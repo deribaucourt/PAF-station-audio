@@ -1,7 +1,7 @@
       ________________________________________________________________
       \                     TELECOM PARISTECH                         /
       \                          PAF 2016                             /
-      \  Transformer le navigateur web en station de traitement audio /
+      \  Transformer le navigateur web en station travail audio       /
       \_______________________________________________________________/
 
 This is a 1st year final application student project at Telecom Paristech.
