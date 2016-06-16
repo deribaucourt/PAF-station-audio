@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 This is a 1st year final application student project at Telecom Paristech.
 
-It consists in a lightweight browser application able to do simple audio processing like :
+It consists in a lightweight HTML 5 browser application able to do simple audio processing like :
   - Recording and playing audio
   - Writing and recording .wav files
   - Moving and editing audio tracks
