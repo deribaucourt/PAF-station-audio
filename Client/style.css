@@ -24,6 +24,11 @@ body,html {
 html * {
 	font-family: "Verdana", Geneva, sans-serif;
 	text-align: center;
+	float: left;
+}
+
+h1 {
+  font-size: 28px;
 }
 
 div.containerWithBorder {
