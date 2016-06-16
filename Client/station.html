@@ -60,7 +60,7 @@ Code starts here                                                                
 
       <div id="toolsContanier" width="80%" height="10%">
         <div id="playbackControllContainer">
-          <a href="#" id="rewardButton" class="button">reward</a>
+          <a href="#" id="rewindButton" class="button">rewind</a>
           <a href="#" id="playButton" class="button">play</a>
           <a href="#" id="stopButton" class="button">forward</a>
         </div>
@@ -75,12 +75,15 @@ Code starts here                                                                
         <a href="#" id="filterButton" class="button">Filters</a>
       </div>
 
-      <div id="timelineContanier" width="100%" height="10%">
-        <input id="globalTimeline" type="range" width="20%"></input>
+      <div id="timelineContainer" class="containerWithBorder" width="100%" height="10%">
+        <div id="globalTimelineContainer" width="20%">
+          <input id="globalTimeline" type="range" value="0" max="100" min="0" step="100"></input>
+        </div>
         <canvas id="timeline" width="80%"></canvas>
       </div>
 
-      <div id="tracksContanier" width="100%" height="60%">
+      <div id="tracksContanier" class="containerWithBorder" width="100%" height="60%">
+        <h2>Insérez vos pistes ici</h2>
       </div>
 
     </canvas>

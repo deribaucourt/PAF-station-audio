@@ -15,7 +15,50 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
-.button {
+body,html {
+  margin:0 auto 0 auto;
+	height:100%;
+	width:100%;
+}
+
+html * {
+	font-family: "Verdana", Geneva, sans-serif;
+	text-align: center;
+}
+
+div.containerWithBorder {
+	border-style: solid;
+	border-width: medium;
+	border-color: #707070;
+	border-radius: 6px;
+}
+
+div#globalTimelineContainer {
+	border-right-style: solid;
+	border-width: medium;
+	border-color: #707070;
+}
+
+div#timelineContainer {
+	border-bottom-style : none;
+	border-bottom-left-radius: 0px;
+	border-bottom-right-radius: 0px;
+}
+
+div#tracksContanier {
+	border-top-left-radius: 0px;
+	border-top-right-radius: 0px;
+
+	background-color: #D8D8D8;
+	color: #F8F8F8;
+	text-align: center;
+}
+
+input.volumeControl {
+
+}
+
+a.button {
 	-moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
 	-webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
 	box-shadow:inset 0px 1px 0px 0px #ffffff;
