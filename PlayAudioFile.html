@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Web Audio, by eridem</title>
+</head>
+<body>
+<h1>Web Audio, by ERiDeM</h1>
+<p>Example 1: Loading from XMLHttpRequest</p>
+<p>Panic documentation: <a href="https://webaudio.github.io/web-audio-api/#the-audiobuffersourcenode-interface">https://webaudio.github.io/web-audio-api/#the-audiobuffersourcenode-interface</a></p>
+
+<script>
+    // http://eridem.net/wp-content/uploads/2015/08/WebAudioWithImages_01.png
+    // http://eridem.net/wp-content/uploads/2015/08/WebAudioWithImages_02.png
+    // http://eridem.net/wp-content/uploads/2015/08/WebAudioWithImages_03.png
+
+    // Browser support
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+    // Initialize audio context
+    var context = new AudioContext();
+
+    // Sound Url
+    var soundUrl = "/Users/pierreucla/Documents/PACT/Luigi/Bowser/Bowser-001.wav";
+
+    // Create request to load the song from address
+    var request = new XMLHttpRequest();
+    request.open("GET", soundUrl, true);
+    request.responseType = "arraybuffer";
+
+    // Play sound
+    // http://eridem.net/wp-content/uploads/2015/08/WebAudioWithImages_05.png
+    function play() {
+        if (!soundBuffer) return;
+
+        // Create AudioBufferSourceNode and attach buffer
+        var source = context.createBufferSource();
+        source.buffer = soundBuffer;
+
+        // Connect it to the output
+        source.connect(context.destination);
+
+        // Play the source
+        source.start(0);
+    }
+
+    // Send request and save it
+    request.onload = function () {
+        console.log("Sound loaded.");
+
+        // http://eridem.net/wp-content/uploads/2015/08/WebAudioWithImages_04.png
+        context.decodeAudioData(
+            request.response,
+            function (buffer) {
+                window.soundBuffer = buffer;
+                if (typeof window.play === 'function') window.play();
+            }
+        );
+    };
+    request.send();
+</script>
+
+</body>
+</html>
