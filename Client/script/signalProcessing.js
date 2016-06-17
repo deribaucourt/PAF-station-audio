@@ -36,21 +36,21 @@ Signal.prototype.paste = function() {
   /* *************** ArrayList Class **************** */
 
 var ArrayList = function(bufferArray) {   // This is a custom class to manipulate arrays
-    this.array = BufferArray ;  //TODO convert data to array
+    this.T = BufferArray ;  //TODO convert data to array
 }
 
 ArrayList.prototype.get = function(i) {
 
-}
+};
 
 ArrayList.prototype.getSection = function(i,j) {
 
-}
+};
 
 ArrayList.prototype.set = function(i,elt) {
 
-}
+};
 
 ArrayList.prototype.append = function(elt) {
 
-}
+};

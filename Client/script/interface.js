@@ -23,13 +23,40 @@ var tracks = [] ;   // Contains the tracks with their signal, volume, ...
     /* *************** Track class **************** */
 
 var Track = new function(BufferArray) {
-    this.volume = 100 ;
-    this.offset = 0 ;
-    this.position = tracks.length ;
-    this.signal = new Signal(array) ;
+  this.volume = 100 ;
+  this.offset = 0 ;
+  this.number = tracks.length ;
+  this.signal = new Signal(array) ;
 }
 
-function drawTracks() {
-  alert(track) ;
-  //  ev.target.appendChild(document.getElementById(data));
+function repaintTrack(number) {
+
+}
+
+function repaintTracks() {
+  document.getElementById("TracksContainer").innerHTML = "";
+
+  for(track : tracks) {
+    drawNewTrack(track);
+  }
+  drawRecordTrack();
+}
+
+function drawNewTrack(track) {
+  var ajax = new XMLHttpRequest();    // get the code
+  ajax.open("GET", "../track.html", false);
+  ajax.send();
+// Change IDs to correspond with track.number
+  var htmlCode = ajax.responseText ;
+  htmlCode.replace("$",track.number);
+  document.getElementById("TracksContainer").innerHTML += htmlCode;
+}
+
+function drawRecordTrack() {
+  var ajax = new XMLHttpRequest();    // get the code
+  ajax.open("GET", "../record.html", false);
+  ajax.send();
+// Change IDs to correspond with track.number
+  var htmlCode = ajax.responseText ;
+  document.getElementById("TracksContainer").innerHTML += htmlCode;
 }
