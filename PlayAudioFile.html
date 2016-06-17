@@ -9,7 +9,8 @@
 <h1>Web Audio, by ERiDeM</h1>
 <p>Example 1: Loading from XMLHttpRequest</p>
 <p>Panic documentation: <a href="https://webaudio.github.io/web-audio-api/#the-audiobuffersourcenode-interface">https://webaudio.github.io/web-audio-api/#the-audiobuffersourcenode-interface</a></p>
-<button id="btnLoad">Load</button>
+<button id="btnLoadKalimba">LoadKalimba</button>
+<button id="btnLoadSleepAway">LoadSleepAway</button>
 
 <script>
 
@@ -19,14 +20,9 @@
     // Initialize audio context
     var context = new AudioContext();
 
-    // Sound Url
-    var soundUrl = "Kalimba.mp3";
-
-    // Create request to load the song from address
-
 
     //Play from the buffer.
-    function play() {
+    function play(soundBuffer) {
         if (!soundBuffer) return;
 
         // Create AudioBufferSourceNode and attach buffer
@@ -41,12 +37,14 @@
     }
 
     // Send request and save it
-    function load()
+    function load(soundUrl)
     {
-      //Sources are fetch thanks to
-        var request = new XMLHttpRequest();
+      //Sources are fetch thanks to the XMLHttpRequest.
+      var request = new XMLHttpRequest();
       request.open("GET", soundUrl, true);
       request.responseType = "arraybuffer";
+
+      //We handle the onload event.
 
       request.onload = function () {
           console.log("Sound loaded.");
@@ -54,15 +52,17 @@
           context.decodeAudioData(
               request.response,
               function (buffer) {
+                  alert(buffer);
                   window.soundBuffer = buffer;
-                  if (typeof window.play === 'function') window.play();
+                  if (typeof window.play === 'function') window.play(buffer);
                 }
               );
             };
     request.send();
     }
 
-      document.querySelector("#btnLoad").onclick = load;
+      document.querySelector("#btnLoadKalimba").onclick = load("Kalimba.mp3");
+      document.querySelector("#btnLoadSleepAway").onclick = load ("Sleep_Away.mp3");
 </script>
 
 </body>
