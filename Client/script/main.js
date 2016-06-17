@@ -47,15 +47,12 @@ var reader = new FileReader();
 reader.addEventListener('load', function() {
 // This part of the code is executed after the reader has finished loading the file
   audioContext.decodeAudioData(reader.result, function(decodedData) {  // Decode the binary data to an audiosBuffer (extend ArrayBuffer)
-    alert("decodedData :"+decodedData);
-    //TODO For test : play the sound !
-    soundBuffer = decodedData;
-    play();
-
+  loadingScreenShow(false);
     tracks.push(new Track(decodedData));
     drawTrackBlock(tracks[-1]);
   }, function(error) {
-    alert("decodeAudioData error", error);
+    alert("Invalid audio file :(", error);
+  loadingScreenShow(false);
   }) ;
 }) ;
 
@@ -66,22 +63,15 @@ function drop(ev) {     // Is called when a file is dropped into the tracks zone
   for(file of files) {
     reader.readAsArrayBuffer(file);
   }
+
+  loadingScreenShow(true);
 }
 
-//TEST SECTION
-var soundBuffer;
-function play() {
-    if (!soundBuffer) return;
-
-    // Create AudioBufferSourceNode and attach buffer
-    var source = audioContext.createBufferSource();
-    source.buffer = soundBuffer;
-
-    // Connect it to the output
-    source.connect(audioContext.destination);
-
-    // Play the source
-    source.start(0);
+function loadingScreenShow(boolean) {
+  if(boolean)
+    document.getElementById("loadingPopup").style.display = "block" ;
+  else
+    document.getElementById("loadingPopup").style.display = "none" ;
 }
 
 function drawTrackBlock(track) {
