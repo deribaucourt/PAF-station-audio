@@ -27,7 +27,7 @@ var Track = new function(BufferArray) {
   this.offset = 0 ;
   this.number = tracks.length ;
   this.signal = new Signal(array) ;
-}
+};
 
 function repaintTrack(number) {
 

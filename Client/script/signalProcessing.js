@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 var Signal = function(bufferArray) {
     this.X = new ArrayList(bufferArray) ;
-}
+};
 
 Signal.prototype.copy = function(begin,end) {
     pasteContent = this.X.get(begin, end) ;
@@ -37,7 +37,7 @@ Signal.prototype.paste = function() {
 
 var ArrayList = function(bufferArray) {   // This is a custom class to manipulate arrays
     this.T = BufferArray ;  //TODO convert data to array
-}
+};
 
 ArrayList.prototype.get = function(i) {
 
