@@ -40,15 +40,19 @@ function allowDrop(ev) {
 }
 
 
+var audioContext = new AudioContext() ;     // Does the decoding of audio files
 var reader = new FileReader();
                 // File reader are asynchronous. Must wait for the finish event before decoding the data.
-var audioCtx = new AudioContext();
+
 reader.addEventListener('load', function() {
 // This part of the code is executed after the reader has finished loading the file
-  audioCtx.decodeAudioData(reader.result, function(decodedData) {  // Decode the binary data to an array
+  audioContext.decodeAudioData(reader.result, function(decodedData) {  // Decode the binary data to an audiosBuffer (extend ArrayBuffer)
     alert("decodedData :"+decodedData);
+    //TODO For test : play the sound !
     tracks.push(new Track(decodedData));
     drawTrackBlock(tracks[-1]);
+  }, function(error) {
+    alert("decodeAudioData error", error);
   }) ;
 }) ;
 
