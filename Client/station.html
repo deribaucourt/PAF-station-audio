@@ -85,8 +85,18 @@ Code starts here                                                                
       </div>
       <br style="clear: left;" />
 
-      <div id="tracksContanier" class="containerWithBorder" style="width:100%;height:75%;overflow:scroll;">
-        <h2 style="float:none;">Insérez vos pistes ici</h2>
+      <div id="tracksContanier" class="containerWithBorder" ondrop="drop(event)" ondragover="allowDrop(event)" style="width:100%;height:75%;overflow:scroll;">
+        <h2 id="tracksInsertMessage">Insérez vos pistes ici</h2>
+        <div id="recordTrackContainer" class="trackTopContainer" style="width:100%; height:20%;">
+          <div class="trackMenu" style="width: 15%; height:20%;">
+            <a href="#" id="recordButton" class="button" style="width:100%; height:80%;">record</a>
+            <br style="clear: left;" />
+
+            <input id="recordVolumeControl" type="range" value="0" max="100" min="0" step="1"></input>
+          </div>
+          <canvas id="recordTrack" class="track" style="width:85%; height:80%;" />
+        </div>
+
       </div>
 
     </div>

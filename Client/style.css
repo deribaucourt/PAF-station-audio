@@ -63,6 +63,28 @@ input.volumeControl {
 
 }
 
+div.trackTopContainer {
+	border-bottom-style: solid;
+	border-width: medium;
+  border-color: #707070;
+
+  z-index: 2;
+}
+
+div.trackMenu {
+  border-right-style: solid;
+  border-width: medium;
+  border-color: #707070;
+}
+
+h2#tracksInsertMessage {
+  float:none;
+  z-index: 1;
+  position: absolute;
+  top: 60%;
+  left: 30%;
+}
+
 a.button {
 	-moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
 	-webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
