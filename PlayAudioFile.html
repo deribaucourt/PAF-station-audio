@@ -11,12 +11,9 @@
 <p>Panic documentation: <a href="https://webaudio.github.io/web-audio-api/#the-audiobuffersourcenode-interface">https://webaudio.github.io/web-audio-api/#the-audiobuffersourcenode-interface</a></p>
 
 <script>
-    // http://eridem.net/wp-content/uploads/2015/08/WebAudioWithImages_01.png
-    // http://eridem.net/wp-content/uploads/2015/08/WebAudioWithImages_02.png
-    // http://eridem.net/wp-content/uploads/2015/08/WebAudioWithImages_03.png
 
-    // Browser support
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
+
     // Initialize audio context
     var context = new AudioContext();
 
@@ -29,7 +26,6 @@
     request.responseType = "arraybuffer";
 
     // Play sound
-    // http://eridem.net/wp-content/uploads/2015/08/WebAudioWithImages_05.png
     function play() {
         if (!soundBuffer) return;
 
@@ -48,7 +44,6 @@
     request.onload = function () {
         console.log("Sound loaded.");
 
-        // http://eridem.net/wp-content/uploads/2015/08/WebAudioWithImages_04.png
         context.decodeAudioData(
             request.response,
             function (buffer) {
