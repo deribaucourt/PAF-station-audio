@@ -14,3 +14,22 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
+
+
+  /* *************** Signal Representation **************** */
+
+var tracks = [] ;   // Contains the tracks with their signal, volume, ...
+
+    /* *************** Track class **************** */
+
+var Track = new function(BufferArray) {
+    this.volume = 100 ;
+    this.offset = 0 ;
+    this.position = tracks.length ;
+    this.signal = new Signal(array) ;
+}
+
+function drawTracks() {
+  alert(track) ;
+  //  ev.target.appendChild(document.getElementById(data));
+}

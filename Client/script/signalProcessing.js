@@ -18,54 +18,39 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
   /* *************** Signal Class **************** */
 
-class Signal {
+var Signal = function(bufferArray) {
+    this.X = new ArrayList(bufferArray) ;
+}
 
-  constructor(array) {
-    this.X = new ArrayList(array) ;
-  }
-
-  copy(begin, end) {
+Signal.prototype.copy = function(begin,end) {
     pasteContent = this.X.get(begin, end) ;
-  }
+};
 
-  cut(begin end) {
+Signal.prototype.cut = function(begin,end) {
+};
 
-  }
+Signal.prototype.paste = function() {
+};
 
-  paste() {
 
-  }
+  /* *************** ArrayList Class **************** */
 
-  effect {
+var ArrayList = function(bufferArray) {   // This is a custom class to manipulate arrays
+    this.array = BufferArray ;  //TODO convert data to array
+}
 
-  }
+ArrayList.prototype.get = function(i) {
 
 }
 
-class ArrayList {   // This is a custom class to manipulate arrays
+ArrayList.prototype.getSection = function(i,j) {
 
-  constructor(array) {
-    this.array = array ;
-  }
+}
 
-  get(i) {
+ArrayList.prototype.set = function(i,elt) {
 
-  }
+}
 
-  get(i,j) {
-
-  }
-
-  set(i, elt) {
-
-  }
-
-  add(elt) {
-
-  }
-
-  resize(size) {  // TODO: Remove elements if too long, else append with zeros
-
-  }
+ArrayList.prototype.append = function(elt) {
 
 }

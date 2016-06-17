@@ -20,18 +20,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 var cursorPosition ;
 var pasteContent = [] ;
-var tracks = [] ;   // Contains the tracks with their signal, volume, ...
-
-  /* *************** Track class **************** */
-
-class Track {
-  constructor(array) {    // Receives the signal
-    this.volume = 100 ;
-    this.signal = new Signal(array) ;
-  }
-
-
-}
 
   /* *************** Drag and Drop Import **************** */
 
@@ -72,9 +60,4 @@ function loadingScreenShow(boolean) {
     document.getElementById("loadingPopup").style.display = "block" ;
   else
     document.getElementById("loadingPopup").style.display = "none" ;
-}
-
-function drawTrackBlock(track) {
-  alert(track) ;
-  //  ev.target.appendChild(document.getElementById(data));
 }
