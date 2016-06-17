@@ -14,3 +14,58 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
+
+
+  /* *************** Signal Class **************** */
+
+class Signal {
+
+  constructor(array) {
+    this.X = new ArrayList(array) ;
+  }
+
+  copy(begin, end) {
+    pasteContent = this.X.get(begin, end) ;
+  }
+
+  cut(begin end) {
+
+  }
+
+  paste() {
+
+  }
+
+  effect {
+
+  }
+
+}
+
+class ArrayList {   // This is a custom class to manipulate arrays
+
+  constructor(array) {
+    this.array = array ;
+  }
+
+  get(i) {
+
+  }
+
+  get(i,j) {
+
+  }
+
+  set(i, elt) {
+
+  }
+
+  add(elt) {
+
+  }
+
+  resize(size) {  // TODO: Remove elements if too long, else append with zeros
+
+  }
+
+}

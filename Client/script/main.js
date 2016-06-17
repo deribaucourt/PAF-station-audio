@@ -14,3 +14,54 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
+
+
+  /* *************** Global Variables **************** */
+
+var cursorPosition ;
+var pasteContent = [] ;
+var tracks = [] ;   // Contains the tracks with their signal, volume, ...
+
+  /* *************** Track class **************** */
+
+class Track {
+  constructor(array) {    // Receives the signal
+    this.volume = 100 ;
+    this.signal = new Signal(array) ;
+  }
+
+
+}
+
+  /* *************** Drag and Drop Import **************** */
+
+function allowDrop(ev) {
+  ev.preventDefault();
+}
+
+
+var reader = new FileReader();
+                // File reader are asynchronous. Must wait for the finish event before decoding the data.
+var audioCtx = new AudioContext();
+reader.addEventListener('load', function() {
+// This part of the code is executed after the reader has finished loading the file
+  audioCtx.decodeAudioData(reader.result, function(decodedData) {  // Decode the binary data to an array
+    alert("decodedData :"+decodedData);
+    tracks.push(new Track(decodedData));
+    drawTrackBlock(tracks[-1]);
+  }) ;
+}) ;
+
+function drop(ev) {     // Is called when a file is dropped into the tracks zone
+  ev.preventDefault();
+  var files = ev.dataTransfer.files;
+
+  for(file of files) {
+    reader.readAsArrayBuffer(file);
+  }
+}
+
+function drawTrackBlock(track) {
+  alert(track) ;
+  //  ev.target.appendChild(document.getElementById(data));
+}
