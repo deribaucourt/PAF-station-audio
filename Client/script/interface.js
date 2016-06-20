@@ -52,15 +52,15 @@ function drawSignal(track) {
     ctx.moveTo(i*canvasWidth/5, canvasHeight*13/30);
     ctx.lineTo(i*canvasWidth/5, canvasHeight*17/30);
     ctx.fillText(i*timeWindowSize/5 + timeWindowOffset, i*canvasWidth/5, canvasHeight*19/30);
-    ctx.stroke();
   }
+  ctx.stroke();
 
 
   ctx.moveTo(0,track.signal.getChannelData(0)[timeWindowOffset*track.signal.sampleRate]*canvasHeight);
   for(i = 1; i<canvasWidth; i++) {
     ctx.lineTo(i,(track.signal.getChannelData(0)[Math.floor((timeWindowOffset+i*timeWindowSize/canvasWidth)*track.signal.sampleRate)]+0.5)*canvasHeight);
-    ctx.stroke();
   }
+  ctx.stroke();
 }
 
     /* *************** Track Block Paint **************** */
@@ -97,6 +97,9 @@ function drawNewTrack(track) {
     }
     document.getElementById("tracksContainer").innerHTML += htmlCode;
     alert("wait for innerHtml to load");
+    var c = document.getElementById("trackCanvas"+track.number) ;   // Fixes canvas stretching
+    c.width = c.clientWidth;
+    c.height = c.clientHeight;
     drawSignal(track);
   };
   ajax.send();
