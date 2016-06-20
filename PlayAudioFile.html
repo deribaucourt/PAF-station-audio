@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Web Audio, by eridem</title>
+</head>
+<body>
+<h1>Web Audio, by ERiDeM</h1>
+<p>Example 1: Loading from XMLHttpRequest</p>
+<p>Panic documentation: <a href="https://webaudio.github.io/web-audio-api/#the-audiobuffersourcenode-interface">https://webaudio.github.io/web-audio-api/#the-audiobuffersourcenode-interface</a></p>
+<button id="btnLoad">Load</button>
+
+<script>
+
+    // Browser support
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+
+    // Initialize audio context
+    var context = new AudioContext();
+
+    // Sound Url
+    var soundUrl = "Kalimba.mp3";
+
+    // Create request to load the song from address
+
+
+    //Play from the buffer.
+    function play() {
+        if (!soundBuffer) return;
+
+        // Create AudioBufferSourceNode and attach buffer
+        var source = context.createBufferSource();
+        source.buffer = soundBuffer;
+
+        // Connect it to the output
+        source.connect(context.destination);
+
+        // Play the source
+        source.start(0);
+    }
+
+    // Send request and save it
+    function load()
+    {
+      //Sources are fetch thanks to
+        var request = new XMLHttpRequest();
+      request.open("GET", soundUrl, true);
+      request.responseType = "arraybuffer";
+
+      request.onload = function () {
+          console.log("Sound loaded.");
+
+          context.decodeAudioData(
+              request.response,
+              function (buffer) {
+                  window.soundBuffer = buffer;
+                  if (typeof window.play === 'function') window.play();
+                }
+              );
+            };
+    request.send();
+    }
+
+      document.querySelector("#btnLoad").onclick = load;
+</script>
+
+</body>
+</html>
