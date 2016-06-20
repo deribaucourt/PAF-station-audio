@@ -18,7 +18,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
   /* *************** Global Variables **************** */
 
-var cursorPosition ;
 var pasteContent = [] ;
 
   /* *************** Drag and Drop Import **************** */
@@ -53,11 +52,4 @@ function drop(ev) {     // Is called when a file is dropped into the tracks zone
   }
 
   loadingScreenShow(true);
-}
-
-function loadingScreenShow(boolean) {
-  if(boolean)
-    document.getElementById("loadingPopup").style.display = "block" ;
-  else
-    document.getElementById("loadingPopup").style.display = "none" ;
 }
