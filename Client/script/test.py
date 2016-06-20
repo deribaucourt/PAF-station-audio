@@ -5,7 +5,7 @@ app = Flask(__name__)
 html_page = """<!DOCTYPE HTML>
 <html>
 <head>
-<title>Rough AJAX Test</title>
+<title>Flask AJAX Test</title>
 <script>
 function GetXMLHttpRequest() {
     "use strict";
@@ -23,7 +23,7 @@ function GetXMLHttpRequest() {
             xhr = new XMLHttpRequest();
         }
     } else {
-        alert("Votre navigateur ne supporte pas l'objet XMLHTTPRequest...");
+        alert("Votre navigateur ne supporte pas l'objet XMLHTTPRequest");
         return null;
     }
     
@@ -34,7 +34,7 @@ function sendAudio() {
     "use strict";
 
     var xhr = new GetXMLHttpRequest();
-    var sentText = encodeURIComponent("this is a test");
+    var sentText = "I was sent through XHR";
     
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
@@ -59,11 +59,9 @@ function sendAudio() {
 def index():
     return html_page
 
-
 @app.route('/request', methods = ['POST'])
 def handle_request() :
-    return "wtf"
-
+    return "Page said : " + request.data
 
 if __name__ == "__main__":
     app.run(debug = True)
