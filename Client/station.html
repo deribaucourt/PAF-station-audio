@@ -56,6 +56,10 @@ Code starts here                                                                
   </div>
 
       <!-- ************* Filters Popup ************ -->
+      
+      <div id="filtersPopup" class="popup">
+        <img src="icons/close.png" onClick="toggleFiltersPopup(false)" />
+      </div>
 
       <!-- ************* Home Page ************ -->
 
@@ -71,7 +75,7 @@ Code starts here                                                                
       </div>
 
       <div id="filterButtonContainer" style="width:20%;height:20%;">
-        <a href="#" id="filterButton" class="button" style="width:100%; height:100%;">Filters</a>
+        <a href="#" id="filterButton" class="button" style="width:100%; height:100%;" onclick="toggleFiltersPopup(true)">Filters</a>
       </div>
       <br style="clear: left;" />
 

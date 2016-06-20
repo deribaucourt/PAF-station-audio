@@ -36,7 +36,7 @@ function repaintTrack(number) {
 function repaintTracks() {
   document.getElementById("TracksContainer").innerHTML = "";
 
-  for(track : tracks) {
+  for(track of tracks) {
     drawNewTrack(track);
   }
   drawRecordTrack();
@@ -59,4 +59,12 @@ function drawRecordTrack() {
 // Change IDs to correspond with track.number
   var htmlCode = ajax.responseText ;
   document.getElementById("TracksContainer").innerHTML += htmlCode;
+}
+
+function toggleFiltersPopup(toggleState) {
+    if(toggleState) {
+        document.getElementById("filtersPopup").style.display = "block";
+    } else {
+        document.getElementById("filtersPopup").style.display = "none";
+    }
 }
