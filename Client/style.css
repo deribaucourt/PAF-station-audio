@@ -24,6 +24,7 @@ body,html {
 html * {
 	font-family: "Verdana", Geneva, sans-serif;
 	text-align: center;
+  font-size: 100%;
 	float: left;
 }
 
@@ -50,7 +51,7 @@ div#timelineContainer {
 	border-bottom-right-radius: 0px;
 }
 
-div#tracksContanier {
+div#tracksContainer {
 	border-top-left-radius: 0px;
 	border-top-right-radius: 0px;
 
