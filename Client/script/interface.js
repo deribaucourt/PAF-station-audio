@@ -48,18 +48,18 @@ function drawSignal(track) {
   ctx.moveTo(0,canvasHeight/2);
   ctx.lineTo(canvasWidth,canvasHeight/2);
   ctx.stroke();
-  for(var i = 0; i<6; i++) {  // Trace 6 time divisions
+  for(var i = 0; i<6; i++) {  // Trace 6 time divisions  TODO: do it only on the timeline
     ctx.moveTo(i*canvasWidth/5, canvasHeight*13/30);
     ctx.lineTo(i*canvasWidth/5, canvasHeight*17/30);
     ctx.fillText(i*timeWindowSize/5 + timeWindowOffset, i*canvasWidth/5, canvasHeight*19/30);
   }
   ctx.stroke();
 
-
   ctx.moveTo(0,track.signal.getChannelData(0)[timeWindowOffset*track.signal.sampleRate]*canvasHeight);
   for(i = 1; i<canvasWidth; i++) {
     ctx.lineTo(i,(track.signal.getChannelData(0)[Math.floor((timeWindowOffset+i*timeWindowSize/canvasWidth)*track.signal.sampleRate)]+0.5)*canvasHeight);
   }
+  console.log("drawing PCM for "+track.number);
   ctx.stroke();
 }
 
@@ -73,16 +73,16 @@ function loadingScreenShow(boolean) {
 }
 
 function repaintTrack(number) {
-
+  document.getElementById("trackCanvas"+track.number).getContext("2d").repaint();
 }
 
 function repaintTracks() {
-  document.getElementById("tracksContainer").innerHTML = "";
+  console.log("temporary removing recording record track") ;
+  document.getElementById("tracksContainer").removeChild(document.getElementById("recordTrackContainer"));  // delete current record track to place it at the end
 
-  for(track of tracks) {
-    drawNewTrack(track);
-  }
-  drawRecordTrack();
+  drawNewTrack(tracks[tracks.length-1]);    // generate new track
+  drawRecordTrack();                        // finally add record track
+
 }
 
 function drawNewTrack(track) {
@@ -101,6 +101,10 @@ function drawNewTrack(track) {
     c.width = c.clientWidth;
     c.height = c.clientHeight;
     drawSignal(track);
+    for(var j = 0; j<tracks.length-1; j++) {  // repaint all other canvas (they clear for some reason)
+      console.log("repainting track "+ j);
+      drawSignal(tracks[j]);
+    }
   };
   ajax.send();
 }
