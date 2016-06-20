@@ -10,9 +10,8 @@
 <p>Example 1: Loading from XMLHttpRequest</p>
 <p>Panic documentation: <a href="https://webaudio.github.io/web-audio-api/#the-audiobuffersourcenode-interface">https://webaudio.github.io/web-audio-api/#the-audiobuffersourcenode-interface</a></p>
 ​
-<input type="button" id = "Kalimba">LoadKalimba</input>
-<input type = "button" id = "SleepAway">LoadSleepAway</input>
-
+<input type="button" value="Kalimba" onclick = "listen('Kalimba.mp3')" />
+<input type="button" value="SleepAway" onclick = "listen('SleepAway.mp3')" />
 <script>
 
     // Browser support
@@ -60,13 +59,7 @@
               );
             };
     request.send();
-    }
-
-    var kalimba = document.getElementById('Kalimba');
-    kalimba.addEventListener("click", listen("Kalimba.mp3"));
-
-    var SleepAway = document.getElementById('SleepAway');
-    SleepAway.addEventListener("click", listen("SleepAway.mp3"));
+  }
 
 </script>
 
