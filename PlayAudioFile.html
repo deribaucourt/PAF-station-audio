@@ -9,8 +9,9 @@
 <h1>Web Audio, by ERiDeM</h1>
 <p>Example 1: Loading from XMLHttpRequest</p>
 <p>Panic documentation: <a href="https://webaudio.github.io/web-audio-api/#the-audiobuffersourcenode-interface">https://webaudio.github.io/web-audio-api/#the-audiobuffersourcenode-interface</a></p>
-<button id="btnLoadKalimba">LoadKalimba</button>
-<button id="btnLoadSleepAway">LoadSleepAway</button>
+​
+<input type="button" id = "Kalimba">LoadKalimba</input>
+<input type = "button" id = "SleepAway">LoadSleepAway</input>
 
 <script>
 
@@ -37,7 +38,7 @@
     }
 
     // Send request and save it
-    function load(soundUrl)
+    function listen(soundUrl)
     {
       //Sources are fetch thanks to the XMLHttpRequest.
       var request = new XMLHttpRequest();
@@ -61,8 +62,12 @@
     request.send();
     }
 
-      document.querySelector("#btnLoadKalimba").onclick = load("Kalimba.mp3");
-      document.querySelector("#btnLoadSleepAway").onclick = load ("Sleep_Away.mp3");
+    var kalimba = document.getElementById('Kalimba');
+    kalimba.addEventListener("click", listen("Kalimba.mp3"));
+
+    var SleepAway = document.getElementById('SleepAway');
+    SleepAway.addEventListener("click", listen("SleepAway.mp3"));
+
 </script>
 
 </body>

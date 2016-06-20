@@ -39,7 +39,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
             var webRtcSource;
 
             function handle_startMonitoring() {
-                navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
+                navigator.getUserMedia =  navigator.mozGetUserMedia ;
                 navigator.getUserMedia(
                     { audio: true, video: false },
                     function (mediaStream) {
