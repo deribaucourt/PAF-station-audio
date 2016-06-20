@@ -39,12 +39,6 @@ ul {
     list-style-image: none;
 }
 
-li {
-    float: none;
-    box-sizing: border-box;
-    text-align: left;
-}
-
 div.containerWithBorder {
 	border-style: solid;
 	border-width: medium;
@@ -91,9 +85,16 @@ div.trackMenu {
   border-color: #707070;
 }
 
+li.filtersPopup {
+    float: none;
+    margin: 10px;
+    box-sizing: border-box;
+    text-align: left;
+}
+
 img.filtersPopup {
     float: none;
-    margin:5px 8px 0 5px;
+    margin:0 8px 0 5px;
     width: 15px;
     height: 15px;
 }
