@@ -55,12 +55,31 @@ function drawSignal(track) {
   }
   ctx.stroke();
 
+  /* CLASSIC REPRESENTATION OF SOUND POWER */
+  var localMax, previousSample, k;
+  var currentSample = Math.floor(timeWindowOffset*track.signal.sampleRate);
+  for(i = 0; i<canvasWidth; i++) {
+    previousSample = currentSample ;
+    currentSample = Math.floor((timeWindowOffset+i*timeWindowSize/canvasWidth)*track.signal.sampleRate) ;
+    localMax = 0;
+    for(k = previousSample+1; k<currentSample; k++) {
+      if(Math.abs(track.signal.getChannelData(0)[k])>localMax) {
+        localMax = Math.abs(track.signal.getChannelData(0)[k]) ;
+      }
+    }
+    ctx.moveTo(i,-(localMax-1)*canvasHeight*0.5);
+    ctx.lineTo(i,(localMax+1)*canvasHeight*0.5);
+  }
+  ctx.stroke();
+
+  /*    RAW PCM REPRESENTATION  */ /*
   ctx.moveTo(0,track.signal.getChannelData(0)[timeWindowOffset*track.signal.sampleRate]*canvasHeight);
   for(i = 1; i<canvasWidth; i++) {
     ctx.lineTo(i,(track.signal.getChannelData(0)[Math.floor((timeWindowOffset+i*timeWindowSize/canvasWidth)*track.signal.sampleRate)]+0.5)*canvasHeight);
   }
   console.log("drawing PCM for "+track.number);
-  ctx.stroke();
+  ctx.stroke();*/
+
 }
 
     /* *************** Track Block Paint **************** */
@@ -72,17 +91,12 @@ function loadingScreenShow(boolean) {
     document.getElementById("loadingPopup").style.display = "none" ;
 }
 
-function repaintTrack(number) {
-  document.getElementById("trackCanvas"+track.number).getContext("2d").repaint();
-}
-
 function repaintTracks() {
   console.log("temporary removing recording record track") ;
   document.getElementById("tracksContainer").removeChild(document.getElementById("recordTrackContainer"));  // delete current record track to place it at the end
 
   drawNewTrack(tracks[tracks.length-1]);    // generate new track
   drawRecordTrack();                        // finally add record track
-
 }
 
 function drawNewTrack(track) {
@@ -105,6 +119,7 @@ function drawNewTrack(track) {
       console.log("repainting track "+ j);
       drawSignal(tracks[j]);
     }
+    document.getElementById("tracksInsertMessage").style.display = "none";
   };
   ajax.send();
 }
