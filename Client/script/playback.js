@@ -14,3 +14,25 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
+
+var audioContext = new AudioContext() ;
+var soundBuffer ;
+
+function play() {
+    if (!soundBuffer) return;
+
+    // Create AudioBufferSourceNode and attach buffer
+    var source = audioContext.createBufferSource();
+    source.buffer = soundBuffer;
+
+    // Connect it to the output
+    source.connect(audioContext.destination);
+
+    // Play the source
+    source.start(0);
+}
+
+function playback(audioBuffer) {  // ArrayBuffer objects work to
+  soundBuffer = audioBuffer;
+  play();
+}
