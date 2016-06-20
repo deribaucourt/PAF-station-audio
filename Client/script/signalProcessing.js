@@ -18,9 +18,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
   /* *************** Signal Class **************** */
 
-var Signal = function(bufferArray) {
+function Signal(bufferArray) {
     this.X = new ArrayList(bufferArray) ;
-};
+}
 
 Signal.prototype.copy = function(begin,end) {
     pasteContent = this.X.get(begin, end) ;
@@ -35,9 +35,9 @@ Signal.prototype.paste = function() {
 
   /* *************** ArrayList Class **************** */
 
-var ArrayList = function(bufferArray) {   // This is a custom class to manipulate arrays
+function ArrayList(bufferArray) {   // This is a custom class to manipulate arrays
     this.T = BufferArray ;  //TODO convert data to array
-};
+}
 
 ArrayList.prototype.get = function(i) {
 

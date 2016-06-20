@@ -22,12 +22,12 @@ var tracks = [] ;   // Contains the tracks with their signal, volume, ...
 
     /* *************** Track class **************** */
 
-var Track = new function(BufferArray) {
+function Track(BufferArray) {
   this.volume = 100 ;
   this.offset = 0 ;
   this.number = tracks.length ;
   this.signal = new Signal(array) ;
-};
+}
 
 function repaintTrack(number) {
 

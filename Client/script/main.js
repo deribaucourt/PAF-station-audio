@@ -29,14 +29,14 @@ function allowDrop(ev) {
 
 
 var audioContext = new AudioContext() ;     // Does the decoding of audio files
-var reader = new FileReader();
+var reader = new FileReader() ;
                 // File reader are asynchronous. Must wait for the finish event before decoding the data.
 
 reader.addEventListener('load', function() {
 // This part of the code is executed after the reader has finished loading the file
   audioContext.decodeAudioData(reader.result, function(decodedData) {  // Decode the binary data to an audiosBuffer (extend ArrayBuffer)
     loadingScreenShow(false);
-    tracks.push("new Track(decodedData)");      alert("new track ok");//TODO remove
+    tracks.push("new Track(decodedData)");      alert("new track ok");  //TODO remove
     repaintTracks();
   }, function(error) {
     alert("Invalid audio file :(", error);
