@@ -61,3 +61,15 @@ function loadingScreenShow(boolean) {
   else
     document.getElementById("loadingPopup").style.display = "none" ;
 }
+
+
+function importFile(evt)
+{
+  var files = evt.target.files; // FileList object
+
+  for(file of files) {
+    reader.readAsArrayBuffer(file);
+        }
+    }
+
+    document.getElementById('importButton').addEventListener('change', importFile, false);
