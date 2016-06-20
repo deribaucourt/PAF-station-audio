@@ -50,8 +50,11 @@ function drawNewTrack(track) {
   ajax.onload=function() {  // This code is called once the html code is loaded
   // Change elements' IDs to correspond with track.number
     var htmlCode = ajax.responseText ;
-    htmlCode.replace("$",track.number);
-    document.getElementById("tracksContainer").innerHTML += htmlCode;
+    for(var i = 0; i<7; i++){
+      htmlCode = htmlCode.replace("TRACKID",track.number);
+    }
+    document.getElementById("tracksContainer").innerHTML += htmlCode;alert("hoho");
+    drawSignal(track);
   };
   ajax.send();
 }
@@ -64,4 +67,17 @@ function drawRecordTrack() {
     document.getElementById("tracksContainer").innerHTML += ajax.responseText;
   }
   ajax.send();
+}
+
+function drawSignal(track) {
+  var c=document.getElementById("trackCanvas"+track.number);
+  var ctx=c.getContext("2d");
+  ctx.beginPath();
+  ctx.moveTo(0,0);
+  ctx.lineTo(300,150);
+  ctx.stroke();
+
+  for(var i = 0; i<track.signal.size; i++) {
+    console.log(track.signal.getChannelData(i));
+  }
 }
