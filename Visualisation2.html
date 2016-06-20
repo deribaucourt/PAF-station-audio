@@ -16,7 +16,7 @@
 <canvas class="visualizer";id="myCanvas";width="640" height="100">
 <script>
 // Create the Audio Context
-
+ window.AudioContext = window.AudioContext || window.webkitAudioContext;
 // Create the Audio Context
 
 var context = new AudioContext();

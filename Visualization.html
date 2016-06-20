@@ -16,7 +16,7 @@
 <canvas class="visualizer";id="myCanvas";width="640" height="100">
 <script>
 // Create the Audio Context
-
+window.AudioContext = window.AudioContext || window.webkitAudioContext;
 var context = new AudioContext();
 var analyser = context.createAnalyser();
 var WIDTH = 300;
@@ -31,12 +31,6 @@ var request = new XMLHttpRequest();
 request.open("GET", soundUrl, true);
 request.responseType = "arraybuffer";
 
-
-
-
-function makeConnection() {
-    source.connect(analyser);
-}
 // Play the sound inside of Chrome
 
 function playSound() {
@@ -53,6 +47,7 @@ function playSound() {
 
   // Play the source
   source.start(0);
+  source.connect(analyser);
 
 }
 
@@ -71,7 +66,6 @@ request.onload = function () {
 
 request.send();
 
-makeConnection();
 
 
 var canvas = document.querySelector('.visualizer');
