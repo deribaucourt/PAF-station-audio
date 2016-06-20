@@ -35,8 +35,8 @@ Signal.prototype.paste = function() {
 
   /* *************** ArrayList Class **************** */
 
-function ArrayList(bufferArray) {   // This is a custom class to manipulate arrays
-    this.T = BufferArray ;  //TODO convert data to array
+function ArrayList(buffArray) {   // This is a custom class to manipulate arrays
+    this.T = buffArray ;  //TODO convert data to array
 }
 
 ArrayList.prototype.get = function(i) {

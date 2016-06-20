@@ -22,11 +22,12 @@ var tracks = [] ;   // Contains the tracks with their signal, volume, ...
 
     /* *************** Track class **************** */
 
-function Track(BufferArray) {
+function Track(buffArray) {
+  console.log(" Instanciating new Track") ;
   this.volume = 100 ;
   this.offset = 0 ;
   this.number = tracks.length ;
-  this.signal = new Signal(array) ;
+  this.signal = new Signal(buffArray) ;
 }
 
 function repaintTrack(number) {
@@ -34,29 +35,33 @@ function repaintTrack(number) {
 }
 
 function repaintTracks() {
-  document.getElementById("TracksContainer").innerHTML = "";
+  document.getElementById("tracksContainer").innerHTML = "";
 
-  for(track : tracks) {
+  for(track of tracks) {
     drawNewTrack(track);
   }
   drawRecordTrack();
 }
 
 function drawNewTrack(track) {
+  console.log("loading html code for track number "+ track.number );
   var ajax = new XMLHttpRequest();    // get the code
-  ajax.open("GET", "../track.html", false);
+  ajax.open("GET", "track.html", true);
+  ajax.onload=function() {  // This code is called once the html code is loaded
+  // Change elements' IDs to correspond with track.number
+    var htmlCode = ajax.responseText ;
+    htmlCode.replace("$",track.number);
+    document.getElementById("tracksContainer").innerHTML += htmlCode;
+  };
   ajax.send();
-// Change IDs to correspond with track.number
-  var htmlCode = ajax.responseText ;
-  htmlCode.replace("$",track.number);
-  document.getElementById("TracksContainer").innerHTML += htmlCode;
 }
 
 function drawRecordTrack() {
+  console.log("painting record track last");
   var ajax = new XMLHttpRequest();    // get the code
-  ajax.open("GET", "../record.html", false);
+  ajax.open("GET", "record.html", true);
+  ajax.onload = function() {
+    document.getElementById("tracksContainer").innerHTML += ajax.responseText;
+  }
   ajax.send();
-// Change IDs to correspond with track.number
-  var htmlCode = ajax.responseText ;
-  document.getElementById("TracksContainer").innerHTML += htmlCode;
 }

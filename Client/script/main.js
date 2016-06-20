@@ -23,12 +23,10 @@ var pasteContent = [] ;
 
   /* *************** Drag and Drop Import **************** */
 
-function allowDrop(ev) {
+function allowDrop(ev) {    // Called when overing a file on the drop zone
   ev.preventDefault();
 }
 
-
-var audioContext = new AudioContext() ;     // Does the decoding of audio files
 var reader = new FileReader() ;
                 // File reader are asynchronous. Must wait for the finish event before decoding the data.
 
@@ -36,10 +34,12 @@ reader.addEventListener('load', function() {
 // This part of the code is executed after the reader has finished loading the file
   audioContext.decodeAudioData(reader.result, function(decodedData) {  // Decode the binary data to an audiosBuffer (extend ArrayBuffer)
     loadingScreenShow(false);
-    tracks.push("new Track(decodedData)");      alert("new track ok");  //TODO remove
+    tracks.push(new Track(decodedData));  //TODO remove
+    console.log("new Track ready");
     repaintTracks();
+    console.log("new display finished");
   }, function(error) {
-    alert("Invalid audio file :(", error);
+    alert("Invalid audio file", error);
   loadingScreenShow(false);
   }) ;
 }) ;
