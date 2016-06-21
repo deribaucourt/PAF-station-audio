@@ -91,6 +91,10 @@ function drawSignal(track) {
     ctx.moveTo(i,-(localMax-1)*canvasHeight*0.5);
     ctx.lineTo(i,(localMax+1)*canvasHeight*0.5);
   }
+
+  ctx.moveTo(Math.floor((cursorPosition-timeWindowOffset)/timeWindowSize*canvasWidth),0)      // Trace Cursor
+  ctx.lineTo(Math.floor((cursorPosition-timeWindowOffset)/timeWindowSize*canvasWidth), canvasHeight);
+
   ctx.stroke();
 
   /*    RAW PCM REPRESENTATION  */ /*
