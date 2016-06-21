@@ -105,12 +105,13 @@ var movingTimelineOffset = false ;
 var previousMouseX = 0 ;
 
 function mouseClickHandler(e) {     // this moves the cursor  TODO : code me
-  cursorPosition = (e.clientX - document.getElementById("globalTimelineContainer").clientWidth) * timeWindowSize/document.body.clientWidth + timeWindowOffset ;
+  cursorPosition = (e.clientX - document.getElementById("globalTimelineContainer").clientWidth) * timeWindowSize/timelineWidth + timeWindowOffset ;
   console.log("detected mouse click. new cursor position = "+cursorPosition) ;
   repaintTracks() ;
 }
 
 function tracksMouseDownHandler(e) {     // this moves the offset
+  document.body.style.cursor = "grab" ;
   previousMousex = e.clientX ;
   console.log("detected mouse down. position = "+previousMousex) ;
   movingTimelineOffset = true ;
@@ -118,6 +119,7 @@ function tracksMouseDownHandler(e) {     // this moves the offset
 
 function mouseUpHandler(e) {
   if(movingTimelineOffset) {
+    document.body.style.cursor = "auto" ;
     console.log("detected mouse up. changing window offset.") ;
     timeWindowOffset -= (e.clientX - previousMousex)*timeWindowSize/document.body.clientWidth;
     console.log("new offset is "+timeWindowOffset) ;
@@ -126,7 +128,5 @@ function mouseUpHandler(e) {
   movingTimelineOffset = false ;
 }
 
-
-tracksContainer.addEventListener("mousedown", tracksMouseDownHandler, false);
 timelineCanvas.addEventListener("click", mouseClickHandler, false);
 document.addEventListener("mouseup", mouseUpHandler, false);

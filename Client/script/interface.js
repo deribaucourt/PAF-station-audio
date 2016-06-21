@@ -54,9 +54,13 @@ function repaintTimeline() {
     timeline.lineTo(i*timelineWidth/5, timelineHeight);
     timeline.fillText(i*timeWindowSize/5 + timeWindowOffset, i*timelineWidth/5, timelineHeight*19/30);
   }
-  timeline.moveTo(Math.floor((cursorPosition-timeWindowOffset)/timeWindowSize*timelineWidth),0)      // Trace Cursor
-  timeline.lineTo(Math.floor((cursorPosition-timeWindowOffset)/timeWindowSize*timelineWidth), timelineHeight);
   timeline.stroke();
+}
+
+var cursor = document.getElementById("cursor");
+
+function drawCursor() {
+  cursor.style.left = ( (cursorPosition-timeWindowOffset)/timeWindowSize*timelineWidth + document.getElementById("globalTimelineContainer").clientWidth) + "px" ;
 }
 
   /* *************** Signal Representation **************** */
@@ -91,10 +95,6 @@ function drawSignal(track) {
     ctx.moveTo(i,-(localMax-1)*canvasHeight*0.5);
     ctx.lineTo(i,(localMax+1)*canvasHeight*0.5);
   }
-
-  ctx.moveTo(Math.floor((cursorPosition-timeWindowOffset)/timeWindowSize*canvasWidth),0)      // Trace Cursor
-  ctx.lineTo(Math.floor((cursorPosition-timeWindowOffset)/timeWindowSize*canvasWidth), canvasHeight);
-
   ctx.stroke();
 
   /*    RAW PCM REPRESENTATION  */ /*
@@ -114,6 +114,7 @@ function repaintTracks() {    // This isn't called when scrolling the tracks, bu
   for(track of tracks) {
     drawSignal(track) ;
   }
+  drawCursor() ;
 }
 
 function loadingScreenShow(boolean) {   // TODO : Maybe it is possible dispose of loading screen ?
@@ -154,6 +155,7 @@ function drawNewTrack(track) {
     var c = document.getElementById("trackCanvas"+track.number) ;   // Fixes canvas stretching
     c.width = c.clientWidth;
     c.height = c.clientHeight;
+    c.addEventListener("mousedown", tracksMouseDownHandler, false);
     drawSignal(track);
     for(var j = 0; j<tracks.length-1; j++) {  // repaint all other canvas (they clear for some reason)
       console.log("repainting track "+ j);
