@@ -73,13 +73,22 @@ function importFile(evt)
     }
 
     document.getElementById('importButton').addEventListener('change', importFile, false);
-
-function listenToAll()
+var compt = 0;
+var source;
+function listenToAll(listen)
 {
-  alert("coucou");
+  compt++;
   var length = tracks.length;
+  var listenTo = [];
+  if (compt === 2) compt = 0;
   for (var i = 0 ; i < length ; i++)
   {
-    playback(tracks[i].signal);
+    if (compt == 1)
+    {
+      source = tracks[i].audioSource();
+    }
+    if (!listen) listenTo[i] = listen;
+    else listenTo[i] = tracks[i].listen;
+    playback(tracks[i].signal, listenTo[i], source);
   }
 }

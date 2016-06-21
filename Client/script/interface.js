@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 
     /* *************** Track class **************** */
+  var audioContext = new AudioContext() ;
 
 function Track(audioBuff) {
   console.log("Instanciating new Track") ;
@@ -24,6 +25,8 @@ function Track(audioBuff) {
   this.offset = 0 ;
   this.number = tracks.length ;
   this.signal = audioBuff ;
+  this.listen = 1;
+  this.audioSource = function() { return audioContext.createBufferSource();};
 }
 
   /* *************** Global Variables **************** */
