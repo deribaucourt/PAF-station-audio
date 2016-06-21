@@ -33,26 +33,45 @@ var cursorPosition = 0 ;  // Current cursor time position
 var timeWindowOffset = 0 ; // time offset in s
 var timeWindowSize = 60 ;    // zoom level / window time in s
 
+  /* *************** Timeline **************** */
+
+var timelineC = document.getElementById("timelineCanvas");
+timelineC.width = timelineC.clientWidth;
+timelineC.height = timelineC.clientHeight;
+var timeline = timelineC.getContext("2d");
+var timelineHeight = timelineC.clientHeight ;   // Measurement in Pixels
+var timelineWidth = timelineC.clientWidth ;
+timeline.font = "12px Arial";
+
+function repaintTimeline() {
+  timeline.clearRect(0, 0, timelineC.width, timelineC.height);
+  timeline.beginPath(); // Trace axis
+  timeline.moveTo(0,timelineHeight/2);
+  timeline.lineTo(timelineWidth,timelineHeight/2);
+  timeline.stroke();
+  for(var i = 0; i<6; i++) {  // Trace 6 big time divisions
+    timeline.moveTo(i*timelineWidth/5, timelineHeight*13/30);
+    timeline.lineTo(i*timelineWidth/5, timelineHeight*17/30);
+    timeline.fillText(i*timeWindowSize/5 + timeWindowOffset, i*timelineWidth/5, timelineHeight*19/30);
+  }
+  timeline.stroke();
+}
+
   /* *************** Signal Representation **************** */
 
 function drawSignal(track) {
   var c=document.getElementById("trackCanvas"+track.number);
   var ctx=c.getContext("2d");
-  ctx.font = "10px Arial";
   var canvasWidth = c.clientWidth;
   var canvasHeight = c.clientHeight;
   var samplesPerDivision = timeWindowSize*track.signal.sampleRate ;
+
+  ctx.clearRect(0, 0, c.width, c.height); ;
 
   // Trace Time axis
   ctx.beginPath();
   ctx.moveTo(0,canvasHeight/2);
   ctx.lineTo(canvasWidth,canvasHeight/2);
-  ctx.stroke();
-  for(var i = 0; i<6; i++) {  // Trace 6 time divisions  TODO: do it only on the timeline
-    ctx.moveTo(i*canvasWidth/5, canvasHeight*13/30);
-    ctx.lineTo(i*canvasWidth/5, canvasHeight*17/30);
-    ctx.fillText(i*timeWindowSize/5 + timeWindowOffset, i*canvasWidth/5, canvasHeight*19/30);
-  }
   ctx.stroke();
 
   /* CLASSIC REPRESENTATION OF SOUND POWER */
@@ -84,14 +103,21 @@ function drawSignal(track) {
 
     /* *************** Track Block Paint **************** */
 
-function loadingScreenShow(boolean) {
+function repaintTracks() {    // This isn't called when scrolling the tracks, but only when resizing zoom
+  repaintTimeline() ;
+  for(track of tracks) {
+    drawSignal(track) ;
+  }
+}
+
+function loadingScreenShow(boolean) {   // TODO : Maybe it is possible dispose of loading screen ?
   if(boolean)
     document.getElementById("loadingPopup").style.display = "block" ;
   else
     document.getElementById("loadingPopup").style.display = "none" ;
 }
 
-function repaintTracks() {
+function addNewTrackToDisplay() {
   console.log("temporary removing recording record track") ;
   document.getElementById("tracksContainer").removeChild(document.getElementById("recordTrackContainer"));  // delete current record track to place it at the end
 
@@ -101,16 +127,16 @@ function repaintTracks() {
 
 function drawNewTrack(track) {
   console.log("loading html code for track number "+ track.number );
-  var ajax = new XMLHttpRequest();    // get the code
+  var ajax = new XMLHttpRequest();    // get the HTML code for  this track
   ajax.open("GET", "track.html", true);
   ajax.onload=function() {  // This code is called once the html code is loaded
-  // Change elements' IDs to correspond with track.number
+      // Change elements' IDs to correspond with track.number
     var htmlCode = ajax.responseText ;
     for(var i = 0; i<7; i++){
       htmlCode = htmlCode.replace("TRACKID",track.number);
     }
     document.getElementById("tracksContainer").innerHTML += htmlCode;
-    alert("wait for innerHtml to load");
+    alert("wait for innerHtml to load");    //TODO : find a better way to wait (place script at the end of the code)
     var c = document.getElementById("trackCanvas"+track.number) ;   // Fixes canvas stretching
     c.width = c.clientWidth;
     c.height = c.clientHeight;
@@ -126,7 +152,7 @@ function drawNewTrack(track) {
 
 function drawRecordTrack() {
   console.log("painting record track last");
-  var ajax = new XMLHttpRequest();    // get the code
+  var ajax = new XMLHttpRequest();    // get the HTML code for record track
   ajax.open("GET", "record.html", true);
   ajax.onload = function() {
     document.getElementById("tracksContainer").innerHTML += ajax.responseText;
