@@ -89,6 +89,6 @@ function listenToAll(listen)
     }
     if (!listen) listenTo[i] = listen;
     else listenTo[i] = tracks[i].listen;
-    playback(tracks[i].signal, listenTo[i], source);
+    playback(tracks[i].signal, listenTo[i], source, tracks[i].offset);
   }
 }

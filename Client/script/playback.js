@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 var soundBuffer ;
 
-function play(listen, source) {
+function play(listen, source, offset) {
 
     if (listen)
       {
@@ -32,7 +32,7 @@ function play(listen, source) {
         source.connect(audioContext.destination);
 
         // Play the source
-        source.start(0);
+        source.start(0,cursorPosition + offset);
     }
     else {
 
@@ -40,7 +40,7 @@ function play(listen, source) {
     }
 }
 
-function playback(audioBuffer, listen, source) {  // ArrayBuffer objects work to
+function playback(audioBuffer, listen, source, offset) {  // ArrayBuffer objects work to
   soundBuffer = audioBuffer;
-  play(listen, source);
+  play(listen, source, offset);
 }
