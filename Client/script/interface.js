@@ -54,8 +54,8 @@ function repaintTimeline() {
     timeline.lineTo(i*timelineWidth/5, timelineHeight);
     timeline.fillText(i*timeWindowSize/5 + timeWindowOffset, i*timelineWidth/5, timelineHeight*19/30);
   }
-  timeline.moveTo(Math.floor(cursorPosition/timeWindowSize*timelineWidth),0)      // Trace Cursor
-  timeline.lineTo(Math.floor(cursorPosition/timeWindowSize*timelineWidth), timelineHeight);
+  timeline.moveTo(Math.floor((cursorPosition-timeWindowOffset)/timeWindowSize*timelineWidth),0)      // Trace Cursor
+  timeline.lineTo(Math.floor((cursorPosition-timeWindowOffset)/timeWindowSize*timelineWidth), timelineHeight);
   timeline.stroke();
 }
 

@@ -105,7 +105,6 @@ var movingTimelineOffset = false ;
 var previousMouseX = 0 ;
 
 function mouseClickHandler(e) {     // this moves the cursor  TODO : code me
-  previousMousex = e.clientX ;
   cursorPosition = (e.clientX - document.getElementById("globalTimelineContainer").clientWidth) * timeWindowSize/document.body.clientWidth + timeWindowOffset ;
   console.log("detected mouse click. new cursor position = "+cursorPosition) ;
   repaintTracks() ;
@@ -130,5 +129,4 @@ function mouseUpHandler(e) {
 
 tracksContainer.addEventListener("mousedown", tracksMouseDownHandler, false);
 timelineCanvas.addEventListener("click", mouseClickHandler, false);
-tracksContainer.addEventListener("click", mouseClickHandler, false);
 document.addEventListener("mouseup", mouseUpHandler, false);
