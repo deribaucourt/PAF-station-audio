@@ -69,12 +69,14 @@ Code starts here                                                                
         <output id="list"></output>
         <a href="#" id="importFileButton" style="width: 10%; height:50%;" class="button">import</a>
         <a href="#" id="exportFileButton" style="width: 10%; height:50%;" class="button">export</a>
-        <div id="titleContainer">
-          <span style="font-size:12px; font-style:italic">icons by <a href="http://www.freepik.com" class="creditLink">Freepik</a> from <a href="http://www.flaticon.com" class="creditLink">Flaticon</a></span>
-        </div>
-        <a href="#" id="filterButton" class="button" style="width:20%; height:50%;" onclick="toggleFiltersPopup(true)">Filters</a>
+          <div id="titleContainer">
+            <span style="font-size:10px; float:none">Copyright© 2016 Vincent Bisogno, François Desrichard, Enguerrand de Ribaucourt, Pierre Ucla - 
+            <span style="font-style:italic; float:none">icons by <a href="http://www.freepik.com" class="creditLink">Freepik</a> from <a href="http://www.flaticon.com" class="creditLink">Flaticon</a></span></span>
+          </div>
+          <a href="#" id="filterButton" class="button" style="width:20%; height:50%;" onclick="toggleFiltersPopup(true)">Filters</a>
+          <div style="float:left"><input type="text" value="test" /></div>
       </div>
-      <br style="clear: left;" />
+      <br style="clear:left" />
 
       <div id="toolsContainer" style="width:100%;height:10%;">
         <div id="playbackControllContainer">
@@ -88,7 +90,7 @@ Code starts here                                                                
           <a href="#" id="pasteButton" class="button">paste</a>
         </div>
       </div>
-      <br style="clear: left;" />
+      <br style="clear:left" />
 
       <div id="timelineContainer" class="containerWithBorder" style="width: 100%; height:5%;">
         <div id="globalTimelineContainer" style="width: 19.6%; height:100%;">
@@ -96,18 +98,17 @@ Code starts here                                                                
         </div>
         <div id="localTimelineContainer" style="width: 80%; height:100%; overflow:hidden;"><canvas id="timelineCanvas" style="width: 100%; height:100%;" /></div>
       </div>
-      <br style="clear: left;" />
+      <br style="clear:left" />
 
       <div id="tracksContainer" class="containerWithBorder" ondrop="drop(event)" ondragover="allowDrop(event)" style="width:100%;height:75%;overflow:scroll;">
         <h2 id="tracksInsertMessage">Insérez vos pistes ici</h2>
         <div id="recordTrackContainer" class="trackTopContainer" style="width:100%; height:20%;">
-          <div class="trackMenu" style="width: 15%; height:20%;">
-            <a href="#" id="recordButton" class="button" style="width:100%; height:80%;">record</a>
+          <div class="trackMenu" style="width: 15%; height:100%;">
+            <a href="#" id="recordButton" class="button" style="width:100%; height:40%;">record</a>
             <br style="clear: left;" />
-
             <input id="recordVolumeControl" class="volumeControl" type="range" value="0" max="100" min="0" step="1"></input>
           </div>
-          <canvas id="recordTrack" class="track" style="width:85%; height:80%;" />
+          <canvas id="recordTrack" class="track" style="width:85%; height:100%;" />
         </div>
 
       </div>
