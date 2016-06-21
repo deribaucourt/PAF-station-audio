@@ -18,7 +18,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
   /* *************** Global Variables **************** */
 
-var cursorPosition ;
 var pasteContent = [] ;
 
   /* *************** Drag and Drop Import **************** */
@@ -36,7 +35,7 @@ reader.addEventListener('load', function() {
     loadingScreenShow(false);
     tracks.push(new Track(decodedData));  //TODO remove
     console.log("new Track ready");
-    repaintTracks();
+    addNewTrackToDisplay();
     console.log("new display finished");
   }, function(error) {
     alert("Invalid audio file", error);
@@ -55,9 +54,45 @@ function drop(ev) {     // Is called when a file is dropped into the tracks zone
   loadingScreenShow(true);
 }
 
-function loadingScreenShow(boolean) {
-  if(boolean)
-    document.getElementById("loadingPopup").style.display = "block" ;
-  else
-    document.getElementById("loadingPopup").style.display = "none" ;
+  /* *************** Zoom by mouse3 **************** */
+
+var scroll = -240 ;
+var delta  = 0 ;
+var d = new Date();
+var scrollTimeout = 0 ; //only do the painting every second (else it's really slow)
+
+/* funtion mouseWheelHandler(e) {
+	delta = e.wheelDelta || -e.detail ;
+  scroll += delta ;
+  timeWindowSize = Math.exp(scroll/60) ;
+  repaintTracks() ;
+} */
+
+function mouseWheelZoomPaint() {
+  d = new Date();
+  if(d.getTime() > scrollTimeout){  // check for timeout before painting
+    scrollTimeout = d.getTime() + 350 ;
+    console.log("repainting with new zoom. window size is now : "+timeWindowSize) ;
+    repaintTracks();
+  }
 }
+
+function mouseWheelHandler(e) {
+	delta = e.wheelDelta || -e.detail ;
+  scroll += delta ;
+  console.log("new scroll : " + scroll) ;
+  timeWindowSize = Math.exp(-scroll/60) ;
+  d = new Date();
+  scrollTimeout = d.getTime() + 350 ;
+  setTimeout(mouseWheelZoomPaint,360) ;
+}
+
+var tracksContainer = document.getElementById("tracksContainer");
+if (tracksContainer.addEventListener) {
+	// IE9, Chrome, Safari, Opera
+	tracksContainer.addEventListener("mousewheel", mouseWheelHandler, false);
+	// Firefox
+	tracksContainer.addEventListener("DOMMouseScroll", mouseWheelHandler, false);
+}
+// IE 6/7/8
+else {tracksContainer.attachEvent("onmousewheel", mouseWheelHandler);}
