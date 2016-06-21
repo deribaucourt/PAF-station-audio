@@ -54,7 +54,7 @@ function drop(ev) {     // Is called when a file is dropped into the tracks zone
   loadingScreenShow(true);
 }
 
-  /* *************** Zoom by mouse3 **************** */
+  /* *************** Zoom Events **************** */
 
 var scroll = -240 ;
 var delta  = 0 ;
@@ -87,12 +87,52 @@ function zoomHandler(e) {
   setTimeout(zoomPaint,360) ;
 }
 
-var tracksContainer = document.getElementById("timelineContainer");
-if (tracksContainer.addEventListener) {
+var timelineContainer = document.getElementById("timelineContainer");
+if (timelineContainer.addEventListener) {
 	// IE9, Chrome, Safari, Opera
-	tracksContainer.addEventListener("mousewheel", zoomHandler, false);
+	timelineContainer.addEventListener("mousewheel", zoomHandler, false);
 	// Firefox
-	tracksContainer.addEventListener("DOMMouseScroll", zoomHandler, false);
+	timelineContainer.addEventListener("DOMMouseScroll", zoomHandler, false);
 }
 // IE 6/7/8
-else {tracksContainer.attachEvent("onmousewheel", zoomHandler);}
+else {timelineContainer.attachEvent("onmousewheel", zoomHandler);}
+
+
+  /* *************** Mouse Click Events **************** */
+
+var tracksContainer = document.getElementById("tracksContainer") ;
+var movingTimelineOffset = false ;
+var movingCursor = false ;
+var previousMouseX = 0 ;
+
+function timelineMouseDownHandler(e) {     // this moves the cursor  TODO : code me
+  previousMousex = e.clientX ;
+  console.log("detected mouse down. position = "+previousMousex) ;
+  movingCursor = true ;
+}
+
+function tracksMouseDownHandler(e) {     // this moves the offset
+  previousMousex = e.clientX ;
+  console.log("detected mouse down. position = "+previousMousex) ;
+  movingTimelineOffset = true ;
+}
+
+function mouseUpHandler(e) {
+  if(movingTimelineOffset) {
+    console.log("detected mouse up. changing window offset.") ;
+    timeWindowOffset -= (e.clientX - previousMousex)*timeWindowSize/document.body.clientWidth;
+    console.log("new offset is "+timeWindowOffset) ;
+    repaintTracks();
+  }
+  else if (movingCursor) {
+    console.log("detected mouse up. changing cursor position.") ;
+  //  TODO : code me
+  }
+  movingTimelineOffset = false ;
+  movingCursor = false ;
+}
+
+
+tracksContainer.addEventListener("mousedown", tracksMouseDownHandler, false);
+timelineCanvas.addEventListener("mousedown", timelineMouseDownHandler, false);
+document.addEventListener("mouseup", mouseUpHandler, false);
