@@ -53,3 +53,33 @@ function drop(ev) {     // Is called when a file is dropped into the tracks zone
 
   loadingScreenShow(true);
 }
+
+function loadingScreenShow(boolean) {
+  if(boolean)
+    document.getElementById("loadingPopup").style.display = "block" ;
+  else
+    document.getElementById("loadingPopup").style.display = "none" ;
+}
+
+
+//Import files by the import button.
+function importFile(evt)
+{
+  var files = evt.target.files; // FileList object
+
+  for(file of files) {
+    reader.readAsArrayBuffer(file);
+        }
+    }
+
+    document.getElementById('importButton').addEventListener('change', importFile, false);
+
+function listenToAll()
+{
+  alert("coucou");
+  var length = tracks.length;
+  for (var i = 0 ; i < length ; i++)
+  {
+    playback(tracks[i].signal);
+  }
+}
