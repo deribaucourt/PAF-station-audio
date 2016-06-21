@@ -149,11 +149,19 @@ function importFile(evt)
         }
     }
 
-    document.getElementById('importButton').addEventListener('change', importFile, false);
+document.getElementById('importButton').addEventListener('change', importFile, false);
+
 var compt = 0;
-var source;
+var source = [];
 function listenToAll(listen)
 {
+
+  if (!listen)
+  {
+    cursorPosition = 0;
+    offset = 0;
+    drawCursor();
+  }
   compt++;
   var length = tracks.length;
   var listenTo = [];
@@ -162,10 +170,10 @@ function listenToAll(listen)
   {
     if (compt == 1)
     {
-      source = tracks[i].audioSource();
+      source[i] = tracks[i].audioSource();
     }
     if (!listen) listenTo[i] = listen;
     else listenTo[i] = tracks[i].listen;
-    playback(tracks[i].signal, listenTo[i], source, tracks[i].offset);
+    playback(tracks[i].signal, listenTo[i], source[i], tracks[i].offset);
   }
 }

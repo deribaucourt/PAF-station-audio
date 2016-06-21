@@ -33,6 +33,9 @@ function play(listen, source, offset) {
 
         // Play the source
         source.start(0,cursorPosition + offset);
+        window.setInterval (function() { cursorPosition = audioContext.currentTime;
+              console.log("CurrentTime "+ audioContext.currentTime);
+                        drawCursor(); } , 500);
     }
     else {
 
