@@ -68,7 +68,7 @@ var scrollTimeout = 0 ; //only do the painting every second (else it's really sl
   repaintTracks() ;
 } */
 
-function mouseWheelZoomPaint() {
+function zoomPaint() {
   d = new Date();
   if(d.getTime() > scrollTimeout){  // check for timeout before painting
     scrollTimeout = d.getTime() + 350 ;
@@ -77,22 +77,22 @@ function mouseWheelZoomPaint() {
   }
 }
 
-function mouseWheelHandler(e) {
+function zoomHandler(e) {
 	delta = e.wheelDelta || -e.detail ;
   scroll += delta ;
   console.log("new scroll : " + scroll) ;
   timeWindowSize = Math.exp(-scroll/60) ;
   d = new Date();
   scrollTimeout = d.getTime() + 350 ;
-  setTimeout(mouseWheelZoomPaint,360) ;
+  setTimeout(zoomPaint,360) ;
 }
 
-var tracksContainer = document.getElementById("tracksContainer");
+var tracksContainer = document.getElementById("timelineContainer");
 if (tracksContainer.addEventListener) {
 	// IE9, Chrome, Safari, Opera
-	tracksContainer.addEventListener("mousewheel", mouseWheelHandler, false);
+	tracksContainer.addEventListener("mousewheel", zoomHandler, false);
 	// Firefox
-	tracksContainer.addEventListener("DOMMouseScroll", mouseWheelHandler, false);
+	tracksContainer.addEventListener("DOMMouseScroll", zoomHandler, false);
 }
 // IE 6/7/8
-else {tracksContainer.attachEvent("onmousewheel", mouseWheelHandler);}
+else {tracksContainer.attachEvent("onmousewheel", zoomHandler);}
