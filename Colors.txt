@@ -1,0 +1,7 @@
+#e6e6e6 : light gray
+#dddcce : ears
+#dddcce : face (bottom)
+#c09646 : face (top)
+#5d3b18 : eyes
+#33200f : nose
+#1a1a1a : dark gray

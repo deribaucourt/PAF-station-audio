@@ -131,6 +131,14 @@ function addNewTrackToDisplay() {
   drawRecordTrack();                        // finally add record track
 }
 
+function toggleFiltersPopup(toggleState) {
+    if(toggleState) {
+        document.getElementById("filtersPopup").style.display = "block";
+    } else {
+        document.getElementById("filtersPopup").style.display = "none";
+    }
+}
+
 function drawNewTrack(track) {
   console.log("loading html code for track number "+ track.number );
   var ajax = new XMLHttpRequest();    // get the HTML code for  this track
