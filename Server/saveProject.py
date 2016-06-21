@@ -1,4 +1,4 @@
-from flask import (Flask, request, jsonify)
+from flask import (Flask, request, make_response)
                    
 app = Flask(__name__)
 
@@ -32,17 +32,17 @@ function GetXMLHttpRequest() {
 
 function sendAudio() {
     "use strict";
-
+    
     var xhr = new GetXMLHttpRequest();
     var sentText = "I was sent through XHR";
     
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
-            alert(xhr.responseText);
+            window.location.assign("/download");
         }
     }
     
-    xhr.open("POST", "/request", true);
+    xhr.open("POST", "/generate", true);
     
     xhr.setRequestHeader("Content-Type", "text");
     xhr.send(sentText);
@@ -59,9 +59,16 @@ function sendAudio() {
 def index():
     return html_page
 
-@app.route('/request', methods = ['POST'])
-def handle_request() :
-    return "Page said : " + request.data
+@app.route('/generate', methods=["POST"])
+def generate_file() :
+    return "done"
+
+@app.route('/download')
+def download_file() :
+    with open("project.bin", "rb") as f :
+        resp = make_response(f.read())
+        resp.headers["Content-Type"] = "application/octet-stream"
+        return resp
 
 if __name__ == "__main__":
     app.run(debug = True)
