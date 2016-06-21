@@ -130,3 +130,42 @@ function mouseUpHandler(e) {
 
 timelineCanvas.addEventListener("click", mouseClickHandler, false);
 document.addEventListener("mouseup", mouseUpHandler, false);
+
+function loadingScreenShow(boolean) {
+  if(boolean)
+    document.getElementById("loadingPopup").style.display = "block" ;
+  else
+    document.getElementById("loadingPopup").style.display = "none" ;
+}
+
+
+//Import files by the import button.
+function importFile(evt)
+{
+  var files = evt.target.files; // FileList object
+
+  for(file of files) {
+    reader.readAsArrayBuffer(file);
+        }
+    }
+
+    document.getElementById('importButton').addEventListener('change', importFile, false);
+var compt = 0;
+var source;
+function listenToAll(listen)
+{
+  compt++;
+  var length = tracks.length;
+  var listenTo = [];
+  if (compt === 2) compt = 0;
+  for (var i = 0 ; i < length ; i++)
+  {
+    if (compt == 1)
+    {
+      source = tracks[i].audioSource();
+    }
+    if (!listen) listenTo[i] = listen;
+    else listenTo[i] = tracks[i].listen;
+    playback(tracks[i].signal, listenTo[i], source, tracks[i].offset);
+  }
+}

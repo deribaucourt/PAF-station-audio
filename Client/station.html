@@ -65,6 +65,8 @@ Code starts here                                                                
     <div id="topContainer" style="width:100%;height:100%;">
 
       <div id="headerContainer" style="width:100%;height:20%;">
+        <input type="file" id="importButton" name="files[]" multiple />
+        <output id="list"></output>
         <a href="#" id="importFileButton" style="width: 10%; height:50%;" class="button">import</a>
         <a href="#" id="exportFileButton" style="width: 10%; height:50%;" class="button">export</a>
         <div id="titleContainer">
@@ -77,8 +79,8 @@ Code starts here                                                                
       <div id="toolsContainer" style="width:100%;height:10%;">
         <div id="playbackControllContainer">
           <a href="#" id="rewindButton" class="button">rewind</a>
-          <a href="#" id="playButton" class="button">play</a>
-          <a href="#" id="stopButton" class="button">stop</a>
+          <a href="#" id="PlayButton" class="button" onclick="listenToAll(1)">play</a>
+          <a href="#" id="stopButton" class="button" onclick="listenToAll(0)">stop</a>
         </div>
         <div id="editionToolsContainer">
           <a href="#" id="copyButton" class="button">copy</a>
