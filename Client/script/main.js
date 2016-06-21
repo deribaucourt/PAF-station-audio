@@ -102,13 +102,12 @@ else {timelineContainer.attachEvent("onmousewheel", zoomHandler);}
 
 var tracksContainer = document.getElementById("tracksContainer") ;
 var movingTimelineOffset = false ;
-var movingCursor = false ;
 var previousMouseX = 0 ;
 
-function timelineMouseDownHandler(e) {     // this moves the cursor  TODO : code me
+function mouseClickHandler(e) {     // this moves the cursor  TODO : code me
   previousMousex = e.clientX ;
-  console.log("detected mouse down. position = "+previousMousex) ;
-  movingCursor = true ;
+  cursorPosition = (e.clientX - document.getElementById("globalTimelineContainer").clientWidth) * timeWindowSize/document.body.clientWidth + timeWindowOffset ;
+  console.log("detected mouse click. new cursor position = "+cursorPosition) ;
 }
 
 function tracksMouseDownHandler(e) {     // this moves the offset
@@ -124,15 +123,11 @@ function mouseUpHandler(e) {
     console.log("new offset is "+timeWindowOffset) ;
     repaintTracks();
   }
-  else if (movingCursor) {
-    console.log("detected mouse up. changing cursor position.") ;
-  //  TODO : code me
-  }
   movingTimelineOffset = false ;
-  movingCursor = false ;
 }
 
 
 tracksContainer.addEventListener("mousedown", tracksMouseDownHandler, false);
-timelineCanvas.addEventListener("mousedown", timelineMouseDownHandler, false);
+timelineCanvas.addEventListener("click", mouseClickHandler, false);
+tracksContainer.addEventListener("click", mouseClickHandler, false);
 document.addEventListener("mouseup", mouseUpHandler, false);

@@ -45,13 +45,13 @@ timeline.font = "12px Arial";
 
 function repaintTimeline() {
   timeline.clearRect(0, 0, timelineC.width, timelineC.height);
-  timeline.beginPath(); // Trace axis
-  timeline.moveTo(0,timelineHeight/2);
+  timeline.beginPath();
+/*  timeline.moveTo(0,timelineHeight/2); // Trace axis
   timeline.lineTo(timelineWidth,timelineHeight/2);
-  timeline.stroke();
+  timeline.stroke(); */
   for(var i = 0; i<6; i++) {  // Trace 6 big time divisions
-    timeline.moveTo(i*timelineWidth/5, timelineHeight*13/30);
-    timeline.lineTo(i*timelineWidth/5, timelineHeight*17/30);
+    timeline.moveTo(i*timelineWidth/5, 0);
+    timeline.lineTo(i*timelineWidth/5, timelineHeight);
     timeline.fillText(i*timeWindowSize/5 + timeWindowOffset, i*timelineWidth/5, timelineHeight*19/30);
   }
   timeline.stroke();
