@@ -108,6 +108,7 @@ function mouseClickHandler(e) {     // this moves the cursor  TODO : code me
   previousMousex = e.clientX ;
   cursorPosition = (e.clientX - document.getElementById("globalTimelineContainer").clientWidth) * timeWindowSize/document.body.clientWidth + timeWindowOffset ;
   console.log("detected mouse click. new cursor position = "+cursorPosition) ;
+  repaintTracks() ;
 }
 
 function tracksMouseDownHandler(e) {     // this moves the offset
