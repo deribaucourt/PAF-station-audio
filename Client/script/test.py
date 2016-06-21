@@ -1,21 +1,12 @@
-/*Copyright© 2016 Vincent Bisogno, François Desrichard, Enguerrand de Ribaucourt, Pierre Ucla
+from flask import (Flask, request, jsonify)
+                   
+app = Flask(__name__)
 
-This file is part of Serval Audio Editor.
-
-Serval Audio Editor is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
-
-
+html_page = """<!DOCTYPE HTML>
+<html>
+<head>
+<title>Flask AJAX Test</title>
+<script>
 function GetXMLHttpRequest() {
     "use strict";
 
@@ -57,3 +48,20 @@ function sendAudio() {
     xhr.send(sentText);
     
 }
+</script>
+</head>
+<body>
+<h1 onClick='sendAudio()'>Flask AJAX Test</h1>
+</body>
+</html>"""
+
+@app.route('/')
+def index():
+    return html_page
+
+@app.route('/request', methods = ['POST'])
+def handle_request() :
+    return "Page said : " + request.data
+
+if __name__ == "__main__":
+    app.run(debug = True)

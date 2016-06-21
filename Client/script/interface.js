@@ -14,3 +14,78 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
+
+
+  /* *************** Signal Representation **************** */
+
+var tracks = [] ;   // Contains the tracks with their signal, volume, ...
+
+    /* *************** Track class **************** */
+
+function Track(buffArray) {
+  console.log(" Instanciating new Track") ;
+  this.volume = 100 ;
+  this.offset = 0 ;
+  this.number = tracks.length ;
+  this.signal = new Signal(buffArray) ;
+}
+
+function repaintTrack(number) {
+
+}
+
+function repaintTracks() {
+  document.getElementById("tracksContainer").innerHTML = "";
+
+  for(track of tracks) {
+    drawNewTrack(track);
+  }
+  drawRecordTrack();
+}
+
+function drawNewTrack(track) {
+  console.log("loading html code for track number "+ track.number );
+  var ajax = new XMLHttpRequest();    // get the code
+  ajax.open("GET", "track.html", true);
+  ajax.onload=function() {  // This code is called once the html code is loaded
+  // Change elements' IDs to correspond with track.number
+    var htmlCode = ajax.responseText ;
+    for(var i = 0; i<7; i++){
+      htmlCode = htmlCode.replace("TRACKID",track.number);
+    }
+    document.getElementById("tracksContainer").innerHTML += htmlCode;alert("hoho");
+    drawSignal(track);
+  };
+  ajax.send();
+}
+
+function drawRecordTrack() {
+  console.log("painting record track last");
+  var ajax = new XMLHttpRequest();    // get the code
+  ajax.open("GET", "record.html", true);
+  ajax.onload = function() {
+    document.getElementById("tracksContainer").innerHTML += ajax.responseText;
+  }
+  ajax.send();
+}
+
+function drawSignal(track) {
+  var c=document.getElementById("trackCanvas"+track.number);
+  var ctx=c.getContext("2d");
+  ctx.beginPath();
+  ctx.moveTo(0,0);
+  ctx.lineTo(300,150);
+  ctx.stroke();
+
+  for(var i = 0; i<track.signal.size; i++) {
+    console.log(track.signal.getChannelData(i));
+  }
+}
+
+function toggleFiltersPopup(toggleState) {
+    if(toggleState) {
+        document.getElementById("filtersPopup").style.display = "block";
+    } else {
+        document.getElementById("filtersPopup").style.display = "none";
+    }
+}

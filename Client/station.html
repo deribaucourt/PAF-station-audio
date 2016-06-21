@@ -47,6 +47,29 @@ Code starts here                                                                
 
               <!-- ************* Body Tag ************ -->
 
+      <!-- ************* Disclaimer Popup ************ -->
+
+      <!-- ************* Loading Popup ************ -->
+
+  <div id="loadingPopup" class="popup">
+    <img src="icons/loading.gif" />
+  </div>
+
+      <!-- ************* Filters Popup ************ -->
+      
+      <div id="filtersPopup" class="popup" style="left:60%; width:40%; height:auto; overflow:scroll">
+          
+          <ul>
+              <li class="filtersPopup"><img src="icons/close.png" class="filtersPopup" style="width:30px; height:30px" onClick="toggleFiltersPopup(false)" /></li>
+              <li class="filtersPopup"><img src="icons/fade_in.png" class="filtersPopup" />Fade in : <a class="button" style="float:none">linear</a><a class="button" style="float:none">exponential</a><a class="button" style="float:none">logarithmic</a></li>
+              <li class="filtersPopup"><img src="icons/fade_out.png" class="filtersPopup" />Fade out : <a class="button" style="float:none">linear</a><a class="button" style="float:none">exponential</a><a class="button" style="float:none">logarithmic</a></li>
+              <li class="filtersPopup"><img src="icons/mix.png" class="filtersPopup" />Mix tracks : <a class="button" style="float:none">2 tracks</a><a class="button" style="float:none">3 tracks</a><a class="button" style="float:none">4 tracks</a></li>
+              <li class="filtersPopup"><img src="icons/deconvolve.png" class="filtersPopup" />Deconvolve : <a class="button" style="float:none">from track</a><a class="button" style="float:none">from file</a></li>
+          </ul>
+      </div>
+
+      <!-- ************* Home Page ************ -->
+
     <div id="topContainer" style="width:100%;height:100%;">
 
       <div id="headerContainer" style="width:80%;height:10%;">
@@ -54,12 +77,13 @@ Code starts here                                                                
         <a href="#" id="exportFileButton" style="width: 10%; height:100%;" class="button">export</a>
         <div id="titleContainer">
           <h1 style="float:none;">Serval Audio Editor</h1>
+          <span style="font-size:12px; font-style:italic">icons by <a href="http://www.freepik.com" class="creditLink">Freepik</a> from <a href="http://www.flaticon.com" class="creditLink">Flaticon</a></span>
           <img src="icons/logo.jpg" style="float:none;" />
         </div>
       </div>
 
       <div id="filterButtonContainer" style="width:20%;height:20%;">
-        <a href="#" id="filterButton" class="button" style="width:100%; height:100%;">Filters</a>
+        <a href="#" id="filterButton" class="button" style="width:100%; height:100%;" onclick="toggleFiltersPopup(true)">Filters</a>
       </div>
       <br style="clear: left;" />
 
@@ -67,7 +91,7 @@ Code starts here                                                                
         <div id="playbackControllContainer">
           <a href="#" id="rewindButton" class="button">rewind</a>
           <a href="#" id="playButton" class="button">play</a>
-          <a href="#" id="stopButton" class="button">forward</a>
+          <a href="#" id="stopButton" class="button">stop</a>
         </div>
         <div id="editionToolsContainer">
           <a href="#" id="copyButton" class="button">copy</a>
@@ -78,15 +102,25 @@ Code starts here                                                                
       <br style="clear: left;" />
 
       <div id="timelineContainer" class="containerWithBorder" style="width: 100%; height:5%;">
-        <div id="globalTimelineContainer" style="width: 30%; height:100%;">
+        <div id="globalTimelineContainer" style="width: 20%; height:100%;">
           <input id="globalTimeline" type="range" value="0" max="100" min="0" step="1"></input>
         </div>
-        <div id="localTimelineContainer" style="width: 70%; height:100%; overflow:hidden;"><canvas style="width: 100%; height:100%;" /></div>
+        <div id="localTimelineContainer" style="width: 60%; height:100%; overflow:hidden;"><canvas style="width: 100%; height:100%;" /></div>
       </div>
       <br style="clear: left;" />
 
-      <div id="tracksContanier" class="containerWithBorder" style="width:100%;height:75%;overflow:scroll;">
-        <h2 style="float:none;">Insérez vos pistes ici</h2>
+      <div id="tracksContainer" class="containerWithBorder" ondrop="drop(event)" ondragover="allowDrop(event)" style="width:100%;height:75%;overflow:scroll;">
+        <h2 id="tracksInsertMessage">Insérez vos pistes ici</h2>
+        <div id="recordTrackContainer" class="trackTopContainer" style="width:100%; height:20%;">
+          <div class="trackMenu" style="width: 15%; height:20%;">
+            <a href="#" id="recordButton" class="button" style="width:100%; height:80%;">record</a>
+            <br style="clear: left;" />
+
+            <input id="recordVolumeControl" class="volumeControl" type="range" value="0" max="100" min="0" step="1"></input>
+          </div>
+          <canvas id="recordTrack" class="track" style="width:85%; height:80%;" />
+        </div>
+
       </div>
 
     </div>

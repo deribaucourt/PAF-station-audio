@@ -50,7 +50,7 @@ opacity:0.8;
 
 
 (function() {
-    var context, soundSource, soundBuffer, url = 'http://thingsinjars.com/lab/web-audio-tutorial/hello.mp3';
+    var context, soundSource, soundBuffer, url = 'Chien_01.wav';
 
     // Step 1 - Initialise the Audio Context
     // There can be only one!
@@ -119,7 +119,7 @@ opacity:0.8;
             convolver.connect(context.destination);
 
             // Loading the 'Sound Snapshot' to apply to our audio
-            setReverbImpulseResponse('http://thingsinjars.com/lab/web-audio-tutorial/dustbin.wav', convolver, playSound);
+            setReverbImpulseResponse('sportscentre_omni.wav', convolver, playSound);
         });
     }
 
