@@ -69,12 +69,54 @@ function createRecorderNode() {
 
 /*************** Display Node **************/
 
-function createDisplayNode(canvasCtx) {      // A node that displays it's signal on a Canvas
+function createDisplayNode(canvas) {      // A node that displays it's signal on a Canvas
   newAudioNode = audioContext.createScriptProcessor(4096, 1, 0);
+  newAudioNode.c = canvas ;
 
   newAudioNode.onaudioprocess = function(audioProcessingEvent) {
+    inputBuffer = audioProcessingEvent.inputBuffer ;
+    var ctx=newAudioNode.c.getContext("2d");
 
-  }
+    var canvasWidth = newAudioNode.c.clientWidth;
+    var canvasHeight = newAudioNode.c.clientHeight;
+    var samplesPerDivision = timeWindowSize*inputBuffer.sampleRate ;
+
+    ctx.clearRect(0, 0, newAudioNode.c.width, newAudioNode.c.height); ;
+
+    // Trace Time axis
+    ctx.beginPath();
+    ctx.strokeStyle = "#664400" ;
+    ctx.moveTo(0,canvasHeight/2);
+    ctx.lineTo(canvasWidth,canvasHeight/2);
+    ctx.stroke();
+
+    /* CLASSIC REPRESENTATION OF SOUND POWER */
+    var localMax, previousSample, k;
+    var currentSample = Math.floor(timeWindowOffset*inputBuffer.sampleRate);
+    ctx.beginPath();
+    ctx.strokeStyle = "#e69900" ;
+    for(i = 0; i<canvasWidth; i++) {
+      previousSample = currentSample ;
+      currentSample = Math.floor((timeWindowOffset+i*timeWindowSize/canvasWidth)*inputBuffer.sampleRate) ;
+      localMax = 0;
+      for(k = previousSample+1; k<currentSample; k++) {
+        if(Math.abs(inputBuffer.getChannelData(0)[k])>localMax) {
+          localMax = Math.abs(inputBuffer.getChannelData(0)[k]) ;
+        }
+      }
+      ctx.moveTo(i,-(localMax-1)*canvasHeight*0.5);
+      ctx.lineTo(i,(localMax+1)*canvasHeight*0.5);
+    }
+    ctx.stroke();
+
+    /*    RAW PCM REPRESENTATION  */ /*
+    ctx.moveTo(0,inputBuffer.getChannelData(0)[timeWindowOffset*inputBuffer.sampleRate]*canvasHeight);
+    for(i = 1; i<canvasWidth; i++) {
+      ctx.lineTo(i,(inputBuffer.getChannelData(0)[Math.floor((timeWindowOffset+i*timeWindowSize/canvasWidth)*inputBuffer.sampleRate)]+0.5)*canvasHeight);
+    }
+    console.log("drawing PCM for "+track.number);
+    ctx.stroke();*/
+  };
 
   return newAudioNode ;
 }
