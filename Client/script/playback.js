@@ -16,9 +16,16 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 
+
+
+
 var soundBuffer ;
+var interval;
 
 function play(listen, source, offset) {
+
+
+
 
     if (listen)
       {
@@ -31,11 +38,22 @@ function play(listen, source, offset) {
         // Connect it to the output
         source.connect(audioContext.destination);
 
+        var d = new Date();
+        var tBegin = d.getTime();
+        interval = window.setInterval (
+          function ()
+          {
+            d = new Date();
+            cursorPosition = (d.getTime() - tBegin)/1000;
+            console.log(cursorPosition);
+            drawCursor();
+          } , 50);
+
         // Play the source
         source.start(0,cursorPosition + offset);
     }
     else {
-
+      clearInterval(interval);
       source.stop();
     }
 }
