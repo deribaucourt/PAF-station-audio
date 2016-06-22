@@ -127,7 +127,6 @@ div#tracksContainer {
 	border-top-left-radius: 0px;
 	border-top-right-radius: 0px;
 
-	background-color: #D8D8D8;
 	color: #F8F8F8;
 }
 
@@ -192,7 +191,7 @@ div#cursor {
   width: 2px;
   top: 30%;
   left: 50%;
-  background-color: rgb(0,0,0);
+  background-color: #996600;
   height: 80%;
 }
 

@@ -45,6 +45,8 @@ var timeline = timelineC.getContext("2d");
 var timelineHeight = timelineC.clientHeight ;   // Measurement in Pixels
 var timelineWidth = timelineC.clientWidth ;
 timeline.font = "12px Arial";
+timeline.strokeStyle = "#e69900" ;
+timeline.fillStyle = "#e69900" ;
 
 function repaintTimeline() {
   timeline.clearRect(0, 0, timelineC.width, timelineC.height);
@@ -81,6 +83,7 @@ function drawSignal(track) {
 
   // Trace Time axis
   ctx.beginPath();
+  ctx.strokeStyle = "#664400" ;
   ctx.moveTo(0,canvasHeight/2);
   ctx.lineTo(canvasWidth,canvasHeight/2);
   ctx.stroke();
@@ -88,6 +91,8 @@ function drawSignal(track) {
   /* CLASSIC REPRESENTATION OF SOUND POWER */
   var localMax, previousSample, k;
   var currentSample = Math.floor(timeWindowOffset*track.signal.sampleRate);
+  ctx.beginPath();
+  ctx.strokeStyle = "#e69900" ;
   for(i = 0; i<canvasWidth; i++) {
     previousSample = currentSample ;
     currentSample = Math.floor((timeWindowOffset+i*timeWindowSize/canvasWidth)*track.signal.sampleRate) ;
