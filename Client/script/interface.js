@@ -134,6 +134,11 @@ function loadingScreenShow(boolean) {   // TODO : Maybe it is possible dispose o
     document.getElementById("loadingPopup").style.display = "none" ;
 }
 
+function addTrack(audioBuff) {
+  tracks.push(new Track(audioBuff));  //TODO remove
+  addNewTrackToDisplay();
+}
+
 function addNewTrackToDisplay() {
   console.log("temporary removing recording record track") ;
   document.getElementById("tracksContainer").removeChild(document.getElementById("recordTrackContainer"));  // delete current record track to place it at the end

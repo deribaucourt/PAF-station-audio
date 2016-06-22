@@ -14,3 +14,38 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
+
+
+var audioContext = new audioContext() ;
+
+  /***************** Recorder Node *****************/
+
+function createRecorderNode() {
+  newAudioNode = audioCtx.createScriptProcessor(4096, 1, 0);        // this is a node which stocks several samples.
+  newAudioNode.record = [[]] ;            //carefull, the first index is for the channel
+  newAudioNode.recording = false ;
+
+  newAudioNode.onaudioprocess = function(audioProcessingEvent) {
+    if(this.recording) {
+      var inputBuffer = audioProcessingEvent.inputBuffer;
+      var outputBuffer = audioProcessingEvent.outputBuffer;
+      for (var channel = 0; channel < outputBuffer.numberOfChannels; channel++) {
+        var inputData = inputBuffer.getChannelData(channel);
+        var outputData = outputBuffer.getChannelData(channel);
+        this.record[channel].concat(inputData) ;
+      }
+    }
+  };
+
+  newAudioNode.startRecording = function() {
+    this.record = [] ;
+    this.recording = true;
+  }
+
+  newAudioNode.getRecordingAndStop = function() {
+    this.recording = false;
+    return this.record;
+  }
+
+  return newAudioNode ;
+}

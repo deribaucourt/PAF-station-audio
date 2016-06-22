@@ -23,6 +23,9 @@ var soundBuffer ;
 var interval;
 var playing = false ;
 var tBegin, startCursorPosition;
+var audioContext = new audioContext();
+
+      /*************** Time Control *************/
 
 function cursorFollowPlaying() {
   if(playing) {
@@ -70,3 +73,42 @@ function playback(audioBuffer, listen, source, offset) {  // ArrayBuffer objects
   soundBuffer = audioBuffer;
   play(listen, source, offset);
 }
+
+
+  /***************** Recording ****************/
+
+var webRtcSource;
+var recorderNodeForRecord = createRecorderNode() ;
+
+function onRecordStart() {
+  recorderNode.startRecording() ;
+}
+
+function onRecordStop() {
+  
+}
+
+function handle_startMonitoring() {
+    navigator.getUserMedia =  navigator.mozGetUserMedia ;
+    navigator.getUserMedia(
+        { audio: true, video: false },
+        function (mediaStream) {
+            webRtcSource = audioContext.createMediaStreamSource(mediaStream);
+
+        //    var données = mediaStream.inputBufferbuffer.getChannelData(0);
+          //  console.log(données);
+
+            webRtcSource.connect(audioContext.destination);
+        },
+        function (error) {
+            console.log("There was an error when getting microphone input: " + err);
+        }
+    );
+}
+function handle_stopMonitoring() {
+    webRtcSource.disconnect();
+    webRtcSource = null;
+}
+
+document.querySelector("#btnStartMonitoring").onclick = handle_startMonitoring; // Wire up start button
+document.querySelector("#btnStopMonitoring").onclick = handle_stopMonitoring; // Wire up stop button

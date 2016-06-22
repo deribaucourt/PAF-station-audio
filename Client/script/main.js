@@ -33,9 +33,8 @@ reader.addEventListener('load', function() {
 // This part of the code is executed after the reader has finished loading the file
   audioContext.decodeAudioData(reader.result, function(decodedData) {  // Decode the binary data to an audiosBuffer (extend ArrayBuffer)
     loadingScreenShow(false);
-    tracks.push(new Track(decodedData));  //TODO remove
+    addTrack(decodedData);
     console.log("new Track ready");
-    addNewTrackToDisplay();
     console.log("new display finished");
   }, function(error) {
     alert("Invalid audio file", error);
