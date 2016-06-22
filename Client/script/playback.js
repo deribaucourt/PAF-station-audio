@@ -79,6 +79,7 @@ function playback(audioBuffer, listen, source, offset) {  // ArrayBuffer objects
 
 var webRtcSource;
 var recorderNodeForRecord = createRecorderNode() ;
+var recordStartingPosition = 0 ;
 
 function onRecordStart() {
   console.log("Starting Record") ;
@@ -88,6 +89,7 @@ function onRecordStart() {
     function (mediaStream) {        // called once the user has agreed to record
       webRtcSource = audioContext.createMediaStreamSource(mediaStream);
       webRtcSource.connect(recorderNodeForRecord);
+      recordStartingPosition = cursorPosition ;
       listenToAll(1);           //start playback
       recorderNodeForRecord.startRecording() ;
     },
@@ -103,4 +105,6 @@ function onRecordStop() {
   webRtcSource.disconnect();
   webRtcSource = null;
   addTrack(recorderNodeForRecord.stopRecording()) ;
+  tracks[tracks.length].offset = recordStartingPosition ;
+//  tracks[tracks.length].rename("Recorded Track") ;  //TODO : track names
 }

@@ -69,4 +69,13 @@ function createRecorderNode() {
 
 /*************** Display Node **************/
 
+function createDisplayNode(canvasCtx) {      // A node that displays it's signal on a Canvas
+  newAudioNode = audioContext.createScriptProcessor(4096, 1, 0);
+
+  newAudioNode.onaudioprocess = function(audioProcessingEvent) {
+
+  }
+
+  return newAudioNode ;
+}
 // TODO
