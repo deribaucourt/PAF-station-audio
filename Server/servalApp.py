@@ -9,13 +9,19 @@ def index():
 
 @app.route("/generate", methods=["POST"])
 def generate_file() :
+    with open("project.txt", "w+") as f :
+        f.write("test");
+    
+    
+    
+    
     return "done"
 
 @app.route("/download")
 def download_file() :
-    with open("project.bin", "rb") as f :
+    with open("project.txt", "rb") as f :
         resp = make_response(f.read())
-        resp.headers["Content-Type"] = "application/octet-stream"
+        resp.headers["Content-Type"] = "text"
         return resp
 
 
