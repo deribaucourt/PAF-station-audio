@@ -26,30 +26,39 @@ function createRecorderNode() {
   newAudioNode.recordSampleRate = 0 ;
 
   newAudioNode.onaudioprocess = function(audioProcessingEvent) {
-    if(this.recording) {
-    var inputBuffer = audioProcessingEvent.inputBuffer;
-    var outputBuffer = audioProcessingEvent.outputBuffer;
-      if(this.recordSampleRate == 0) {
-        this.recordSampleRate = inputBuffer.sampleRate ;
+    if(newAudioNode.recording) {
+      var inputBuffer = audioProcessingEvent.inputBuffer;
+      if(newAudioNode.recordSampleRate == 0) {
+        newAudioNode.recordSampleRate = inputBuffer.sampleRate ;
       }
-      for (var channel = 0; channel < outputBuffer.numberOfChannels; channel++) {
+      if(inputBuffer.numberOfChannels > newAudioNode.record.length) {
+        for (var channel = 0; channel < inputBuffer.numberOfChannels; channel++) {
+          newAudioNode.record.push(new Array());
+        }
+      }
+      for (var channel = 0; channel < inputBuffer.numberOfChannels; channel++) {
         var inputData = inputBuffer.getChannelData(channel);
-        var outputData = outputBuffer.getChannelData(channel);
-        this.record[channel].concat(inputData) ;
+        for(var n = 0; n<inputData.length; n++) {
+          newAudioNode.record[channel].push(inputData[n])
+        }
       }
     }
   };
 
   newAudioNode.startRecording = function() {
-    this.record = [] ;
-    this.recording = true;
+    newAudioNode.record = [] ;
+    newAudioNode.recording = true;
   };
 
   newAudioNode.stopRecording = function() {     // returns Recorder AudioBuffer
-    this.recording = false;
-    recordedBuff = audioContext.createBuffer(this.record.length,this.record[0].length,this.recordSampleRate) ;
+    newAudioNode.recording = false;
+    console.log("recorded channels : "+newAudioNode.record.length +" length : " + newAudioNode.record[0].length +" at rate : " + newAudioNode.recordSampleRate);
+    recordedBuff = audioContext.createBuffer(newAudioNode.record.length,newAudioNode.record[0].length,newAudioNode.recordSampleRate) ;
     for(var channel = 0; channel < recordedBuff.numberOfChannels; channel ++) {
-      recordedBuff.getChannelData(channel) = record[channel] ;
+    //    recordedBuff.getChannelData(channel) = newAudioNode.record[channel] ;
+      for(var n = 0; n<newAudioNode.record[0].length; n++) {
+        recordedBuff.getChannelData(0)[n] = newAudioNode.record[channel][n] ;
+      }
     }
     return recordedBuff;
   };
