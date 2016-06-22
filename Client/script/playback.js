@@ -80,49 +80,27 @@ function playback(audioBuffer, listen, source, offset) {  // ArrayBuffer objects
 var webRtcSource;
 var recorderNodeForRecord = createRecorderNode() ;
 
-function handle_startMonitoring() {
-    navigator.getUserMedia =  navigator.mozGetUserMedia ;
-    navigator.getUserMedia(
-        { audio: true, video: false },
-        function (mediaStream) {
-            webRtcSource = audioContext.createMediaStreamSource(mediaStream);
-
-        //    var données = mediaStream.inputBufferbuffer.getChannelData(0);
-          //  console.log(données);
-
-            webRtcSource.connect(recorderNodeForRecord);
-        },
-        function (error) {
-            console.log("There was an error when getting microphone input: " + err);
-        }
-    );
-}
-function handle_stopMonitoring() {
-    webRtcSource.disconnect();
-    webRtcSource = null;
-}
-
 function onRecordStart() {
   console.log("Starting Record") ;
-  /*navigator.getUserMedia =  navigator.mozGetUserMedia ;
+  navigator.getUserMedia =  navigator.mozGetUserMedia ;
   navigator.getUserMedia(
     { audio: true, video: false },
-    function (mediaStream) {
+    function (mediaStream) {        // called once the user has agreed to record
       webRtcSource = audioContext.createMediaStreamSource(mediaStream);
       webRtcSource.connect(recorderNodeForRecord);
+      listenToAll(1);           //start playback
+      recorderNodeForRecord.startRecording() ;
     },
     function (error) {
       console.log("There was an error when getting microphone input: " + err);
     }
   );
-*/handle_startMonitoring();
-  recorderNodeForRecord.startRecording() ;
 }
 
 function onRecordStop() {
   console.log("Stoping Record") ;
-/*  webRtcSource.disconnect();
+  listenToAll(1) ;            // pause Playback
+  webRtcSource.disconnect();
   webRtcSource = null;
-  */handle_stopMonitoring();
   addTrack(recorderNodeForRecord.stopRecording()) ;
 }
