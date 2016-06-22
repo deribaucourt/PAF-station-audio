@@ -33,9 +33,8 @@ reader.addEventListener('load', function() {
 // This part of the code is executed after the reader has finished loading the file
   audioContext.decodeAudioData(reader.result, function(decodedData) {  // Decode the binary data to an audiosBuffer (extend ArrayBuffer)
     loadingScreenShow(false);
-    tracks.push(new Track(decodedData));  //TODO remove
+    addTrack(decodedData);
     console.log("new Track ready");
-    addNewTrackToDisplay();
     console.log("new display finished");
   }, function(error) {
     alert("Invalid audio file", error);
@@ -151,31 +150,47 @@ function importFile(evt)
 
 document.getElementById('importButton').addEventListener('change', importFile, false);
 
-var compt = 0;
 var source = [];
+var play_pause = "block";
 function listenToAll(listen)
 {
-
+    if (play_pause === "block")
+    {
+      play_pause = "none";
+      document.getElementById("playResume").style.display = "none";
+    }
+    else
+    {
+      play_pause = "block";
+      document.getElementById("playResume").style.display = "block";
+    }
   if (!listen)
   {
+    play_pause = "block";
+    document.getElementById("playResume").style.display = "block";
     cursorPosition = 0;
     offset = 0;
     drawCursor();
   }
-  compt++;
   var length = tracks.length;
   var listenTo = [];
-  if (compt === 2) compt = 0;
   for (var i = 0 ; i < length ; i++)
   {
-    if (compt == 1)
+    if (play_pause === "none")
     {
       source[i] = tracks[i].audioSource();
     }
-    if (!listen) listenTo[i] = listen;
-    else listenTo[i] = tracks[i].listen;
+    if (!listen) listenTo[i] = 0;
+    else
+    {
+      if (play_pause === "none")
+        listenTo[i] = tracks[i].listen;
+      else
+        listenTo[i] = 0;
+    }
     playback(tracks[i].signal, listenTo[i], source[i], tracks[i].offset);
   }
+
 }
 
 repaintTracks();

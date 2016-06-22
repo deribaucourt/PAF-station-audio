@@ -14,3 +14,59 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
+
+
+
+  /***************** Recorder Node *****************/
+
+function createRecorderNode() {
+  newAudioNode = audioContext.createScriptProcessor(4096, 1, 0);        // this is a node which stocks several samples.
+  newAudioNode.record = [[]] ;            //carefull, the first index is for the channel
+  newAudioNode.recording = false ;
+  newAudioNode.recordSampleRate = 0 ;
+
+  newAudioNode.onaudioprocess = function(audioProcessingEvent) {
+    if(newAudioNode.recording) {
+      var inputBuffer = audioProcessingEvent.inputBuffer;
+      if(newAudioNode.recordSampleRate == 0) {
+        newAudioNode.recordSampleRate = inputBuffer.sampleRate ;
+      }
+      if(inputBuffer.numberOfChannels > newAudioNode.record.length) {
+        for (var channel = 0; channel < inputBuffer.numberOfChannels; channel++) {
+          newAudioNode.record.push(new Array());
+        }
+      }
+      for (var channel = 0; channel < inputBuffer.numberOfChannels; channel++) {
+        var inputData = inputBuffer.getChannelData(channel);
+        for(var n = 0; n<inputData.length; n++) {
+          newAudioNode.record[channel].push(inputData[n])
+        }
+      }
+    }
+  };
+
+  newAudioNode.startRecording = function() {
+    newAudioNode.record = [] ;
+    newAudioNode.recording = true;
+  };
+
+  newAudioNode.stopRecording = function() {     // returns Recorder AudioBuffer
+    newAudioNode.recording = false;
+    console.log("recorded channels : "+newAudioNode.record.length +" length : " + newAudioNode.record[0].length +" at rate : " + newAudioNode.recordSampleRate);
+    recordedBuff = audioContext.createBuffer(newAudioNode.record.length,newAudioNode.record[0].length,newAudioNode.recordSampleRate) ;
+    for(var channel = 0; channel < recordedBuff.numberOfChannels; channel ++) {
+    //    recordedBuff.getChannelData(channel) = newAudioNode.record[channel] ;
+      for(var n = 0; n<newAudioNode.record[0].length; n++) {
+        recordedBuff.getChannelData(0)[n] = newAudioNode.record[channel][n] ;
+      }
+    }
+    return recordedBuff;
+  };
+
+  return newAudioNode ;
+}
+
+
+/*************** Display Node **************/
+
+// TODO

@@ -17,7 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 
     /* *************** Track class **************** */
-  var audioContext = new AudioContext() ;
 
 function Track(audioBuff) {
   console.log("Instanciating new Track") ;
@@ -134,6 +133,11 @@ function loadingScreenShow(boolean) {   // TODO : Maybe it is possible dispose o
     document.getElementById("loadingPopup").style.display = "none" ;
 }
 
+function addTrack(audioBuff) {
+  tracks.push(new Track(audioBuff));  //TODO remove
+  addNewTrackToDisplay();
+}
+
 function addNewTrackToDisplay() {
   console.log("temporary removing recording record track") ;
   document.getElementById("tracksContainer").removeChild(document.getElementById("recordTrackContainer"));  // delete current record track to place it at the end
@@ -161,17 +165,18 @@ function drawNewTrack(track) {
       htmlCode = htmlCode.replace("TRACKID",track.number);
     }
     document.getElementById("tracksContainer").innerHTML += htmlCode;
-    alert("wait for innerHtml to load");    //TODO : find a better way to wait (place script at the end of the code)
-    var c = document.getElementById("trackCanvas"+track.number) ;   // Fixes canvas stretching
-    c.width = c.clientWidth;
-    c.height = c.clientHeight;
-    c.addEventListener("mousedown", tracksMouseDownHandler, false);
-    drawSignal(track);
-    for(var j = 0; j<tracks.length-1; j++) {  // repaint all other canvas (they clear for some reason)
-      console.log("repainting track "+ j);
-      drawSignal(tracks[j]);
-    }
-    document.getElementById("tracksInsertMessage").style.display = "none";
+    setTimeout(function() {         //We need to wait for the innerHtml to be in the DOM
+      var c = document.getElementById("trackCanvas"+track.number) ;   // Fixes canvas stretching
+      c.width = c.clientWidth;
+      c.height = c.clientHeight;
+      c.addEventListener("mousedown", tracksMouseDownHandler, false);
+      drawSignal(track);
+      for(var j = 0; j<tracks.length-1; j++) {  // repaint all other canvas (they clear for some reason)
+        console.log("repainting track "+ j);
+        drawSignal(tracks[j]);
+      }
+      document.getElementById("tracksInsertMessage").style.display = "none";
+    },1);
   };
   ajax.send();
 }
@@ -182,6 +187,26 @@ function drawRecordTrack() {
   ajax.open("GET", "record.html", true);
   ajax.onload = function() {
     document.getElementById("tracksContainer").innerHTML += ajax.responseText;
+    setTimeout( function() {
+      document.getElementById("recordButton").addEventListener("click",onRecordButtonPress);
+    }, 1);
   }
   ajax.send();
+}
+
+    /******************** Record Track *****************/
+
+var recording = false ;
+
+function onRecordButtonPress(e) {
+  console.log("record Button Pressed");
+  if(!recording) {
+    recording = true ;
+    document.getElementById("recordButtonImg").style.display = "none" ;
+    onRecordStart() ;
+  } else {
+    recording = false ;
+    document.getElementById("recordButtonImg").style.display = "block" ;
+    onRecordStop() ;
+  }
 }
