@@ -105,6 +105,6 @@ function onRecordStop() {
   webRtcSource.disconnect();
   webRtcSource = null;
   addTrack(recorderNodeForRecord.stopRecording()) ;
-  tracks[tracks.length].offset = recordStartingPosition ;
-//  tracks[tracks.length].rename("Recorded Track") ;  //TODO : track names
+  tracks[tracks.length-1].offset = recordStartingPosition ;
+//  tracks[tracks.length-1].rename("Recorded Track") ;  //TODO : track names
 }

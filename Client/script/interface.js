@@ -202,11 +202,13 @@ function onRecordButtonPress(e) {
   console.log("record Button Pressed");
   if(!recording) {
     recording = true ;
+    document.getElementById("stopRecordButtonImg").style.display = "block" ;
     document.getElementById("recordButtonImg").style.display = "none" ;
     onRecordStart() ;
   } else {
     recording = false ;
     document.getElementById("recordButtonImg").style.display = "block" ;
+    document.getElementById("stopRecordButtonImg").style.display = "none" ;
     onRecordStop() ;
   }
 }
