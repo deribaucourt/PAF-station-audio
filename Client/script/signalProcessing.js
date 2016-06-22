@@ -16,7 +16,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 
-var audioContext = new audioContext() ;
 
   /***************** Recorder Node *****************/
 
@@ -48,4 +47,15 @@ function createRecorderNode() {
   }
 
   return newAudioNode ;
+}
+
+function addFilter(trackId) {
+    var myEffect = audioContext.createGain();
+    myEffect.gain.value = 2.0;
+    mySource = tracks[trackId].audioSource();
+    mySource.connect(myEffect);
+    myEffect.connect(audioContext.destination);
+    mySource.start(0);
+    
+    console.log("done");
 }

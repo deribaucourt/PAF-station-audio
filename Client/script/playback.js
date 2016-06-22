@@ -23,7 +23,6 @@ var soundBuffer ;
 var interval;
 var playing = false ;
 var tBegin, startCursorPosition;
-var audioContext = new audioContext();
 
       /*************** Time Control *************/
 

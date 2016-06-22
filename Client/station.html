@@ -56,7 +56,7 @@ Code starts here                                                                
               <li class="filtersPopup"><img src="icons/fade_in.png" class="filtersPopup" />Fade in : <a class="button" style="float:none">linear</a><a class="button" style="float:none">exponential</a><a class="button" style="float:none">logarithmic</a></li>
               <li class="filtersPopup"><img src="icons/fade_out.png" class="filtersPopup" />Fade out : <a class="button" style="float:none">linear</a><a class="button" style="float:none">exponential</a><a class="button" style="float:none">logarithmic</a></li>
               <li class="filtersPopup"><img src="icons/mix.png" class="filtersPopup" />Mix tracks : <a class="button" style="float:none">2 tracks</a><a class="button" style="float:none">3 tracks</a><a class="button" style="float:none">4 tracks</a></li>
-              <li class="filtersPopup"><img src="icons/deconvolve.png" class="filtersPopup" />Convolve : <a class="button" style="float:none">from track</a><a class="button" style="float:none">from file</a></li>
+              <li class="filtersPopup"><img src="icons/deconvolve.png" class="filtersPopup" />Convolve : <a class="button" style="float:none" onclick="addFilter(0)">from track</a><a class="button" style="float:none">from file</a></li>
           </ul>
       </div>
 
@@ -139,9 +139,9 @@ Code starts here                                                                
 
     <!-- Scripts import -->
     <script type="text/javascript" src="script\server.js"></script>
+    <script type="text/javascript" src="script\signalProcessing.js"></script>
     <script type="text/javascript" src="script\playback.js"></script>
     <script type="text/javascript" src="script\record.js"></script>
-    <script type="text/javascript" src="script\signalProcessing.js"></script>
     <script type="text/javascript" src="script\interface.js"></script>
     <script type="text/javascript" src="script\main.js"></script>
 
