@@ -31,6 +31,7 @@ function cursorFollowPlaying() {
     drawCursor();
     setTimeout(cursorFollowPlaying,50);
   }
+    console.log(cursorPosition);
 }
 
 function play(listen, source, offset) {
