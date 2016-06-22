@@ -21,6 +21,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 var soundBuffer ;
 var interval;
+var playing = false ;
+var tBegin, startCursorPosition;
+
+function cursorFollowPlaying() {
+  if(playing) {
+    d = new Date();
+    cursorPosition = (d.getTime() - tBegin)/1000 + startCursorPosition;
+    drawCursor();
+    setTimeout(cursorFollowPlaying,50);
+  }
+}
 
 function play(listen, source, offset) {
 
@@ -39,23 +50,20 @@ function play(listen, source, offset) {
         source.connect(audioContext.destination);
 
         var d = new Date();
-        var tBegin = d.getTime();
-        interval = window.setInterval (
-          function ()
-          {
-            d = new Date();
-            cursorPosition = (d.getTime() - tBegin)/1000;
-            console.log(cursorPosition);
-            drawCursor();
-          } , 50);
+        tBegin = d.getTime();
+        startCursorPosition = cursorPosition ;
 
         // Play the source
         source.start(0,cursorPosition + offset);
+
+        playing = true;
     }
     else {
-      clearInterval(interval);
+      playing = false;
       source.stop();
     }
+
+    cursorFollowPlaying();
 }
 
 function playback(audioBuffer, listen, source, offset) {  // ArrayBuffer objects work to
