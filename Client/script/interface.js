@@ -61,9 +61,11 @@ function repaintTimeline() {
 }
 
 var cursor = document.getElementById("cursor");
+var menuWidth = document.getElementById("globalTimelineContainer").clientWidth ;
 
 function drawCursor() {
-  cursor.style.left = ( (cursorPosition-timeWindowOffset)/timeWindowSize*timelineWidth + document.getElementById("globalTimelineContainer").clientWidth) + "px" ;
+
+  cursor.style.left = Math.max( menuWidth, Math.min( menuWidth + timelineWidth , (cursorPosition-timeWindowOffset)/timeWindowSize*timelineWidth + menuWidth ) ) + "px" ;
 }
 
   /* *************** Signal Representation **************** */

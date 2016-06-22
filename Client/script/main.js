@@ -169,3 +169,5 @@ function listenToAll(listen)
     playback(tracks[i].signal, listenTo[i], source, tracks[i].offset);
   }
 }
+
+repaintTracks();
