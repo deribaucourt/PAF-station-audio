@@ -38,12 +38,16 @@ function play(listen, source, offset) {
         // Connect it to the output
         source.connect(audioContext.destination);
 
+        var d = new Date();
+        var tBegin = d.getTime();
         interval = window.setInterval (
           function ()
           {
-            cursorPosition = cursorPosition + 0.1;
+            d = new Date();
+            cursorPosition = (d.getTime() - tBegin)/1000;
+            console.log(cursorPosition);
             drawCursor();
-          } , 100);
+          } , 50);
 
         // Play the source
         source.start(0,cursorPosition + offset);
