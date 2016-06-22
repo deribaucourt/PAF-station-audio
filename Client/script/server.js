@@ -39,20 +39,25 @@ function GetXMLHttpRequest() {
     return xhr;
 }
 
-function sendAudio() {
-    "use strict";
+function generateProject() {
+    
+    
+    return "I was sent throught XHR"
+}
 
+function exportProject() {
+    "use strict";
+    
     var xhr = new GetXMLHttpRequest();
-    var sentText = "I was sent through XHR";
+    var sentText = generateProject();
     
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
-            alert(xhr.responseText);
+            window.location.assign("/download");
         }
     }
     
-    xhr.open("POST", "/request", true);
-    
+    xhr.open("POST", "/generate", true);
     xhr.setRequestHeader("Content-Type", "text");
     xhr.send(sentText);
     
