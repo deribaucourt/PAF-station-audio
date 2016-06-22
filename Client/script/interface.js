@@ -45,6 +45,8 @@ var timeline = timelineC.getContext("2d");
 var timelineHeight = timelineC.clientHeight ;   // Measurement in Pixels
 var timelineWidth = timelineC.clientWidth ;
 timeline.font = "12px Arial";
+timeline.strokeStyle = "#e69900" ;
+timeline.fillStyle = "#e69900" ;
 
 function repaintTimeline() {
   timeline.clearRect(0, 0, timelineC.width, timelineC.height);
@@ -61,9 +63,11 @@ function repaintTimeline() {
 }
 
 var cursor = document.getElementById("cursor");
+var menuWidth = document.getElementById("globalTimelineContainer").clientWidth ;
 
 function drawCursor() {
-  cursor.style.left = ( (cursorPosition-timeWindowOffset)/timeWindowSize*timelineWidth + document.getElementById("globalTimelineContainer").clientWidth) + "px" ;
+
+  cursor.style.left = Math.max( menuWidth, Math.min( menuWidth + timelineWidth , (cursorPosition-timeWindowOffset)/timeWindowSize*timelineWidth + menuWidth ) ) + "px" ;
 }
 
   /* *************** Signal Representation **************** */
@@ -79,6 +83,7 @@ function drawSignal(track) {
 
   // Trace Time axis
   ctx.beginPath();
+  ctx.strokeStyle = "#664400" ;
   ctx.moveTo(0,canvasHeight/2);
   ctx.lineTo(canvasWidth,canvasHeight/2);
   ctx.stroke();
@@ -86,6 +91,8 @@ function drawSignal(track) {
   /* CLASSIC REPRESENTATION OF SOUND POWER */
   var localMax, previousSample, k;
   var currentSample = Math.floor(timeWindowOffset*track.signal.sampleRate);
+  ctx.beginPath();
+  ctx.strokeStyle = "#e69900" ;
   for(i = 0; i<canvasWidth; i++) {
     previousSample = currentSample ;
     currentSample = Math.floor((timeWindowOffset+i*timeWindowSize/canvasWidth)*track.signal.sampleRate) ;
@@ -150,7 +157,7 @@ function drawNewTrack(track) {
   ajax.onload=function() {  // This code is called once the html code is loaded
       // Change elements' IDs to correspond with track.number
     var htmlCode = ajax.responseText ;
-    for(var i = 0; i<7; i++){
+    for(var i = 0; i<9; i++){
       htmlCode = htmlCode.replace("TRACKID",track.number);
     }
     document.getElementById("tracksContainer").innerHTML += htmlCode;

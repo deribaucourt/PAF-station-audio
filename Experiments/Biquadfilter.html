@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Web Audio, by eridem</title>
+</head>
+<body>
+<h1>Web Audio, by ERiDeM</h1>
+<p>Example 4: Volume</p>
+<p>Panic documentation: <a href="https://webaudio.github.io/web-audio-api/#idl-def-GainNode">https://webaudio.github.io/web-audio-api/#idl-def-GainNode</a></p>
+<script>
+
+    //#region Previous stuff
+
+    // Browser support
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+    // Initialize audio context
+    var context = new AudioContext();
+
+    // Sound Url
+    var soundUrl = "zebre.wav";
+
+    // Create request to load the song from address
+    var request = new XMLHttpRequest();
+    request.open("GET", soundUrl, true);
+    request.responseType = "arraybuffer";
+
+    //#endregion
+
+    // Play sound
+    function play() {
+        if (!soundBuffer) return;
+
+        // Create AudioBufferSourceNode and attach buffer
+        var source = context.createBufferSource();
+        source.buffer = soundBuffer;
+
+        // http://eridem.net/wp-content/uploads/2015/08/WebAudioWithImages_10.png
+        // http://eridem.net/wp-content/uploads/2015/08/WebAudioWithImages_11.png
+
+        // Create a gain to reduce the volume
+
+
+        var biquadFilter = context.createBiquadFilter();
+
+        biquadFilter.type = "lowshelf";
+        biquadFilter.frequency.value = 500;
+        biquadFilter.gain.value = 20;
+
+
+        // Connect node to gain
+        source.connect(biquadFilter);
+
+        // Connect gain to destination
+        biquadFilter.connect(context.destination);
+
+        // Play source
+        source.start(0);
+
+        // http://www.html5rocks.com/en/tutorials/webaudio/intro/diagrams/linear-fade.png
+        // http://www.html5rocks.com/en/tutorials/webaudio/intro/diagrams/equal-fade.png
+
+    }
+
+    //#region Previous stuff
+
+    // Send request and save it
+    request.onload = function () {
+        context.decodeAudioData(
+            request.response,
+            function (buffer) {
+                window.soundBuffer = buffer;
+                if (typeof window.play === 'function') window.play();
+            }
+        );
+    };
+    request.send();
+
+    //#endregion
+
+</script>
+
+</body>
+</html>

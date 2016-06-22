@@ -1,11 +1,12 @@
 <div class="trackTopContainer" id="trackTopContainerTRACKID" style="width:100%; height:40%;"> <!-- all TRACK_ID will be replaced with the number -->
-  <div class="trackMenu" id="trackMenuTRACKID" style="width:19.6%; height:100%;">
-    <h3 class="trackTitle" id="trackTitleTRACKID" style="width:60%; height:30%;">Darude-Sandstorm</h3>
-    <a href="#" class="button" id="closeButtonTRACKID" style="width:10%; height:10%;">close</a>
+  <div class="trackMenu" id="trackMenuTRACKID" style="width:20%; height:100%; overflow:hidden">
+    <h3 class="trackTitle" id="trackTitleTRACKID" style="width:70%; height:30%;font-size:100%;">Darude-Sandstorm</h3>
+    <a href="#" class="button" title="Close" id="closeButtonTRACKID" style="width:30%; height:30%;"><img src="icons/line.png"/></a>
     <br style="clear: left;" />
 
-    <input class="trackVolumeControl" id="trackVolumControlTRACKID" type="range" value="0" max="100" min="0" step="1"></input>
-    <a href="#" class="button" id="trackMuteButtonTRACKID" >Mute</a>
+    <a href="#" class="button" title="Open balance volume control" id="trackVolumControlTRACKID" style="width:60%;height:70%;"><img src="icons/interface.png"/></a>
+    <a href="#" class="button" title="Solo play" id="trackSoloButtonTRACKID" style="width:40%;height:35%;"><img src="icons/play-button.png" /></a>
+    <a href="#" class="muteButton" title="Mute" id="trackMuteButtonTRACKID" style="width:40%;height:35%;"><img id="muteButtonIconTRACKID" src="icons/multimedia-1.png" /></a>
   </div>
   <canvas class="trackCanvas" id="trackCanvasTRACKID" style="width:80%; height:100%;"/>
 </div>

@@ -65,51 +65,70 @@ Code starts here                                                                
     <div id="topContainer" style="width:100%;height:100%;">
 
       <div id="headerContainer" style="width:100%;height:20%;">
-        <input type="file" id="importButton" name="files[]" multiple />
-        <output id="list"></output>
-        <a href="#" id="importFileButton" style="width: 10%; height:50%;" class="button">import</a>
-        <a href="#" id="exportFileButton" style="width: 10%; height:50%;" class="button" onclick="exportProject()">export</a>
-          <div id="titleContainer">
-            <span style="font-size:10px; float:none">Copyright© 2016 Vincent Bisogno, François Desrichard, Enguerrand de Ribaucourt, Pierre Ucla - 
-            <span style="font-style:italic; float:none">icons by <a href="http://www.freepik.com" class="creditLink">Freepik</a> from <a href="http://www.flaticon.com" class="creditLink">Flaticon</a></span></span>
-          </div>
-          <a href="#" id="filterButton" class="button" style="width:20%; height:50%;" onclick="toggleFiltersPopup(true)">Filters</a>
-          <div style="float:left"><input type="text" value="test" /></div>
+        <div id="fileManageContainer" style="width:20%;height:100%;">
+          <a href="#" id="serverProjectDownload" title="Download project from server" style="width: 50%; height:33%;" class="button"><img src="icons/multimedia.png" /></a>
+          <a href="#" id="serverProjectUpload" title="Upload project to server" style="width: 50%; height:33%;" class="button"><img src="icons/upload.png" /></a>
+          <br style="clear:left" />
+
+          <input type="file" class="inputfile" id="importButton" name="files[]" multiple /><label title="Import music track"  style="width: 50%; height:33%;" for="importButton"></label>
+          <a href="#" id="exportFileButton" title="Export music" style="width: 50%; height:33%;" class="button"><img src="icons/up-arrow.png" /></a>
+          <br style="clear:left" />
+
+          <div style="float:left;width:100%;height:33%;"><input id="projectNameInput" type="text" value="project name" /></div>
+        </div>
+        <div id="titleContainer" style="width: 70%;height: 100%;">
+          <span style="font-size:50%; float:none">Copyright© 2016 Vincent Bisogno, François Desrichard, Enguerrand de Ribaucourt, Pierre Ucla -
+          <span style="font-style:italic; float:none">icons by <a href="http://www.flaticon.com/authors/madebyoliver" class="creditLink">Madebyoliver</a> and <a href="http://www.flaticon.com/authors/butterflytronics" class="creditLink">butterflytronics</a></span></span>
+        </div>
+        <div id="filterButtonContainer" style="width:10%; height:100%;">
+          <a href="#" id="filterButton" title="Apply filters" class="button" style="width:100%; height:100%;" onclick="toggleFiltersPopup(true)"><img src="icons/witch.png" /></a>
+        </div>
       </div>
       <br style="clear:left" />
 
       <div id="toolsContainer" style="width:100%;height:10%;">
-        <div id="playbackControllContainer">
-          <a href="#" id="rewindButton" class="button">rewind</a>
-          <a href="#" id="PlayButton" class="button" onclick="listenToAll(1)">play</a>
-          <a href="#" id="stopButton" class="button" onclick="listenToAll(0)">stop</a>
+        <div id="playbackControllContainer" style="width:30%;height:100%;">
+          <a href="#" id="rewindButton" title="Rewind" class="button" style="width:33%;height:100%;"><img src="icons/arrows.png" /></a>
+          <a href="#" id="PlayButton" title="Play/Pause" class="playButton" onclick="listenToAll(1)" style="width:33%;height:100%;"><img src="icons/play-button.png" id="playResume" /></a>
+          <a href="#" id="stopButton" title="Stop" class="button" onclick="listenToAll(0)" style="width:33%;height:100%;"><img src="icons/stop.png" /></a>
         </div>
-        <div id="editionToolsContainer">
-          <a href="#" id="copyButton" class="button">copy</a>
-          <a href="#" id="cutButton" class="button">cut</a>
-          <a href="#" id="pasteButton" class="button">paste</a>
+        <div id="editionToolsContainer" style="width:30%;height:100%;">
+          <a href="#" id="copyButton" title="Copy" class="button" style="width:33%;height:100%;"><img src="icons/copy-archive.png" /></a>
+          <a href="#" id="cutButton" title="Cut" class="button" style="width:33%;height:100%;"><img src="icons/scissors.png" /></a>
+          <a href="#" id="pasteButton" title="Pause" class="button" style="width:33%;height:100%;"><img src="icons/paste-file.png" /></a>
+        </div>
+        <div id="tracksToolsContainer" style="width:20%;height:100%;">
+          <a href="#" id="newTrackButton" title="New track" class="button" style="width:50%;height:100%;"><img src="icons/plus.png" /></a>
+          <a href="#" id="cloneTrackButton" title="Clone track" class="button" style="width:50%;height:100%;"><img src="icons/circle.png" /></a>
+        </div>
+        <div id="tracksToolsContainer" style="width:20%;height:100%;">
+          <a href="#" id="undoButton" title="Undo" class="button" style="width:50%;height:100%;"><img src="icons/back.png" /></a>
+          <a href="#" id="redoButton" title="Redo" class="button" style="width:50%;height:100%;"><img src="icons/forward.png" /></a>
         </div>
       </div>
       <br style="clear:left" />
 
       <div id="timelineContainer" class="containerWithBorder" style="width: 100%; height:5%;">
-        <div id="globalTimelineContainer" style="width: 19.6%; height:100%;">
-          <input id="globalTimeline" type="range" value="0" max="100" min="0" step="1"></input>
+        <div id="globalTimelineContainer" style="width: 20%; height:100%;">   <!-- TODO: rename this globalVolumeContainer in all files -->
+          <a href="#" id="globalMuteButton" title="Mute all" class="muteButton"><img src="icons/multimedia-1.png" id="globalMuteIcon" style="display:none;" /></a>
+          <input id="globalVolumeControl" title="Volume" class="volumeControl" type="range" value="0" max="100" min="0" step="1"></input>
         </div>
-        <div id="localTimelineContainer" style="width: 80%; height:100%; overflow:hidden;"><canvas id="timelineCanvas" style="width: 100%; height:100%;" /></div>
+        <div id="localTimelineContainer" style="width: 80%; height:100%;"><canvas id="timelineCanvas" style="width: 100%; height:100%;" /></div>
       </div>
       <br style="clear:left" />
 
-      <div id="tracksContainer" class="containerWithBorder" ondrop="drop(event)" ondragover="allowDrop(event)" style="width:100%;height:75%;overflow:scroll;">
+      <div id="tracksContainer" class="containerWithBorder" ondrop="drop(event)" ondragover="allowDrop(event)" style="width:100%;height:75%;overflow-y:scroll;">
         <h2 id="tracksInsertMessage">Insérez vos pistes ici</h2>
-        <div id="recordTrackContainer" class="trackTopContainer" style="width:100%; height:20%;">
-          <div class="trackMenu" style="width: 15%; height:100%;">
-            <a href="#" id="recordButton" class="button" style="width:100%; height:40%;">record</a>
-            <br style="clear: left;" />
-            <input id="recordVolumeControl" class="volumeControl" type="range" value="0" max="100" min="0" step="1"></input>
-          </div>
-          <canvas id="recordTrack" class="track" style="width:85%; height:100%;" />
-        </div>
+
+        <script>    // IMPORT AND DRAW RECORD TRACK
+          console.log("painting record track last");
+          var ajax = new XMLHttpRequest();    // get the HTML code for record track
+          ajax.open("GET", "record.html", true);
+          ajax.onload = function() {
+            document.getElementById("tracksContainer").innerHTML += ajax.responseText;
+          }
+          ajax.send();
+        </script>
 
       </div>
 
