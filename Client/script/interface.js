@@ -150,7 +150,7 @@ function drawNewTrack(track) {
   ajax.onload=function() {  // This code is called once the html code is loaded
       // Change elements' IDs to correspond with track.number
     var htmlCode = ajax.responseText ;
-    for(var i = 0; i<8; i++){
+    for(var i = 0; i<9; i++){
       htmlCode = htmlCode.replace("TRACKID",track.number);
     }
     document.getElementById("tracksContainer").innerHTML += htmlCode;
