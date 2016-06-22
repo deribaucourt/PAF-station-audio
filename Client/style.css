@@ -75,10 +75,8 @@ ul {
   height: 40%;
 }
 
-div.vr {
-  width:2px;
-  height:0px;
-  background-color: white;
+#editionToolsContainer, #tracksToolsContainer {
+  border-left : medium solid white ;
 }
 
 .inputfile {
@@ -131,6 +129,12 @@ div#tracksContainer {
 
 	background-color: #D8D8D8;
 	color: #F8F8F8;
+}
+
+#recordButton {
+  background:url(./icons/stop.png) no-repeat;
+  background-position: center;
+  background-size: auto 80%;
 }
 
 input.volumeControl {
