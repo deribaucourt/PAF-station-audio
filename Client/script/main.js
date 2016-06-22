@@ -188,8 +188,23 @@ function listenToAll(listen)
       else
         listenTo[i] = 0;
     }
+    console.log("i = "+ i + " // listenTo[i] = " + listenTo[i] + "source[i] = " + source[i]);
     playback(tracks[i].signal, listenTo[i], source[i], tracks[i].offset);
   }
+}
+
+function soloPlay(trackId)
+{
+  for (track of tracks)
+  {
+    track.listen = 0;
+  }
+  tracks[trackId].listen = 1;
+  listenToAll(1);
+}
+
+function mute(trackId)
+{
 
 }
 
