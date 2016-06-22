@@ -23,7 +23,6 @@ var soundBuffer ;
 var interval;
 var playing = false ;
 var tBegin, startCursorPosition;
-var audioContext = new audioContext();
 
       /*************** Time Control *************/
 
@@ -80,14 +79,6 @@ function playback(audioBuffer, listen, source, offset) {  // ArrayBuffer objects
 var webRtcSource;
 var recorderNodeForRecord = createRecorderNode() ;
 
-function onRecordStart() {
-  recorderNode.startRecording() ;
-}
-
-function onRecordStop() {
-  
-}
-
 function handle_startMonitoring() {
     navigator.getUserMedia =  navigator.mozGetUserMedia ;
     navigator.getUserMedia(
@@ -98,7 +89,7 @@ function handle_startMonitoring() {
         //    var données = mediaStream.inputBufferbuffer.getChannelData(0);
           //  console.log(données);
 
-            webRtcSource.connect(audioContext.destination);
+            webRtcSource.connect(recorderNodeForRecord);
         },
         function (error) {
             console.log("There was an error when getting microphone input: " + err);
@@ -110,5 +101,27 @@ function handle_stopMonitoring() {
     webRtcSource = null;
 }
 
-document.querySelector("#btnStartMonitoring").onclick = handle_startMonitoring; // Wire up start button
-document.querySelector("#btnStopMonitoring").onclick = handle_stopMonitoring; // Wire up stop button
+function onRecordStart() {
+  console.log("Starting Record") ;
+  /*navigator.getUserMedia =  navigator.mozGetUserMedia ;
+  navigator.getUserMedia(
+    { audio: true, video: false },
+    function (mediaStream) {
+      webRtcSource = audioContext.createMediaStreamSource(mediaStream);
+      webRtcSource.connect(recorderNodeForRecord);
+    },
+    function (error) {
+      console.log("There was an error when getting microphone input: " + err);
+    }
+  );
+*/handle_startMonitoring();
+  recorderNodeForRecord.startRecording() ;
+}
+
+function onRecordStop() {
+  console.log("Stoping Record") ;
+/*  webRtcSource.disconnect();
+  webRtcSource = null;
+  */handle_stopMonitoring();
+  addTrack(recorderNodeForRecord.stopRecording()) ;
+}

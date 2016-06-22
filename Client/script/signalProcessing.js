@@ -16,19 +16,22 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 
-var audioContext = new audioContext() ;
 
   /***************** Recorder Node *****************/
 
 function createRecorderNode() {
-  newAudioNode = audioCtx.createScriptProcessor(4096, 1, 0);        // this is a node which stocks several samples.
+  newAudioNode = audioContext.createScriptProcessor(4096, 1, 0);        // this is a node which stocks several samples.
   newAudioNode.record = [[]] ;            //carefull, the first index is for the channel
   newAudioNode.recording = false ;
+  newAudioNode.recordSampleRate = 0 ;
 
   newAudioNode.onaudioprocess = function(audioProcessingEvent) {
     if(this.recording) {
-      var inputBuffer = audioProcessingEvent.inputBuffer;
-      var outputBuffer = audioProcessingEvent.outputBuffer;
+    var inputBuffer = audioProcessingEvent.inputBuffer;
+    var outputBuffer = audioProcessingEvent.outputBuffer;
+      if(this.recordSampleRate == 0) {
+        this.recordSampleRate = inputBuffer.sampleRate ;
+      }
       for (var channel = 0; channel < outputBuffer.numberOfChannels; channel++) {
         var inputData = inputBuffer.getChannelData(channel);
         var outputData = outputBuffer.getChannelData(channel);
@@ -40,12 +43,21 @@ function createRecorderNode() {
   newAudioNode.startRecording = function() {
     this.record = [] ;
     this.recording = true;
-  }
+  };
 
-  newAudioNode.getRecordingAndStop = function() {
+  newAudioNode.stopRecording = function() {     // returns Recorder AudioBuffer
     this.recording = false;
-    return this.record;
-  }
+    recordedBuff = audioContext.createBuffer(this.record.length,this.record[0].length,this.recordSampleRate) ;
+    for(var channel = 0; channel < recordedBuff.numberOfChannels; channel ++) {
+      recordedBuff.getChannelData(channel) = record[channel] ;
+    }
+    return recordedBuff;
+  };
 
   return newAudioNode ;
 }
+
+
+/*************** Display Node **************/
+
+// TODO
