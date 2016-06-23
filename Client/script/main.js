@@ -173,7 +173,7 @@ function listenToAll(listen)
   {
     if (play_pause === "none")
     {
-      source[i] = tracks[i].outputNode;
+      source[i] = tracks[i].audioSource;
     }
     if (!listen) listenTo[i] = 0;
     else
@@ -183,7 +183,7 @@ function listenToAll(listen)
       else
         listenTo[i] = 0;
     }
-    playback(tracks[i].signal, listenTo[i], source[i], tracks[i].offset);
+    playback(tracks[i].signal, listenTo[i], source[i], tracks[i].outputNode, tracks[i].offset);
   }
 
   if (!listen)

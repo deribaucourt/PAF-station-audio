@@ -25,13 +25,13 @@ gain track.number value;
 
 */
 
-var instructions = [] ; // array of string
+var instructions = ["gain 0 0.1"] ; // array of string
 var args ;
 
 function execute(finalOutput) {   // does the wiring to produce the sound   ["Speakers","File","Screen"]
   for(track of tracks) {
-    if(track.audioSource.buffer )
-    track.audioSource.stop() ;
+    if(track.audioSource.buffer)
+      track.audioSource.stop() ;
     track.audioSource = audioContext.createBufferSource() ;
     track.outputNode = track.audioSource ;
   }

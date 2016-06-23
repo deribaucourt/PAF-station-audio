@@ -35,7 +35,7 @@ function cursorFollowPlaying() {
     }
 }
 
-function play(listen, source, offset) {
+function play(listen, source, input, offset) {
     if (comptGeneral === 0)
     {
       playingCompt = 0;
@@ -52,7 +52,7 @@ function play(listen, source, offset) {
         source.buffer = soundBuffer;
 
         // Connect it to the output
-        source.connect(audioContext.destination);
+        input.connect(audioContext.destination);
 
         var d = new Date();
         tBegin = d.getTime();
@@ -75,9 +75,9 @@ function play(listen, source, offset) {
     }
 }
 
-function playback(audioBuffer, listen, source, offset) {  // ArrayBuffer objects work to
+function playback(audioBuffer, listen, source, input, offset) {  // ArrayBuffer objects work to
   soundBuffer = audioBuffer;
-  play(listen, source, offset);
+  play(listen, source, input, offset);
 }
 
 
