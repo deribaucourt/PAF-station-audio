@@ -164,14 +164,7 @@ function listenToAll(listen)
       play_pause = "block";
       document.getElementById("playResume").style.display = "block";
     }
-  if (!listen)
-  {
-    play_pause = "block";
-    document.getElementById("playResume").style.display = "block";
-    cursorPosition = 0;
-    offset = 0;
-    drawCursor();
-  }
+
   var length = tracks.length;
   var listenTo = [];
   for (var i = 0 ; i < length ; i++)
@@ -188,24 +181,47 @@ function listenToAll(listen)
       else
         listenTo[i] = 0;
     }
-    console.log("i = "+ i + " // listenTo[i] = " + listenTo[i] + "source[i] = " + source[i]);
     playback(tracks[i].signal, listenTo[i], source[i], tracks[i].offset);
+  }
+
+  if (!listen)
+  {
+    play_pause = "block";
+    document.getElementById("playResume").style.display = "block";
+    cursorPosition = 0;
+    offset = 0;
+    drawCursor();
   }
 }
 
 function soloPlay(trackId)
 {
+  var i = 0;
   for (track of tracks)
   {
     track.listen = 0;
+    document.getElementById("muteButtonIcon"+i).style.display = "block";
+    i++;
   }
+  i = 0;
   tracks[trackId].listen = 1;
+  document.getElementById("muteButtonIcon"+trackId).style.display = "none";
+
   listenToAll(1);
 }
 
 function mute(trackId)
 {
-
+  if (document.getElementById("muteButtonIcon"+trackId).style.display === "none")
+  {
+    tracks[trackId].listen = 0;
+    document.getElementById("muteButtonIcon"+trackId).style.display = "block";
+  }
+  else
+  {
+    tracks[trackId].listen = 1;
+    document.getElementById("muteButtonIcon"+trackId).style.display = "none";
+  }
 }
 
 repaintTracks();

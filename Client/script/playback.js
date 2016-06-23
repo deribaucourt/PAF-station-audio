@@ -15,29 +15,32 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
-
-
-
-
+var length;
 var soundBuffer ;
 var interval;
 var playing = false ;
 var tBegin, startCursorPosition;
+var playingCompt = 0;
+var comptGeneral = 0;
 
 function cursorFollowPlaying() {
-  if(playing) {
-    d = new Date();
-    cursorPosition = (d.getTime() - tBegin)/1000 + startCursorPosition;
-    drawCursor();
-    setTimeout(cursorFollowPlaying,50);
-  }
+    if (playingCompt > 0)
+    {
+      d = new Date();
+      cursorPosition = (d.getTime() - tBegin)/1000 + startCursorPosition;
+      drawCursor();
+      setTimeout(cursorFollowPlaying, 50);
+    }
 }
 
 function play(listen, source, offset) {
-
-
-
-
+    if (comptGeneral === 0)
+    {
+      playingCompt = 0;
+    }
+    comptGeneral++;
+    length = tracks.length;
+    console.log(playingCompt);
     if (listen)
       {
         if (!soundBuffer) return;
@@ -52,6 +55,7 @@ function play(listen, source, offset) {
         var d = new Date();
         tBegin = d.getTime();
         startCursorPosition = cursorPosition ;
+        playingCompt++;
 
         // Play the source
         source.start(0,cursorPosition + offset);
@@ -60,10 +64,13 @@ function play(listen, source, offset) {
     }
     else {
       playing = false;
-      source.stop();
+      if (source.buffer) source.stop();
     }
-
-    cursorFollowPlaying();
+    if (comptGeneral === length)
+    {
+      comptGeneral = 0;
+      cursorFollowPlaying();
+    }
 }
 
 function playback(audioBuffer, listen, source, offset) {  // ArrayBuffer objects work to
