@@ -1,7 +1,17 @@
-from flask import Flask, render_template, request, make_response, redirect, url_for
+from flask import Flask, request, make_response, jsonify
+from json import dumps
+from werkzeug.routing import BaseConverter
+from os import listdir
+from normalizer import slugify
 
 app = Flask(__name__, static_url_path="", static_folder="../Client")
 
+class RegexConverter(BaseConverter):
+    def __init__(self, url_map, *items):
+        super(RegexConverter, self).__init__(url_map)
+        self.regex = items[0]
+
+app.url_map.converters['regex'] = RegexConverter
 
 @app.route("/")
 def index():
@@ -9,19 +19,26 @@ def index():
 
 @app.route("/generate", methods=["POST"])
 def generate_file() :
-    with open("project.txt", "w+") as f :
-        f.write("test");
-    
-    
-    
-    
+    filename = slugify(request.data) + ".bin"
+    with open("projects/" + filename, "w+") as f :
+        f.write(request.data);
+        
     return "done"
 
-@app.route("/download")
-def download_file() :
-    with open("project.txt", "rb") as f :
+@app.route("/retrieve", methods=["GET"])
+def retrieve_projects() :
+    list = []
+    for filename in listdir("projects") :
+        if filename[-4:] == ".bin" :
+            list.append({"filename" : filename})
+    return jsonify(results = list)
+    
+
+@app.route("/<slug>.bin")
+def download_file(slug) :
+    with open("projects/" + slug + ".bin", "rb") as f :
         resp = make_response(f.read())
-        resp.headers["Content-Type"] = "text"
+        resp.headers["Content-Type"] = "application/octet-stream"
         return resp
 
 

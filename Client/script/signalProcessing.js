@@ -58,14 +58,15 @@ function createRecorderNode() {
 }
 
 function addFilter(trackId) {
-    var myEffect = audioContext.createGain();
-    myEffect.gain.value = 2.0;
     mySource = tracks[trackId].audioSource();
+    mySource.buffer = tracks[trackId].signal;
+    mySource.connect(audioContext.destination);
+    
+    var myEffect = audioContext.createDelay(2.0);
     mySource.connect(myEffect);
     myEffect.connect(audioContext.destination);
-    mySource.start(0);
     
-    console.log("done");
+    mySource.start(0);
 }
 
 /*************** Display Node **************/

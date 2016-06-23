@@ -39,10 +39,36 @@ function GetXMLHttpRequest() {
     return xhr;
 }
 
+function retrieveProjects() {
+    "use strict";
+    
+    var xhr = new GetXMLHttpRequest();
+    
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
+            parseProjects(xhr.responseText);
+        }
+    }
+    
+    xhr.open("GET", "/retrieve", true);
+    xhr.send();
+}
+
+function parseProjects(responseText) {
+    var responseObj = JSON.parse(responseText);
+    var files = responseObj.results;
+    
+    for (i = 0 ; i < files.length ; i++) {
+        console.log(files[i].filename);
+    }
+    
+    toggleProjectsPopup(true);
+}
+
 function generateProject() {
     
     
-    return "I was sent throught XHR"
+    return document.getElementById("projectNameInput").value
 }
 
 function exportProject() {
@@ -53,12 +79,11 @@ function exportProject() {
     
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0) && xhr.responseText == "done") {
-            window.location.assign("/download");
+            //window.location.assign("/project.bin");
         }
     }
     
     xhr.open("POST", "/generate", true);
     xhr.setRequestHeader("Content-Type", "text");
     xhr.send(sentText);
-    
 }

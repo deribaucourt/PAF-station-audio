@@ -154,6 +154,14 @@ function toggleFiltersPopup(toggleState) {
     }
 }
 
+function toggleProjectsPopup(toggleState) {
+    if(toggleState) {
+        document.getElementById("projectsPopup").style.display = "block";
+    } else {
+        document.getElementById("projectsPopup").style.display = "none";
+    }
+}
+
 function drawNewTrack(track) {
   console.log("loading html code for track number "+ track.number );
   var ajax = new XMLHttpRequest();    // get the HTML code for  this track
