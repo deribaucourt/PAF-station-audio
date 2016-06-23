@@ -25,7 +25,7 @@ function Track(audioBuff) {
   this.number = tracks.length ;
   this.signal = audioBuff ;
   this.listen = 1;
-  this.audioSource = function() { return audioContext.createBufferSource();};
+  this.audioSource = audioContext.createBufferSource();
   this.outputNode = this.audioSource;
 }
 

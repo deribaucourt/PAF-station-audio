@@ -154,6 +154,8 @@ var source = [];
 var play_pause = "block";
 function listenToAll(listen)
 {
+    execute("Speakers") ;
+
     if (play_pause === "block")
     {
       play_pause = "none";
@@ -171,7 +173,7 @@ function listenToAll(listen)
   {
     if (play_pause === "none")
     {
-      source[i] = tracks[i].audioSource();
+      source[i] = tracks[i].outputNode;
     }
     if (!listen) listenTo[i] = 0;
     else

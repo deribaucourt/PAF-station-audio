@@ -25,13 +25,17 @@ gain track.number value;
 
 */
 
-
-var instructionsList = "" ;
-var instructions ;
-var op ;
+var instructions = [] ; // array of string
 var args ;
 
-function execute() {   // does the wiring to produce the sound
+function execute(finalOutput) {   // does the wiring to produce the sound   ["Speakers","File","Screen"]
+  for(track of tracks) {
+    if(track.audioSource.buffer )
+    track.audioSource.stop() ;
+    track.audioSource = audioContext.createBufferSource() ;
+    track.outputNode = track.audioSource ;
+  }
+
   for(instruction of instructions) {
     args = instruction.split(" ") ;
     switch(args[0]) {
@@ -46,23 +50,23 @@ function execute() {   // does the wiring to produce the sound
     }
   }
 
-  connectFinalOutputs() ;
+  connectFinalOutputs(finalOutput) ;
 
 }
 
-function connectFinalOutputs() {
+function connectFinalOutputs(finalOutput) {
+  switch(finalOutput) {
 
+  }
 }
 
-function addInstruction(instructionString) {      //no ; is needed at the end
-  instructionsList += instructionString + ";" ;
+function addInstruction(instructionString) {
+  instructions.push(instructionString) ;
 
-  for(var i = 0; i<redoneInstructionsCount; i++) {
+  for(var i = 0; i<redoneInstructionsCount-1; i++) {
     undoneInstructions.pop() ;
   }
   redoneInstructionsCount = 0 ;
-
-  instructions = instrcutions.split(";") ;
 }
 
 var undoneInstructions = [] ;
