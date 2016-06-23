@@ -25,7 +25,7 @@ gain track.number value;
 
 */
 
-var instructions = ["gain 0 0.1","gain 1 0.5"] ; // array of string
+var instructions = [] ; // array of string
 var args ;
 
 function execute(finalOutput) {   // does the wiring to produce the sound   ["Speakers","File","Screen"]
