@@ -28,16 +28,15 @@ gain track.number value;
 
 var instructionsList = "" ;
 var instructions ;
-var instruction ;
 var op ;
 var args ;
 
 function execute() {   // does the wiring to produce the sound
-  for(instruction : instructions) {
+  for(instruction of instructions) {
     args = instruction.split(" ") ;
     switch(args[0]) {
 
-      case(gain) :
+      case "gain" :
         gainNode = audioContext.createGain() ;
         gainNode.gain.value = args[2] ;
         tracks[args[1]].outputNode.connect(gainNode) ;
@@ -75,5 +74,5 @@ function undo() {
 
 function redo() {
   addInstruction( undoneInstructions.pop() ) ;
-  var redoneInstructionsCount ++ ;
+  redoneInstructionsCount ++ ;
 }

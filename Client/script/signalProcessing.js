@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
   /***************** Recorder Node *****************/
 
 function createRecorderNode() {
-  newAudioNode = audioContext.createScriptProcessor(4096, 1, 0);        // this is a node which stocks several samples.
+  newAudioNode = audioContext.createScriptProcessor(16384, 1, 0);        // this is a node which stocks several samples.
   newAudioNode.record = [[]] ;            //carefull, the first index is for the channel
   newAudioNode.recording = false ;
   newAudioNode.recordSampleRate = 0 ;
@@ -121,3 +121,17 @@ function createDisplayNode(canvas) {      // A node that displays it's signal on
   return newAudioNode ;
 }
 // TODO
+
+  /***************** File Output Node ********************/
+
+function createFileOutputNode(file) {
+  newAudioNode = audioContext.createScriptProcessor(16384, 1, 0);
+
+  newAudioNode.onaudioprocess = function(audioProcessingEvent) {
+     var dest = audioContext.createMediaStreamDestination() ;
+     var blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
+     window.location.href = URL.createObjectURL(blob);
+  }
+
+  return newAudioNode ;
+}
