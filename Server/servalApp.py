@@ -39,15 +39,22 @@ def retrieve_projects() :
                 list.append({"fileName" : fileName, "projectName" : data["projectName"]})
     
     return jsonify(results = list)
-    
 
-@app.route("/<slug>.json")
+'''@app.route("/<slug>.json")
 def download_file(slug) :
     with open("projects/" + slug + ".bin", "rb") as f :
         resp = make_response(f.read())
         resp.headers["Content-Type"] = "application/octet-stream"
-        return resp
+        return resp'''
 
+@app.route("/filteraudio", methods=["POST"])
+def filter_audio() :
+    filteredAudio = "ok"
+    
+    with open("channelData.txt", "w+") as f :
+        f.write(request.data);
+    
+    return filteredAudio
 
 if __name__ == "__main__":
     app.run(debug = True)

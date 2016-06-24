@@ -80,8 +80,6 @@ function exportProject() {
     var xhr = new GetXMLHttpRequest();
     var sentText = generateProject();
     
-    console.log(sentText);
-    
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0) && xhr.responseText == "done") {
             //window.location.assign("/project.bin");
@@ -91,4 +89,31 @@ function exportProject() {
     xhr.open("POST", "/generate", true);
     xhr.setRequestHeader("Content-Type", "text");
     xhr.send(sentText);
+}
+
+function exportChannelData(id) {
+    "use strict";
+    
+    var xhr = new GetXMLHttpRequest();
+    var array32Left = tracks[id].signal.getChannelData(0);
+    var array32Right = tracks[id].signal.getChannelData(1);
+    var regularArrayLeft = [];
+    var regularArrayRight = [];
+    
+    for (i = 0 ; i < array32Left.length ; i++) {
+        regularArrayLeft.push(array32Left[i]);
+        regularArrayRight.push(array32Right[i]);
+    }
+    
+    var channelData = JSON.stringify({"leftChannel" : regularArrayLeft, "rightChannel" : regularArrayRight});
+    
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
+            console.log(xhr.responseText);
+        }
+    }
+    
+    xhr.open("POST", "/filteraudio", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(channelData);
 }
