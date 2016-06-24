@@ -49,10 +49,12 @@ def download_file(slug) :
 
 @app.route("/filteraudio", methods=["POST"])
 def filter_audio() :
-    filteredAudio = "ok"
+    filteredAudio = ""
     
-    with open("channelData.txt", "w+") as f :
+    with open("channelData.json", "w+") as f :
         f.write(request.data);
+    
+    filteredAudio = request.data
     
     return filteredAudio
 
