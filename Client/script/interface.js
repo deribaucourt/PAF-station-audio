@@ -128,14 +128,14 @@ function repaintTracks() {    // This isn't called when scrolling the tracks, bu
 }
 
 function loadingScreenShow(boolean) {   // TODO : Maybe it is possible dispose of loading screen ?
-  if(boolean)
+/*  if(boolean)
     document.getElementById("loadingPopup").style.display = "block" ;
   else
-    document.getElementById("loadingPopup").style.display = "none" ;
+    document.getElementById("loadingPopup").style.display = "none" ;*/
 }
 
 function addTrack(audioBuff) {
-  tracks.push(new Track(audioBuff));  //TODO remove
+  tracks.push(new Track(audioBuff));
   addNewTrackToDisplay();
 }
 
@@ -212,8 +212,27 @@ function onRecordButtonPress(e) {
   }
 }
 
+function onClone() {
+  //TODO
+}
+
+function clone(i) {   //returns a clone of track i
+
+}
+
 function onClose(i) {
-  tracks.splice(i,1) ;
-  document.getElementById("tracksContainer").removeChild(document.getElementById("trackTopContainer"+i)) ;
+  var previousLength = tracks.length ;
+  var previousTracks = [] ;
+  removeInstructionsOf(i) ;
+  for(var k = i; k<previousLength; k++) {
+    previousTracks.push(tracks.pop()) ;
+    console.log("removing display for track number : "+ k );
+    document.getElementById("tracksContainer").removeChild(document.getElementById("trackTopContainer"+k)) ;
+  }
+  for(var k = 1; k<previousTracks.length; k++) {
+  //  previousTracks[k].number -- ;
+    tracks.push(previousTracks[k]) ;
+    addNewTrackToDisplay() ;
+  }
   repaintTracks() ;
 }

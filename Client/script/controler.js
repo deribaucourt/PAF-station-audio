@@ -69,6 +69,41 @@ function addInstruction(instructionString) {
   redoneInstructionsCount = 0 ;
 }
 
+function removeInstructionsOf(i) {
+  for(var k=0; k<instructions.length; k++) {
+    args = instructions[k].split(" ") ;
+    if(args[1]==i)
+      instruction[k] = "" ;
+    else {
+      console.log("changing instruction for new track value") ;
+      args[1] --;
+      instructions[k] = "" ;
+      for(arg of args) {
+        instructions[k] += arg + " " ;
+      }
+    }
+  }/*
+  var k = 0;
+  while(k<instructions.length) {
+    args = instructions[k].split(" ") ;
+    if(args[1] == i) {
+      instructions.splice(k,1) ;
+      console.log("removed one instructions for removed Track") ;
+    }
+    else {
+      if(args[1]>i) {
+        console.log("changing instruction for new track value") ;
+        args[1] --;
+        instructions[k] = "" ;
+        for(arg of args) {
+          instructions[k] += arg ;
+        }
+      }
+      i++;
+    }
+  }*/
+}
+
 var undoneInstructions = [] ;
 var redoneInstructionsCount = 0 ;
 
