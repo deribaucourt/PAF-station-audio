@@ -39,21 +39,74 @@ function GetXMLHttpRequest() {
     return xhr;
 }
 
-function sendAudio() {
+function retrieveProjects() {
     "use strict";
-
+    
     var xhr = new GetXMLHttpRequest();
-    var sentText = "I was sent through XHR";
     
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
-            alert(xhr.responseText);
+            parseProjects(xhr.responseText);
         }
     }
     
-    xhr.open("POST", "/request", true);
+    xhr.open("GET", "/retrieve", true);
+    xhr.send();
+}
+
+function parseProjects(responseText) {
+    var responseObj = JSON.parse(responseText);
+    var files = responseObj.results;
     
-    xhr.setRequestHeader("Content-Type", "text");
+    for (i = 0 ; i < files.length ; i++) {
+        console.log(files[i].projectName);
+        document.getElementById("projectsPopup").innerHTML += files[i].projectName + " ; "
+    }
+    
+    toggleProjectsPopup(true);
+}
+
+function generateProject() {
+    var projectName = document.getElementById("projectNameInput").value
+    
+    var dataObject = {"projectName" : projectName}
+    
+    return JSON.stringify(dataObject)
+}
+
+function exportProject() {
+    "use strict";
+    
+    var xhr = new GetXMLHttpRequest();
+    var sentText = generateProject();
+    
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0) && xhr.responseText == "done") {
+            //window.location.assign("/project.bin");
+        }
+    }
+    
+    xhr.open("POST", "/generate", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
     xhr.send(sentText);
+}
+
+function exportChannelData(id) {
+    "use strict";
     
+    var xhr = new GetXMLHttpRequest();
+    var arrayLeft = Array.prototype.slice.call(tracks[id].signal.getChannelData(0));
+    var arrayRight = Array.prototype.slice.call(tracks[id].signal.getChannelData(1));
+    
+    var channelData = JSON.stringify({"leftChannel" : arrayLeft, "rightChannel" : arrayRight});
+    
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
+            //console.log(xhr.responseText);
+        }
+    }
+    
+    xhr.open("POST", "/filteraudio", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.send(channelData);
 }
