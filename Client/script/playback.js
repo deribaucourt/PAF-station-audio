@@ -15,31 +15,34 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
+//TODO : rename this file playback-record
 
-
-
-
+var length;
 var soundBuffer ;
 var interval;
 var playing = false ;
 var tBegin, startCursorPosition;
-
-      /*************** Time Control *************/
+var playingCompt = 0;
+var comptGeneral = 0;
 
 function cursorFollowPlaying() {
-  if(playing) {
-    d = new Date();
-    cursorPosition = (d.getTime() - tBegin)/1000 + startCursorPosition;
-    drawCursor();
-    setTimeout(cursorFollowPlaying,50);
-  }
+    if (playingCompt > 0)
+    {
+      d = new Date();
+      cursorPosition = (d.getTime() - tBegin)/1000 + startCursorPosition;
+      drawCursor();
+      setTimeout(cursorFollowPlaying, 50);
+    }
 }
 
-function play(listen, source, offset) {
-
-
-
-
+function play(listen, source, input, offset) {
+    if (comptGeneral === 0)
+    {
+      playingCompt = 0;
+    }
+    comptGeneral++;
+    length = tracks.length;
+    console.log(playingCompt);
     if (listen)
       {
         if (!soundBuffer) return;
@@ -49,11 +52,12 @@ function play(listen, source, offset) {
         source.buffer = soundBuffer;
 
         // Connect it to the output
-        source.connect(audioContext.destination);
+        input.connect(audioContext.destination);
 
         var d = new Date();
         tBegin = d.getTime();
         startCursorPosition = cursorPosition ;
+        playingCompt++;
 
         // Play the source
         source.start(0,cursorPosition + offset);
@@ -62,15 +66,18 @@ function play(listen, source, offset) {
     }
     else {
       playing = false;
-      source.stop();
+      if (source.buffer) source.stop();
     }
-
-    cursorFollowPlaying();
+    if (comptGeneral === length)
+    {
+      comptGeneral = 0;
+      cursorFollowPlaying();
+    }
 }
 
-function playback(audioBuffer, listen, source, offset) {  // ArrayBuffer objects work to
+function playback(audioBuffer, listen, source, input, offset) {  // ArrayBuffer objects work to
   soundBuffer = audioBuffer;
-  play(listen, source, offset);
+  play(listen, source, input, offset);
 }
 
 
@@ -78,50 +85,34 @@ function playback(audioBuffer, listen, source, offset) {  // ArrayBuffer objects
 
 var webRtcSource;
 var recorderNodeForRecord = createRecorderNode() ;
-
-function handle_startMonitoring() {
-    navigator.getUserMedia =  navigator.mozGetUserMedia ;
-    navigator.getUserMedia(
-        { audio: true, video: false },
-        function (mediaStream) {
-            webRtcSource = audioContext.createMediaStreamSource(mediaStream);
-
-        //    var données = mediaStream.inputBufferbuffer.getChannelData(0);
-          //  console.log(données);
-
-            webRtcSource.connect(recorderNodeForRecord);
-        },
-        function (error) {
-            console.log("There was an error when getting microphone input: " + err);
-        }
-    );
-}
-function handle_stopMonitoring() {
-    webRtcSource.disconnect();
-    webRtcSource = null;
-}
+var recordStartingPosition = 0 ;
 
 function onRecordStart() {
   console.log("Starting Record") ;
-  /*navigator.getUserMedia =  navigator.mozGetUserMedia ;
+  navigator.getUserMedia =  navigator.mozGetUserMedia ;
   navigator.getUserMedia(
     { audio: true, video: false },
-    function (mediaStream) {
+    function (mediaStream) {        // called once the user has agreed to record
       webRtcSource = audioContext.createMediaStreamSource(mediaStream);
       webRtcSource.connect(recorderNodeForRecord);
+      recordStartingPosition = cursorPosition ;
+      listenToAll(1);           //start playback
+      recorderNodeForRecord.startRecording() ;
     },
     function (error) {
       console.log("There was an error when getting microphone input: " + err);
     }
   );
-*/handle_startMonitoring();
-  recorderNodeForRecord.startRecording() ;
 }
 
 function onRecordStop() {
-  console.log("Stoping Record") ;
-/*  webRtcSource.disconnect();
-  webRtcSource = null;
-  */handle_stopMonitoring();
-  addTrack(recorderNodeForRecord.stopRecording()) ;
+  if(webRtcSource !== undefined) {
+    console.log("Stoping Record") ;
+    listenToAll(1) ;            // pause Playback
+    webRtcSource.disconnect();
+    webRtcSource = null;
+    addTrack(recorderNodeForRecord.stopRecording()) ;
+    tracks[tracks.length-1].offset = recordStartingPosition ;
+  //  tracks[tracks.length-1].rename("Recorded Track") ;  //TODO : track names
+  }
 }

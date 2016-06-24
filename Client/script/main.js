@@ -150,31 +150,90 @@ function importFile(evt)
 
 document.getElementById('importButton').addEventListener('change', importFile, false);
 
-var compt = 0;
 var source = [];
+var play_pause = "block";
 function listenToAll(listen)
 {
+    execute("Speakers") ;
+
+    if (play_pause === "block")
+    {
+      play_pause = "none";
+      document.getElementById("playResume").style.display = "none";
+    }
+    else
+    {
+      play_pause = "block";
+      document.getElementById("playResume").style.display = "block";
+    }
+
+  var length = tracks.length;
+  var listenTo = [];
+  for (var i = 0 ; i < length ; i++)
+  {
+    if (play_pause === "none")
+    {
+      source[i] = tracks[i].audioSource;
+    }
+    if (!listen) listenTo[i] = 0;
+    else
+    {
+      if (play_pause === "none")
+        listenTo[i] = tracks[i].listen;
+      else
+        listenTo[i] = 0;
+    }
+    playback(tracks[i].signal, listenTo[i], source[i], tracks[i].outputNode, tracks[i].offset);
+  }
 
   if (!listen)
   {
+    play_pause = "block";
+    document.getElementById("playResume").style.display = "block";
     cursorPosition = 0;
     offset = 0;
     drawCursor();
   }
-  compt++;
-  var length = tracks.length;
-  var listenTo = [];
-  if (compt === 2) compt = 0;
-  for (var i = 0 ; i < length ; i++)
+}
+
+function soloPlay(trackId)
+{
+  var i = 0;
+  for (track of tracks)
   {
-    if (compt == 1)
-    {
-      source[i] = tracks[i].audioSource();
-    }
-    if (!listen) listenTo[i] = listen;
-    else listenTo[i] = tracks[i].listen;
-    playback(tracks[i].signal, listenTo[i], source[i], tracks[i].offset);
+    track.listen = 0;
+    document.getElementById("muteButtonIcon"+i).style.display = "block";
+    i++;
   }
+  i = 0;
+  tracks[trackId].listen = 1;
+  document.getElementById("muteButtonIcon"+trackId).style.display = "none";
+
+  listenToAll(1);
+}
+
+function mute(trackId)
+{
+  if (document.getElementById("muteButtonIcon"+trackId).style.display === "none")
+  {
+    tracks[trackId].listen = 0;
+    document.getElementById("muteButtonIcon"+trackId).style.display = "block";
+  }
+  else
+  {
+    tracks[trackId].listen = 1;
+    document.getElementById("muteButtonIcon"+trackId).style.display = "none";
+  }
+}
+
+function rewind()
+{
+  if (document.getElementById("playResume").style.display === "none")
+  {
+    listenToAll(0);
+    listenToAll(1);
+  }
+  else listenToAll(0);
 }
 
 repaintTracks();

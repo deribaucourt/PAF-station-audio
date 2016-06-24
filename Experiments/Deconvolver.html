@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+<script>
+
+  context = new webkitAudioContext();
+
+  function startSound() {
+      // Note: this loads asynchronously
+      var request = new XMLHttpRequest();
+      request.open("GET", 'Chien_01.wav', true);
+      request.responseType = "arraybuffer";
+
+      // Our asynchronous callback
+      request.onload = function() {
+          var audioData = request.response;
+
+          audioGraph(audioData);
+      };
+    request.send();
+  }
+
+
+  function audioGraph(audioData) {
+      var convolver;
+
+      soundSource = context.createBufferSource();
+      context.decodeAudioData(audioData, function(soundBuffer){
+          soundSource.buffer = soundBuffer;
+          convolver = context.createConvolver();
+
+          soundSource.connect(convolver);
+          convolver.connect(context.destination);
+
+          setReverbImpulseResponse('sportscentre_omni.wav', convolver, playSound);
+      });
+  }
+
+  function setReverbImpulseResponse(url, convolver, callback) {
+
+  var request = new XMLHttpRequest();
+  request.open("GET", url, true);
+  request.responseType = "arraybuffer";
+
+  request.onload = function () {
+      context.decodeAudioData(request.response, function(convolverBuffer) {
+          convolver.buffer = convolverBuffer;
+          callback();
+      });
+  }
+  request.send();
+}
+
+startSound();
+playSound();
+
+
+function computeDft(signal) {
+    var n = signal.length;
+    var outreal = new Array(n);
+    var outimag = new Array(n);
+
+    for (var k = 0; k < n; k++) {  // For each output element
+        var sum = 0;
+        for (var t = 0; t < n; t++) {  // For each input element
+            var angle = 2 * Math.PI * t * k / n;
+            sumreal +=  signal[t] * Math.cos(angle);
+            sumimag += -signal[t] * Math.sin(angle);
+        }
+        outreal[k] = sumreal;
+        outimag[k] = sumimag;
+    }
+    return [outreal, outimag];
+}
+
+function computeiDft(signal){
+    var n = data.length;
+    var outreal = new Array(n);
+    var outimag = new Array(n);
+
+    for (var t = 0; k < n; k++) {  // For each output element
+        var sum = 0;
+        for (var k = 0; t < n; t++) {  // For each input element
+            var angle = 2 * Math.PI * t * k / n;
+            sumreal +=  (1/n)*(signal[k] * Math.cos(angle));
+            sumimag +=  (1/n)*(signal[k] * Math.sin(angle));
+        }
+        outreal[t] = sumreal;
+        outimag[t] = sumimag;
+    }
+    return [outreal, outimag];
+}
+
+function deconvolve(signal1,signal2){
+
+    var tf1 = computeDft(signal1);
+    var tf2 = computeDft(signal2);
+    var tmp = tf1/tf2;
+    var out = computeiDft(tmp);
+
+    return out;
+
+}
+</script>
+
+</body>
+</html>

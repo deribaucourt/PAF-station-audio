@@ -25,7 +25,8 @@ function Track(audioBuff) {
   this.number = tracks.length ;
   this.signal = audioBuff ;
   this.listen = 1;
-  this.audioSource = function() { return audioContext.createBufferSource();};
+  this.audioSource = audioContext.createBufferSource();
+  this.outputNode = this.audioSource;
 }
 
   /* *************** Global Variables **************** */
@@ -169,7 +170,7 @@ function drawNewTrack(track) {
   ajax.onload=function() {  // This code is called once the html code is loaded
       // Change elements' IDs to correspond with track.number
     var htmlCode = ajax.responseText ;
-    for(var i = 0; i<9; i++){
+    for(var i = 0; i<20; i++){
       htmlCode = htmlCode.replace("TRACKID",track.number);
     }
     document.getElementById("tracksContainer").innerHTML += htmlCode;
@@ -210,11 +211,13 @@ function onRecordButtonPress(e) {
   console.log("record Button Pressed");
   if(!recording) {
     recording = true ;
+    document.getElementById("stopRecordButtonImg").style.display = "block" ;
     document.getElementById("recordButtonImg").style.display = "none" ;
     onRecordStart() ;
   } else {
     recording = false ;
     document.getElementById("recordButtonImg").style.display = "block" ;
+    document.getElementById("stopRecordButtonImg").style.display = "none" ;
     onRecordStop() ;
   }
 }

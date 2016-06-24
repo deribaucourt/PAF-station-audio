@@ -1,4 +1,4 @@
-"""Copyright© 2016 Vincent Bisogno, François Desrichard, Enguerrand de Ribaucourt, Pierre Ucla
+/*Copyright© 2016 Vincent Bisogno, François Desrichard, Enguerrand de Ribaucourt, Pierre Ucla
 
 This file is part of Serval Audio Editor.
 
@@ -13,12 +13,12 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>."""
+along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
-import numpy as np;
 
-def deconvolve(sig1, sig2) :
-    fft1 = np.fft(sig1)
-    fft2 = np.fft(sig2)
-    tmp = fft1 / fft2
-    return np.ifft(tmp)
+function applyGain() {
+  trackNumb = document.getElementById("trackValueInput").value ;
+  gainVal = document.getElementById("gainValueInput").value ;
+  addInstruction("gain "+trackNumb+" "+gainVal) ;
+  //execute("Screen") ; //redraw signal
+}

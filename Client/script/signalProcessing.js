@@ -20,36 +20,45 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
   /***************** Recorder Node *****************/
 
 function createRecorderNode() {
-  newAudioNode = audioContext.createScriptProcessor(4096, 1, 0);        // this is a node which stocks several samples.
+  newAudioNode = audioContext.createScriptProcessor(16384, 1, 0);        // this is a node which stocks several samples.
   newAudioNode.record = [[]] ;            //carefull, the first index is for the channel
   newAudioNode.recording = false ;
   newAudioNode.recordSampleRate = 0 ;
 
   newAudioNode.onaudioprocess = function(audioProcessingEvent) {
-    if(this.recording) {
-    var inputBuffer = audioProcessingEvent.inputBuffer;
-    var outputBuffer = audioProcessingEvent.outputBuffer;
-      if(this.recordSampleRate == 0) {
-        this.recordSampleRate = inputBuffer.sampleRate ;
+    if(newAudioNode.recording) {
+      var inputBuffer = audioProcessingEvent.inputBuffer;
+      if(newAudioNode.recordSampleRate == 0) {
+        newAudioNode.recordSampleRate = inputBuffer.sampleRate ;
       }
-      for (var channel = 0; channel < outputBuffer.numberOfChannels; channel++) {
+      if(inputBuffer.numberOfChannels > newAudioNode.record.length) {
+        for (var channel = 0; channel < inputBuffer.numberOfChannels; channel++) {
+          newAudioNode.record.push(new Array());
+        }
+      }
+      for (var channel = 0; channel < inputBuffer.numberOfChannels; channel++) {
         var inputData = inputBuffer.getChannelData(channel);
-        var outputData = outputBuffer.getChannelData(channel);
-        this.record[channel].concat(inputData) ;
+        for(var n = 0; n<inputData.length; n++) {
+          newAudioNode.record[channel].push(inputData[n])
+        }
       }
     }
   };
 
   newAudioNode.startRecording = function() {
-    this.record = [] ;
-    this.recording = true;
+    newAudioNode.record = [] ;
+    newAudioNode.recording = true;
   };
 
   newAudioNode.stopRecording = function() {     // returns Recorder AudioBuffer
-    this.recording = false;
-    recordedBuff = audioContext.createBuffer(this.record.length,this.record[0].length,this.recordSampleRate) ;
+    newAudioNode.recording = false;
+    console.log("recorded channels : "+newAudioNode.record.length +" length : " + newAudioNode.record[0].length +" at rate : " + newAudioNode.recordSampleRate);
+    recordedBuff = audioContext.createBuffer(newAudioNode.record.length,newAudioNode.record[0].length,newAudioNode.recordSampleRate) ;
     for(var channel = 0; channel < recordedBuff.numberOfChannels; channel ++) {
-      recordedBuff.getChannelData(channel) = record[channel] ;
+    //    recordedBuff.getChannelData(channel) = newAudioNode.record[channel] ;
+      for(var n = 0; n<newAudioNode.record[0].length; n++) {
+        recordedBuff.getChannelData(0)[n] = newAudioNode.record[channel][n] ;
+      }
     }
     return recordedBuff;
   };
@@ -71,4 +80,69 @@ function addFilter(trackId) {
 
 /*************** Display Node **************/
 
+function createDisplayNode(canvas) {      // A node that displays it's signal on a Canvas
+  newAudioNode = audioContext.createScriptProcessor(4096, 1, 0);
+  newAudioNode.c = canvas ;
+
+  newAudioNode.onaudioprocess = function(audioProcessingEvent) {
+    inputBuffer = audioProcessingEvent.inputBuffer ;
+    var ctx=newAudioNode.c.getContext("2d");
+
+    var canvasWidth = newAudioNode.c.clientWidth;
+    var canvasHeight = newAudioNode.c.clientHeight;
+    var samplesPerDivision = timeWindowSize*inputBuffer.sampleRate ;
+
+    ctx.clearRect(0, 0, newAudioNode.c.width, newAudioNode.c.height); ;
+
+    // Trace Time axis
+    ctx.beginPath();
+    ctx.strokeStyle = "#664400" ;
+    ctx.moveTo(0,canvasHeight/2);
+    ctx.lineTo(canvasWidth,canvasHeight/2);
+    ctx.stroke();
+
+    /* CLASSIC REPRESENTATION OF SOUND POWER */
+    var localMax, previousSample, k;
+    var currentSample = Math.floor(timeWindowOffset*inputBuffer.sampleRate);
+    ctx.beginPath();
+    ctx.strokeStyle = "#e69900" ;
+    for(i = 0; i<canvasWidth; i++) {
+      previousSample = currentSample ;
+      currentSample = Math.floor((timeWindowOffset+i*timeWindowSize/canvasWidth)*inputBuffer.sampleRate) ;
+      localMax = 0;
+      for(k = previousSample+1; k<currentSample; k++) {
+        if(Math.abs(inputBuffer.getChannelData(0)[k])>localMax) {
+          localMax = Math.abs(inputBuffer.getChannelData(0)[k]) ;
+        }
+      }
+      ctx.moveTo(i,-(localMax-1)*canvasHeight*0.5);
+      ctx.lineTo(i,(localMax+1)*canvasHeight*0.5);
+    }
+    ctx.stroke();
+
+    /*    RAW PCM REPRESENTATION  */ /*
+    ctx.moveTo(0,inputBuffer.getChannelData(0)[timeWindowOffset*inputBuffer.sampleRate]*canvasHeight);
+    for(i = 1; i<canvasWidth; i++) {
+      ctx.lineTo(i,(inputBuffer.getChannelData(0)[Math.floor((timeWindowOffset+i*timeWindowSize/canvasWidth)*inputBuffer.sampleRate)]+0.5)*canvasHeight);
+    }
+    console.log("drawing PCM for "+track.number);
+    ctx.stroke();*/
+  };
+
+  return newAudioNode ;
+}
 // TODO
+
+  /***************** File Output Node ********************/
+
+function createFileOutputNode(file) {
+  newAudioNode = audioContext.createScriptProcessor(16384, 1, 0);
+
+  newAudioNode.onaudioprocess = function(audioProcessingEvent) {
+     var dest = audioContext.createMediaStreamDestination() ;
+     var blob = new Blob(chunks, { 'type' : 'audio/ogg; codecs=opus' });
+     window.location.href = URL.createObjectURL(blob);
+  }
+
+  return newAudioNode ;
+}
