@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+</head>
+
+  <body>
+
+
+<script>
+window.AudioContext = window.AudioContext || window.webkitAudioContext;
+
+var context = new AudioContext();
+var soundSource = context.createBufferSource();
+
+function createConvolverNode() {
+var scriptNode = context.createScriptProcessor(4096, 1, 1);
+var soundBuffer;
+
+    function getDataTrack() {
+
+        var request = new XMLHttpRequest();
+        request.open("GET", "Chien_01.wav", true);
+        request.responseType = "arraybuffer";
+
+        request.onload = function() {
+            var audioData = request.response;
+        };
+
+        request.send();
+        return audioData;
+    }
+
+
+    scriptNode.onaudioprocess = function(audioProcessingEvent) {
+        var convolver;
+            var audioData = getDataTrack();
+            context.decodeAudioData(audioData, function(soundBuffer){
+            var soundBuffer = audioProcessingEvent.inputBuffer;
+            audioProcessingEvent.outputBuffer = soundSource;
+            convolver = context.createConvolver();
+
+            soundSource.connect(convolver);
+            convolver.connect(context.destination);
+
+            var request = new XMLHttpRequest();
+            request.open("GET", 'sportscentre_omni.wav', true);
+            request.responseType = "arraybuffer";
+
+            request.onload = function () {
+                context.decodeAudioData(request.response, function(convolverBuffer) {
+                    convolver.buffer = convolverBuffer;
+                    soundSource.start(context.currentTime);
+                });
+            }
+            request.send();
+
+
+        });
+    }
+      return scriptNode ;
+  }
+      var convolverNode = createConvolverNode();
+      soundSource.connect(convolverNode);
+      convolverNode.connect(context.destination);
+      soundSource.start();
+
+
+
+</script>
+
+</body>
+</html>
