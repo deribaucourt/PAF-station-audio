@@ -49,8 +49,11 @@ Code starts here                                                                
       
       <!-- ************* Projects Popup ************ -->
 
-      <div id="projectsPopup" class="popup" style="left:0; width:40%; height:auto">
-          <li class="filtersPopup"><img src="icons/close.png" class="filtersPopup" style="width:30px; height:30px" onClick="toggleProjectsPopup(false)" />
+      <div id="projectsPopup" class="popup" style="left:0; width:auto; height:auto">
+          <img src="icons/close.png" style="margin:5px; width:30px; height:30px; float:left" onClick="toggleProjectsPopup(false)" />
+          <div style="height:40px; float:none; padding:0 10px; display:table-cell; vertical-align:middle">Projects saved</div>
+          <br style="clear:left" />
+          <div id="projectsPopupContainer"></div>
       </div>
 
       <!-- ************* Filters Popup ************ -->
@@ -58,13 +61,13 @@ Code starts here                                                                
       <div id="filtersPopup" class="popup" style="left:60%; width:40%; height:auto">
 
           <ul>
-              <li class="filtersPopup"><img src="icons/close.png" class="filtersPopup" style="width:30px; height:30px" onClick="toggleFiltersPopup(false)" /></li>
-              <li class="filtersPopup"><img src="icons/megaphone.png" class="filtersPopup" />Gain : <input type="text" id="trackValueInput"><input type="text" id="gainValueInput"><a class="button" onclick="applyGain();">Apply</a></li>
-              <li class="filtersPopup">Deconvolve : <input type="text" id="deconvolveTrack1"><input type="text" id="deconvolveTrack2"><a class="button" onclick="applyDeconvolve();">Apply</a><a class="button" onclick="addTrack(genSin());">addSin</a></li>
-              <li class="filtersPopup"><img src="icons/fade_in.png" class="filtersPopup" />Fade in : <a class="button" style="float:none">linear</a><a class="button" style="float:none">exponential</a><a class="button" style="float:none">logarithmic</a></li>
-              <li class="filtersPopup"><img src="icons/fade_out.png" class="filtersPopup" />Fade out : <a class="button" style="float:none">linear</a><a class="button" style="float:none">exponential</a><a class="button" style="float:none">logarithmic</a></li>
-              <li class="filtersPopup"><img src="icons/mix.png" class="filtersPopup" />Mix tracks : <a class="button" style="float:none">2 tracks</a><a class="button" style="float:none">3 tracks</a><a class="button" style="float:none">4 tracks</a></li>
-              <li class="filtersPopup"><img src="icons/deconvolve.png" class="filtersPopup" />Convolve : <a class="button" style="float:none" onclick="addFilter(0)">from track</a><a class="button" style="float:none">from file</a></li>
+              <li class="simpleList"><img src="icons/close.png" class="filtersPopup" style="width:30px; height:30px" onClick="toggleFiltersPopup(false)" /></li>
+              <li class="simpleList"><img src="icons/megaphone.png" class="filtersPopup" />Gain : <input type="text" id="trackValueInput"><input type="text" id="gainValueInput"><a class="button" onclick="applyGain();">Apply</a></li>
+              <li class="simpleList">Deconvolve : <input type="text" id="deconvolveTrack1"><input type="text" id="deconvolveTrack2"><a class="button" onclick="applyDeconvolve();">Apply</a><a class="button" onclick="addTrack(genSin());">addSin</a></li>
+              <li class="simpleList"><img src="icons/fade_in.png" class="filtersPopup" />Fade in : <a class="button" style="float:none">linear</a><a class="button" style="float:none">exponential</a><a class="button" style="float:none">logarithmic</a></li>
+              <li class="simpleList"><img src="icons/fade_out.png" class="filtersPopup" />Fade out : <a class="button" style="float:none">linear</a><a class="button" style="float:none">exponential</a><a class="button" style="float:none">logarithmic</a></li>
+              <li class="simpleList"><img src="icons/mix.png" class="filtersPopup" />Mix tracks : <a class="button" style="float:none">2 tracks</a><a class="button" style="float:none">3 tracks</a><a class="button" style="float:none">4 tracks</a></li>
+              <li class="simpleList"><img src="icons/deconvolve.png" class="filtersPopup" />Convolve : <a class="button" style="float:none" onclick="addFilter(0)">from track</a><a class="button" style="float:none">from file</a></li>
           </ul>
       </div>
 
@@ -79,7 +82,7 @@ Code starts here                                                                
           <br style="clear:left" />
 
           <input type="file" class="inputfile" id="importButton" name="files[]" multiple /><label title="Import music track"  style="width: 50%; height:33%;" for="importButton"></label>
-          <a href="#" id="exportFileButton" title="Export music" style="width: 50%; height:33%;" class="button" onclick="exportChannelData(0)"><img src="icons/up-arrow.png" /></a>
+          <a href="#" id="exportFileButton" title="Export music" style="width: 50%; height:33%;" class="button"><img src="icons/up-arrow.png" /></a>
           <br style="clear:left" />
 
           <div style="float:left;width:100%;height:33%;"><input id="projectNameInput" type="text" value="project name" /></div>

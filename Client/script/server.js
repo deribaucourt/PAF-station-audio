@@ -45,68 +45,107 @@ function retrieveProjects() {
     var xhr = new GetXMLHttpRequest();
     
     xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
-            parseProjects(xhr.responseText);
+        if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 0)) {
+            displayProjects(xhr.response);
         }
     }
     
     xhr.open("GET", "/retrieve", true);
+    xhr.responseType = "json";
     xhr.send();
 }
 
-function parseProjects(responseText) {
-    var responseObj = JSON.parse(responseText);
-    var files = responseObj.results;
+function displayProjects(response) {
+    var files = response.projects;
+    
+    var projectsPopup = document.getElementById("projectsPopupContainer");
+    var projectsList = document.createElement("ul");
+    var listButton, listElement;
+    
+    projectsPopup.innerHTML = "";
+    
     
     for (i = 0 ; i < files.length ; i++) {
-        console.log(files[i].projectName);
-        document.getElementById("projectsPopup").innerHTML += files[i].projectName + " ; "
+        listButton = document.createElement("a");
+        listButton.appendChild(document.createTextNode(files[i].projectName));
+        listButton.setAttribute("class", "simpleButton");
+        listButton.setAttribute("onclick", "loadProject('" + files[i].fileName + "')")
+        
+        listElement = document.createElement("li");
+        listElement.appendChild(listButton);
+        listElement.setAttribute("class", "choiceList");
+        if (i === 0) {
+            listElement.setAttribute("style", "border-top:0");
+        }
+        
+        projectsList.appendChild(listElement);
     }
     
+    projectsPopup.appendChild(projectsList);
     toggleProjectsPopup(true);
 }
 
-function generateProject() {
-    var projectName = document.getElementById("projectNameInput").value
+function loadProject(fileName) {
+    "use strict";
     
-    var dataObject = {"projectName" : projectName}
+    var xhr = new GetXMLHttpRequest();
     
-    return JSON.stringify(dataObject)
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 0)) {
+            console.log(xhr.response);
+        }
+    }
+    
+    xhr.open("GET", "/load?file_name=" + fileName, true);
+    xhr.responseType = "json";
+    xhr.send();
 }
 
 function exportProject() {
     "use strict";
     
     var xhr = new GetXMLHttpRequest();
-    var sentText = generateProject();
+    var project = JSON.stringify(generateProject());
     
     xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0) && xhr.responseText == "done") {
+        if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 0)) {
             //window.location.assign("/project.bin");
         }
     }
     
     xhr.open("POST", "/generate", true);
     xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send(sentText);
+    xhr.send(project);
 }
 
-function exportChannelData(id) {
+function generateProject() {
+    var projectName = document.getElementById("projectNameInput").value
+    
+    var project = {"projectName" : projectName};
+    
+    return project
+}
+
+function serverDeconvolve(id1, id2) {
     "use strict";
     
     var xhr = new GetXMLHttpRequest();
-    var arrayLeft = Array.prototype.slice.call(tracks[id].signal.getChannelData(0));
-    var arrayRight = Array.prototype.slice.call(tracks[id].signal.getChannelData(1));
+    var signal1ArrayLeft = Array.prototype.slice.call(tracks[id1].signal.getChannelData(0));
+    var signal1ArrayRight = Array.prototype.slice.call(tracks[id1].signal.getChannelData(1));
+    var signal2ArrayLeft = Array.prototype.slice.call(tracks[id2].signal.getChannelData(0));
+    var signal2ArrayRight = Array.prototype.slice.call(tracks[id2].signal.getChannelData(1));
     
-    var channelData = JSON.stringify({"leftChannel" : arrayLeft, "rightChannel" : arrayRight});
+    var channelData = JSON.stringify({"signal1" : {"leftChannel" : signal1ArrayLeft, "rightChannel" : signal1ArrayRight},
+                                      "signal2" : {"leftChannel" : signal2ArrayLeft, "rightChannel" : signal2ArrayRight}});
     
     xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
-            //console.log(xhr.responseText);
+        if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 0)) {
+            console.log(xhr.response); // the result
         }
     }
     
-    xhr.open("POST", "/filteraudio", true);
+    xhr.open("POST", "/deconvolve", true);
     xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.responseType = "arraybuffer";
     xhr.send(channelData);
 }

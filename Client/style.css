@@ -37,10 +37,28 @@ h3 {
 }
 
 ul {
-    margin: 2px;
-    padding: 2px;
+    margin: 0;
+    padding: 0;
     list-style-type: none;
     list-style-image: none;
+}
+
+li.simpleList {
+    float: none;
+    text-align: left;
+}
+
+li.choiceList {
+    float: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #505050;
+    border-width: 1px 0 0 0;
+    text-align: left;
+}
+
+li.choiceList:hover {
+    background: #1a1a1a;
 }
 
 #globalMuteButton {
@@ -148,12 +166,6 @@ div.trackMenu {
   border-color: #707070;
 }
 
-li.filtersPopup {
-    float: none;
-    margin: 10px;
-    text-align: left;
-}
-
 img.filtersPopup {
     float: none;
     margin:0 8px 0 5px;
@@ -200,6 +212,17 @@ img {
 #globalVolumeControl {
   width: auto;
   height: 100%;
+}
+
+a.simpleButton {
+    padding: 7px 15px;
+    color: #dddcce;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
 }
 
 a.creditLink {
