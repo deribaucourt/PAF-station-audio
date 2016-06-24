@@ -54,6 +54,7 @@ Code starts here                                                                
           <ul>
               <li class="filtersPopup"><img src="icons/close.png" class="filtersPopup" style="width:30px; height:30px" onClick="toggleFiltersPopup(false)" /></li>
               <li class="filtersPopup"><img src="icons/megaphone.png" class="filtersPopup" />Gain : <input type="text" id="trackValueInput"><input type="text" id="gainValueInput"><a class="button" onclick="applyGain();">Apply</a></li>
+              <li class="filtersPopup">Deconvolve : <input type="text" id="deconvolveTrack1"><input type="text" id="deconvolveTrack2"><a class="button" onclick="applyDeconvolve();">Apply</a><a class="button" onclick="addTrack(genSin());">addSin</a></li>
               <li class="filtersPopup"><img src="icons/fade_in.png" class="filtersPopup" />Fade in : <a class="button" style="float:none">linear</a><a class="button" style="float:none">exponential</a><a class="button" style="float:none">logarithmic</a></li>
               <li class="filtersPopup"><img src="icons/fade_out.png" class="filtersPopup" />Fade out : <a class="button" style="float:none">linear</a><a class="button" style="float:none">exponential</a><a class="button" style="float:none">logarithmic</a></li>
               <li class="filtersPopup"><img src="icons/mix.png" class="filtersPopup" />Mix tracks : <a class="button" style="float:none">2 tracks</a><a class="button" style="float:none">3 tracks</a><a class="button" style="float:none">4 tracks</a></li>
@@ -145,6 +146,7 @@ Code starts here                                                                
     <script>var audioContext = new AudioContext() ;</script>
     <script type="text/javascript" src="script\server.js"></script>
     <script type="text/javascript" src="script\signalProcessing.js"></script>
+    <script type="text/javascript" src="script\deconvolve.js"></script>
     <script type="text/javascript" src="script\playback.js"></script>
     <script type="text/javascript" src="script\interface.js"></script>
     <script type="text/javascript" src="script\controler.js"></script>

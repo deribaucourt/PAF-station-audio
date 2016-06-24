@@ -106,11 +106,13 @@ function onRecordStart() {
 }
 
 function onRecordStop() {
-  console.log("Stoping Record") ;
-  listenToAll(1) ;            // pause Playback
-  webRtcSource.disconnect();
-  webRtcSource = null;
-  addTrack(recorderNodeForRecord.stopRecording()) ;
-  tracks[tracks.length-1].offset = recordStartingPosition ;
-//  tracks[tracks.length-1].rename("Recorded Track") ;  //TODO : track names
+  if(webRtcSource !== undefined) {
+    console.log("Stoping Record") ;
+    listenToAll(1) ;            // pause Playback
+    webRtcSource.disconnect();
+    webRtcSource = null;
+    addTrack(recorderNodeForRecord.stopRecording()) ;
+    tracks[tracks.length-1].offset = recordStartingPosition ;
+  //  tracks[tracks.length-1].rename("Recorded Track") ;  //TODO : track names
+  }
 }

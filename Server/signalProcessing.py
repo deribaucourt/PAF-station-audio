@@ -14,3 +14,11 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>."""
+
+import numpy as np;
+
+def deconvolve(sig1, sig2) :
+    fft1 = np.fft(sig1)
+    fft2 = np.fft(sig2)
+    tmp = fft1 / fft2
+    return np.ifft(tmp)
