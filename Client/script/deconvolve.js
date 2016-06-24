@@ -1,7 +1,7 @@
 
 function genSin() {
   var sampleRate = 44100;
-  var T = 0.1 ;
+  var T = 4 ;
   var nb_samples = T*sampleRate;
   var buffer = audioContext.createBuffer(1,nb_samples,sampleRate);
   var tampon = buffer.getChannelData(0);
@@ -20,6 +20,7 @@ function genSin() {
   return buffer ;
 }
 
+// FFT through javascript is extremly slow. Use Python
 function computeDft(signal) {
     var n = signal.length;
     var outreal = new Array(n);
@@ -75,7 +76,7 @@ function deconvolve(audioBuff1,audioBuff2){
       outBuff.getChannelData(0)[i] = out[i][0] ;
     }
 
-    return outBuff;
+    return outBuff.getChannelData(0);
 
 }
 
@@ -83,6 +84,6 @@ function deconvolve(audioBuff1,audioBuff2){
 function applyDeconvolve() {
   var track1 = tracks[document.getElementById("deconvolveTrack1").value] ;
   var track2 = tracks[document.getElementById("deconvolveTrack2").value] ;
-  track2.signal = deconvolve(track1.signal,track2.signal) ;
+  track2.signal.getChannelData(0) = deconvolve(track1.signal,track2.signal) ;
   drawSignal(track2) ;
 }
