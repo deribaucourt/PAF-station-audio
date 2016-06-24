@@ -28,7 +28,7 @@ gain track.number value;
 var instructions = [] ; // array of string
 var args ;
 
-function execute(finalOutput) {   // does the wiring to produce the sound   ["Speakers","File","Screen"] TODO: rename processTo
+function execute(finalOutput, isPlayButton) {   // does the wiring to produce the sound   ["Speakers","File","Screen"] TODO: rename processTo
   for(track of tracks) {
     if(track.audioSource.buffer)
       track.audioSource.stop() ;
@@ -50,13 +50,20 @@ function execute(finalOutput) {   // does the wiring to produce the sound   ["Sp
     }
   }
 
-  connectFinalOutputs(finalOutput) ;
+  connectFinalOutputs(finalOutput, isPlayButton) ;
 
 }
 
-function connectFinalOutputs(finalOutput) {
-  switch(finalOutput) {
-
+function connectFinalOutputs(finalOutput, isPlayButton) {
+  switch(finalOutput)
+  {
+    case "Speakers" :
+      if (isPlayButton) listenToAll(1);
+      else listenToAll(0);
+    case "File" :
+      //TODO
+    case "Screen" :
+      //TODO
   }
 }
 
