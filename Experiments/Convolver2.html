@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+
+  		</style>
+</head>
+
+  <body>
+
+<script>
+
+window.AudioContext = window.AudioContext || window.webkitAudioContext;
+var context = new AudioContext();
+var soundSource = context.createBufferSource();
+
+function getBufferTrack(soundUrl){
+
+      var request = new XMLHttpRequest();
+      request.open("GET", soundUrl, true);
+      request.responseType = "arraybuffer";
+
+          request.onload = function() {
+          context.decodeAudioData(request.response, function(soundBuffer){
+          window.soundBuffer = soundBuffer;
+          console.log(window.soundBuffer);
+
+        }, function(){});
+    }
+      request.send();
+//var out = context.createBufferSource();
+//out.buffer = soundSource.buffer;
+}
+
+function getBufferImpulse(bufferUrl){
+  var convolver = context.createConvolver;
+
+  var request = new XMLHttpRequest();
+  request.open("GET", bufferUrl, true);
+  request.responseType = "arraybuffer";
+
+
+      request.onload = function() {
+      var audioData = request.response;
+      context.decodeAudioData(audioData, function(convolverBuffer){
+      convolver.buffer = convolverBuffer;
+    });
+}
+  request.send();
+
+//var out = createBufferSource();
+//out.buffer = convolver.buffer;
+return convolver;
+}
+
+
+function convolve(audioBuffer,convolverBuffer) {
+
+    var soundSource;
+    var convolver;
+
+            soundSource = context.createBufferSource();
+            soundSource.buffer = audioBuffer;
+
+            convolver = context.createConvolver();
+
+            soundSource.connect(convolver);
+            convolver.connect(context.destination);
+            convolver.buffer = convolverBuffer;
+            soundSource.start();
+};
+
+//var aud=getBufferTrack('Chien_01.wav');
+//var conv=getBufferImpulse('sportscentre_omni.wav');
+getBufferTrack('Chien_01.wav');
+soundSource.buffer = window.soundBuffer;
+console.log("coucou d'en bas : " + soundSource.buffer);
+//convolve(audBuffer,convBuffer)
+;
+
+
+
+</script>
+
+</body>
+</html>
