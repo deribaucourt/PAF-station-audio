@@ -221,6 +221,7 @@ function clone(i) {   //returns a clone of track i
 }
 
 function onClose(i) {
+  console.log("closing "+i);
   var previousLength = tracks.length ;
   var previousTracks = [] ;
   removeInstructionsOf(i) ;

@@ -72,8 +72,11 @@ function addInstruction(instructionString) {
 function removeInstructionsOf(i) {
   for(var k=0; k<instructions.length; k++) {
     args = instructions[k].split(" ") ;
-    if(args[1]==i)
-      instruction[k] = "" ;
+    console.log("examine "+ args) ;
+    if(args[1]==i) {
+      console.log("removing instruction for "+i) ;
+      instructions[k] = "" ;
+    }
     else if(args[1] > i) {
       console.log("changing instruction for new track value") ;
       args[1] --;
