@@ -74,7 +74,7 @@ function removeInstructionsOf(i) {
     args = instructions[k].split(" ") ;
     if(args[1]==i)
       instruction[k] = "" ;
-    else {
+    else if(args[1] > i) {
       console.log("changing instruction for new track value") ;
       args[1] --;
       instructions[k] = "" ;
