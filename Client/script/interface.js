@@ -211,3 +211,9 @@ function onRecordButtonPress(e) {
     onRecordStop() ;
   }
 }
+
+function onClose(i) {
+  tracks.splice(i,1) ;
+  document.getElementById("tracksContainer").removeChild(document.getElementById("trackTopContainer"+i)) ;
+  repaintTracks() ;
+}
