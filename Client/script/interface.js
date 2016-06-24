@@ -166,7 +166,7 @@ function toggleProjectsPopup(toggleState) {
 function drawNewTrack(track) {
   console.log("loading html code for track number "+ track.number );
   var ajax = new XMLHttpRequest();    // get the HTML code for  this track
-  ajax.open("GET", "track.html", true);
+  ajax.open("GET", "track", true);
   ajax.onload=function() {  // This code is called once the html code is loaded
       // Change elements' IDs to correspond with track.number
     var htmlCode = ajax.responseText ;

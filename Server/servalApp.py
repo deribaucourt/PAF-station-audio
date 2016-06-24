@@ -17,6 +17,15 @@ app.url_map.converters['regex'] = RegexConverter
 def index():
     return app.send_static_file("station.html")
 
+@app.route("/track")
+def track_file() :
+    print("flask serving")
+    
+    with open("../Client/track.html", "r") as f :
+        track_html = f.read()
+    
+    return track_html
+
 @app.route("/generate", methods=["POST"])
 def generate_file() :
     data = json.loads(request.data)
