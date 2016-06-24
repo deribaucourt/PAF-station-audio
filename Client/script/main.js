@@ -226,4 +226,14 @@ function mute(trackId)
   }
 }
 
+function rewind()
+{
+  if (document.getElementById("playResume").style.display === "none")
+  {
+    listenToAll(0);
+    listenToAll(1);
+  }
+  else listenToAll(0);
+}
+
 repaintTracks();
