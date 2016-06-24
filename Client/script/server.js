@@ -59,16 +59,19 @@ function parseProjects(responseText) {
     var files = responseObj.results;
     
     for (i = 0 ; i < files.length ; i++) {
-        console.log(files[i].filename);
+        console.log(files[i].projectName);
+        document.getElementById("projectsPopup").innerHTML += files[i].projectName + " ; "
     }
     
     toggleProjectsPopup(true);
 }
 
 function generateProject() {
+    var projectName = document.getElementById("projectNameInput").value
     
+    var dataObject = {"projectName" : projectName}
     
-    return document.getElementById("projectNameInput").value
+    return JSON.stringify(dataObject)
 }
 
 function exportProject() {
@@ -76,6 +79,8 @@ function exportProject() {
     
     var xhr = new GetXMLHttpRequest();
     var sentText = generateProject();
+    
+    console.log(sentText);
     
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0) && xhr.responseText == "done") {

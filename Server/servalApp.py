@@ -1,8 +1,8 @@
 from flask import Flask, request, make_response, jsonify
-from json import dumps
 from werkzeug.routing import BaseConverter
 from os import listdir
-from normalizer import slugify
+from slugify import slugify
+import json
 
 app = Flask(__name__, static_url_path="", static_folder="../Client")
 
@@ -19,22 +19,29 @@ def index():
 
 @app.route("/generate", methods=["POST"])
 def generate_file() :
-    filename = slugify(request.data) + ".bin"
-    with open("projects/" + filename, "w+") as f :
+    data = json.loads(request.data)
+    
+    fileName = slugify(data["projectName"]) + ".json"
+    
+    with open("projects/" + fileName, "w+") as f :
         f.write(request.data);
-        
+    
     return "done"
 
 @app.route("/retrieve", methods=["GET"])
 def retrieve_projects() :
     list = []
-    for filename in listdir("projects") :
-        if filename[-4:] == ".bin" :
-            list.append({"filename" : filename})
+    
+    for fileName in listdir("projects") :
+        if fileName[-5:] == ".json" :
+            with open("projects/" + fileName) as f :
+                data = json.load(f)
+                list.append({"fileName" : fileName, "projectName" : data["projectName"]})
+    
     return jsonify(results = list)
     
 
-@app.route("/<slug>.bin")
+@app.route("/<slug>.json")
 def download_file(slug) :
     with open("projects/" + slug + ".bin", "rb") as f :
         resp = make_response(f.read())
