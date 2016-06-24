@@ -28,7 +28,7 @@ gain track.number value;
 var instructions = [] ; // array of string
 var args ;
 
-function execute(finalOutput) {   // does the wiring to produce the sound   ["Speakers","File","Screen"]
+function execute(finalOutput) {   // does the wiring to produce the sound   ["Speakers","File","Screen"] TODO: rename processTo
   for(track of tracks) {
     if(track.audioSource.buffer)
       track.audioSource.stop() ;
@@ -73,10 +73,13 @@ var undoneInstructions = [] ;
 var redoneInstructionsCount = 0 ;
 
 function undo() {
-  undoneInstructions.push( instructions.pop() ) ;
+  if(instructions.length > 0)
+    undoneInstructions.push( instructions.pop() ) ;
 }
 
 function redo() {
-  addInstruction( undoneInstructions.pop() ) ;
-  redoneInstructionsCount ++ ;
+  if(undoneInstructions.length != 0) {
+    addInstruction( undoneInstructions.pop() ) ;
+    redoneInstructionsCount ++ ;
+  }
 }
