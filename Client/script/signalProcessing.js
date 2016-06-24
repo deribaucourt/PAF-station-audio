@@ -66,6 +66,17 @@ function createRecorderNode() {
   return newAudioNode ;
 }
 
+function addFilter(trackId) {
+    mySource = tracks[trackId].audioSource();
+    mySource.buffer = tracks[trackId].signal;
+    mySource.connect(audioContext.destination);
+    
+    var myEffect = audioContext.createDelay(2.0);
+    mySource.connect(myEffect);
+    myEffect.connect(audioContext.destination);
+    
+    mySource.start(0);
+}
 
 /*************** Display Node **************/
 
