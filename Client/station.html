@@ -39,6 +39,8 @@ Code starts here                                                                
 
               <!-- ************* Body Tag ************ -->
 
+              <!-- ************* Track Templates ***** -->
+      <script type="text/javascript" src="script\templates.js"></script>
       <!-- ************* Disclaimer Popup ************ -->
 
       <!-- ************* Loading Popup ************ -->
@@ -46,7 +48,7 @@ Code starts here                                                                
   <div id="loadingPopup" class="popup">
     <img src="icons/loading.gif" />
   </div>
-      
+
       <!-- ************* Projects Popup ************ -->
 
       <div id="projectsPopup" class="popup" style="left:0; width:40%; height:auto">
@@ -128,19 +130,6 @@ Code starts here                                                                
       <div id="tracksContainer" class="containerWithBorder" ondrop="drop(event)" ondragover="allowDrop(event)" style="width:100%;height:75%;overflow-y:scroll;">
         <h2 id="tracksInsertMessage">Insérez vos pistes ici</h2>
 
-        <script>    // IMPORT AND DRAW RECORD TRACK
-          console.log("painting record track last");
-          var ajax = new XMLHttpRequest();    // get the HTML code for record track
-          ajax.open("GET", "record.html", true);
-          ajax.onload = function() {
-            document.getElementById("tracksContainer").innerHTML += ajax.responseText;
-            setTimeout( function() {      // Add interactivity
-              document.getElementById("recordButton").addEventListener("click",onRecordButtonPress);
-            }, 1);
-          }
-          ajax.send();
-        </script>
-
       </div>
 
       <div id="cursor">
@@ -159,6 +148,15 @@ Code starts here                                                                
     <script type="text/javascript" src="script\controler.js"></script>
     <script type="text/javascript" src="script\filterInterface.js"></script>
     <script type="text/javascript" src="script\main.js"></script>
+
+
+    <script>    // IMPORT AND DRAW RECORD TRACK
+      console.log("painting record track last");
+      document.getElementById("tracksContainer").innerHTML += recordTemplate;
+      setTimeout( function() {      // Add interactivity
+      document.getElementById("recordButton").addEventListener("click",onRecordButtonPress);
+      }, 1);
+    </script>
 
   </body>
 
