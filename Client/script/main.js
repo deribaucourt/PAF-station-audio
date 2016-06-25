@@ -154,7 +154,8 @@ var source = [];
 var play_pause = "block";
 function listenToAll(listen)
 {
-    execute("Speakers") ;
+
+
 
     if (play_pause === "block")
     {
@@ -209,7 +210,7 @@ function soloPlay(trackId)
   tracks[trackId].listen = 1;
   document.getElementById("muteButtonIcon"+trackId).style.display = "none";
 
-  listenToAll(1);
+  execute("Speakers", 1);
 }
 
 function mute(trackId)
@@ -230,10 +231,13 @@ function rewind()
 {
   if (document.getElementById("playResume").style.display === "none")
   {
-    listenToAll(0);
-    listenToAll(1);
+    execute("Speakers", 0);
+    execute("Speakers", 1);
   }
-  else listenToAll(0);
+  else execute("Speakers", 0);
 }
 
-repaintTracks();
+repaintTracks()
+{
+  console.log("coucou");
+}

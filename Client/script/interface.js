@@ -165,11 +165,8 @@ function toggleProjectsPopup(toggleState) {
 
 function drawNewTrack(track) {
   console.log("loading html code for track number "+ track.number );
-  var ajax = new XMLHttpRequest();    // get the HTML code for  this track
-  ajax.open("GET", "track", true);
-  ajax.onload=function() {  // This code is called once the html code is loaded
       // Change elements' IDs to correspond with track.number
-    var htmlCode = ajax.responseText ;
+    var htmlCode = trackTemplate ;
     for(var i = 0; i<20; i++){
       htmlCode = htmlCode.replace("TRACKID",track.number);
     }
@@ -186,21 +183,14 @@ function drawNewTrack(track) {
       }
       document.getElementById("tracksInsertMessage").style.display = "none";
     },1);
-  };
-  ajax.send();
 }
 
 function drawRecordTrack() {
   console.log("painting record track last");
-  var ajax = new XMLHttpRequest();    // get the HTML code for record track
-  ajax.open("GET", "record.html", true);
-  ajax.onload = function() {
-    document.getElementById("tracksContainer").innerHTML += ajax.responseText;
+    document.getElementById("tracksContainer").innerHTML += recordTemplate;
     setTimeout( function() {
       document.getElementById("recordButton").addEventListener("click",onRecordButtonPress);
     }, 1);
-  }
-  ajax.send();
 }
 
     /******************** Record Track *****************/
@@ -220,4 +210,10 @@ function onRecordButtonPress(e) {
     document.getElementById("stopRecordButtonImg").style.display = "none" ;
     onRecordStop() ;
   }
+}
+
+function onClose(i) {
+  tracks.splice(i,1) ;
+  document.getElementById("tracksContainer").removeChild(document.getElementById("trackTopContainer"+i)) ;
+  repaintTracks() ;
 }

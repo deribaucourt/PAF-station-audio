@@ -70,11 +70,11 @@ function addFilter(trackId) {
     mySource = tracks[trackId].audioSource();
     mySource.buffer = tracks[trackId].signal;
     mySource.connect(audioContext.destination);
-    
+
     var myEffect = audioContext.createDelay(2.0);
     mySource.connect(myEffect);
     myEffect.connect(audioContext.destination);
-    
+
     mySource.start(0);
 }
 
@@ -83,6 +83,7 @@ function addFilter(trackId) {
 function createDisplayNode(canvas) {      // A node that displays it's signal on a Canvas
   newAudioNode = audioContext.createScriptProcessor(4096, 1, 0);
   newAudioNode.c = canvas ;
+  newAudioNode.offset = 0 ;
 
   newAudioNode.onaudioprocess = function(audioProcessingEvent) {
     inputBuffer = audioProcessingEvent.inputBuffer ;
@@ -108,7 +109,7 @@ function createDisplayNode(canvas) {      // A node that displays it's signal on
     ctx.strokeStyle = "#e69900" ;
     for(i = 0; i<canvasWidth; i++) {
       previousSample = currentSample ;
-      currentSample = Math.floor((timeWindowOffset+i*timeWindowSize/canvasWidth)*inputBuffer.sampleRate) ;
+      currentSample = Math.floor((timeWindowOffset+newAudioNode.offset+i*timeWindowSize/canvasWidth)*inputBuffer.sampleRate) ;
       localMax = 0;
       for(k = previousSample+1; k<currentSample; k++) {
         if(Math.abs(inputBuffer.getChannelData(0)[k])>localMax) {
