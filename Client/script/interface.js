@@ -155,14 +155,14 @@ function toggleFiltersPopup(toggleState) {
     }
 }
 
-function toggleProjectsPopup(toggleState) {
-	var popup = document.getElementById("projectsPopup");
+function togglePopup(caller, elementId, loadingFunction) {
+	var popup = document.getElementById(elementId);
     if(popup.style.display === "none") {
-		document.getElementById("projectMenuButton").classList.add("menuButtonActive");
-		retrieveProjects();
+		caller.classList.add("menuButtonActive");
+		loadingFunction();
         popup.style.display = "block";
     } else {
-		document.getElementById("projectMenuButton").classList.remove("menuButtonActive");
+		caller.classList.remove("menuButtonActive");
         popup.style.display = "none";
     }
 }

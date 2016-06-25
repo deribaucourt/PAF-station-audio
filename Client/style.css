@@ -211,6 +211,7 @@ div.popup {
 	z-index: 3;
 	position: absolute;
 	display: none;
+	min-width: 12%;
 	border: 1px solid #e6e6e6;
 	background-color: #ffffff;
 }
