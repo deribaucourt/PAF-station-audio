@@ -19,7 +19,7 @@ body, html {
 	margin:0 auto 0 auto;
 	height:100%;
 	width:100%;
-	color: #e6e6e6;
+	color: #000000;
 	background-color: #1a1a1a;
 }
 
@@ -52,18 +52,39 @@ li.simpleList {
 	text-align: left;
 }
 
-li.choiceList {
+li.listChoice {
 	float: none;
-	padding: 0;
+	padding: 8px 12px 8px 30px;
 	margin: 0;
-	border: 1px solid #505050;
-	border-width: 1px 0 0 0;
+	border: 0 solid #e6e6e6;
 	text-align: left;
-	transition: all 0.1s;
+	font: 13px Arial, sans-serif;
+	cursor: pointer;
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	transition: background-color 0.07s;
 }
 
-li.choiceList:hover {
-	background: #1a1a1a;
+li.listChoice:hover {
+	background: #e6e6e6;
+}
+
+img.listChoice {
+	margin-right: 8px;
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+	vertical-align:top;
+}
+
+li.listSeparator {
+	float: none;
+	height: 1px;
+	padding: 1px 1px 0 1px;
+	background-color: #e6e6e6;
 }
 
 #globalMuteButton {
@@ -192,7 +213,6 @@ div.popup {
 	display: none;
 	border: 1px solid #e6e6e6;
 	background-color: #ffffff;
-	
 }
 
 div#cursor {
@@ -218,26 +238,15 @@ img {
 	height: 100%;
 }
 
-a.simpleButton {
-	padding: 7px 15px;
-	color: #dddcce;
-	cursor: pointer;
-	user-select: none;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	-o-user-select: none;
-}
-
 div.menuButton {
 	border: 1px solid #e6e6e6;
 	border-width: 0 0 1px 0;
 	display: block;
 	background-color: #ffffff;
-	line-height: 2.5em;
-	font: 14px Arial, sans-serif;
+	padding-left: 30px;
+	text-align: left;
+	font: 13px Arial, sans-serif;
 	line-height:30px;
-	color: #1a1a1a;
 	text-decoration: none;
 	cursor: pointer;
 	user-select: none;
@@ -250,6 +259,14 @@ div.menuButton {
 
 div.menuButton:hover {
 	background-color: #e6e6e6;
+}
+
+div.menuButtonActive {
+	border-bottom-width: 0;
+}
+
+div.menuButtonActive:hover {
+	background-color: #ffffff;
 }
 
 .menuInput {

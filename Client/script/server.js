@@ -64,25 +64,17 @@ function displayProjects(response) {
 	
 	projectsPopup.innerHTML = "";
 	
-	
 	for (i = 0 ; i < files.length ; i++) {
-		listButton = document.createElement("a");
-		listButton.appendChild(document.createTextNode(files[i].projectName));
-		listButton.setAttribute("class", "simpleButton");
-		listButton.setAttribute("onclick", "loadProject('" + files[i].fileName + "')")
-		
 		listElement = document.createElement("li");
-		listElement.appendChild(listButton);
-		listElement.setAttribute("class", "choiceList");
-		if (i === 0) {
-			listElement.setAttribute("style", "border-top:0");
-		}
+		listElement.appendChild(document.createTextNode(files[i].projectName));
+		listElement.setAttribute("onclick", "loadProject('" + files[i].fileName + "')");
+		listElement.setAttribute("class", "listChoice");
+		listElement.setAttribute("style", "padding-left:40px;");
 		
 		projectsList.appendChild(listElement);
 	}
 	
 	projectsPopup.appendChild(projectsList);
-	toggleProjectsPopup(true);
 }
 
 function loadProject(fileName) {

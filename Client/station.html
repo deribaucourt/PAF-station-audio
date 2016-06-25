@@ -46,11 +46,20 @@ Code starts here                                                                
 	</div>
 	
 	<!-- ************* Projects Popup ************ -->
-	<div id="projectsPopup" class="popup" style="top:30px; left:0; width:auto; height:auto">
-		<img src="icons/close.png" style="margin:5px; width:30px; height:30px; float:left" onClick="toggleProjectsPopup(false)" />
-		<div style="height:40px; float:none; padding:0 10px; display:table-cell; vertical-align:middle">Projects saved</div>
-		<br style="clear:left" />
-		<div id="projectsPopupContainer"></div>
+	<div id="projectsPopup" class="popup" style="left:0; top:30px; width:auto; height:auto; display:none; border-width:0 1px;">
+		<ul>
+			<li class="listChoice" style="padding-left:6px"><img src="icons/project_new.png" class="listChoice" />New</li>
+			<li class="listChoice" style="padding-left:6px"><img src="icons/project_load_computer.png" class="listChoice" />Load from computer</li>
+			<li class="listChoice" style="background-color:#ffffff; cursor:default;">Load from server :</li>
+			<div id="projectsPopupContainer"></div>
+			<br style="clear:left" />
+			<li class="listSeparator"></li>
+			<li class="listChoice" style="padding-left:6px"><img src="icons/project_save_computer.png" class="listChoice" />Save to computer</li>
+			<li class="listChoice">Save to server</li>
+			<li class="listChoice">Export to audio file</li>
+			<li class="listSeparator"></li>
+			<li class="listChoice" onclick="window.location.assign('about:home')">Close Serval</li>
+		</ul>
 	</div>
 	
 	<!-- ************* Filters Popup ************ -->
@@ -70,7 +79,7 @@ Code starts here                                                                
 	<div id="topContainer" style="width:100%; height:100%;">
 		
 		<div id="headerContainer" style="width:100%; height:30px; box-shadow:2px 2px;">
-			<div id="projectMenuButton" onclick="retrieveProjects()" class="menuButton" style="width:10%; height:100%; border-left-width:1px;">Project</div>
+			<div id="projectMenuButton" onclick="toggleProjectsPopup()" class="menuButton" style="width:10%; height:100%; border-left-width:1px;">Project</div>
 			<div id="tracksMenuButton" class="menuButton" style="width:10%; height:100%; border-left-width:1px;">Tracks</div>
 			<input id="projectNameInput" type="text" value="My Project" class="menuInput" style="width:60%; height:100%;"/>
 			<div id="aboutMenuButton" class="menuButton" style="width:20%; height:100%; border-right-width:1px;">About Serval</div>

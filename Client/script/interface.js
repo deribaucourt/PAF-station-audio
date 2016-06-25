@@ -156,10 +156,14 @@ function toggleFiltersPopup(toggleState) {
 }
 
 function toggleProjectsPopup(toggleState) {
-    if(toggleState) {
-        document.getElementById("projectsPopup").style.display = "block";
+	var popup = document.getElementById("projectsPopup");
+    if(popup.style.display === "none") {
+		document.getElementById("projectMenuButton").classList.add("menuButtonActive");
+		retrieveProjects();
+        popup.style.display = "block";
     } else {
-        document.getElementById("projectsPopup").style.display = "none";
+		document.getElementById("projectMenuButton").classList.remove("menuButtonActive");
+        popup.style.display = "none";
     }
 }
 
