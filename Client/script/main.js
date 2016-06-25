@@ -148,7 +148,7 @@ function importFile(evt)
         }
     }
 
-document.getElementById('importButton').addEventListener('change', importFile, false);
+document.getElementById('importButton').addEventListener('change', importFile, false); //ToDo : update ref
 
 var source = [];
 var play_pause = "block";

@@ -16,85 +16,90 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 body, html {
-  margin:0 auto 0 auto;
+	margin:0 auto 0 auto;
 	height:100%;
 	width:100%;
-  color: #e6e6e6;
-  background-color: #1a1a1a;
+	color: #e6e6e6;
+	background-color: #1a1a1a;
 }
 
 html * {
 	font-family: "Verdana", Geneva, sans-serif;
 	text-align: center;
-  font-size: 100%;
+	font-size: 100%;
 	float: left;
-  box-sizing: border-box;
-  overflow: hidden;
+	box-sizing: border-box;
+	overflow: hidden;
 }
 
 h3 {
-  margin: 0 auto 0 auto;
+	margin: 0 auto 0 auto;
 }
 
 ul {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-    list-style-image: none;
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+	list-style-image: none;
+}
+
+input:focus {
+	outline: none;
 }
 
 li.simpleList {
-    float: none;
-    text-align: left;
+	float: none;
+	text-align: left;
 }
 
 li.choiceList {
-    float: none;
-    padding: 0;
-    margin: 0;
-    border: 1px solid #505050;
-    border-width: 1px 0 0 0;
-    text-align: left;
+	float: none;
+	padding: 0;
+	margin: 0;
+	border: 1px solid #505050;
+	border-width: 1px 0 0 0;
+	text-align: left;
+	transition: all 0.1s;
 }
 
 li.choiceList:hover {
-    background: #1a1a1a;
+	background: #1a1a1a;
 }
 
 #globalMuteButton {
-  width: 20%;
-  height: 100%;
+	width: 20%;
+	height: 100%;
 }
 
 .muteButton {
-  background:url(./icons/multimedia-2.png) no-repeat;
-  background-position: center;
-  background-size: auto 80%;
+	background:url(./icons/multimedia-2.png) no-repeat;
+	background-position: center;
+	background-size: auto 80%;
 }
 
 #PlayButton {
-  background:url(./icons/signs.png) no-repeat;
-  background-position: center;
-  background-size: auto 80%;
+	background:url(./icons/signs.png) no-repeat;
+	background-position: center;
+	background-size: auto 80%;
 }
 
 /*.muteButton:actvie {
-  background:url(./icons/multimedia-1.png) no-repeat;
-  background-size: auto 100%;
+	background:url(./icons/multimedia-1.png) no-repeat;
+	background-size: auto 100%;
 }*/
 
 #globalMuteButton {
-  width: 10%;
-  height: 100%;
+	width: 10%;
+	height: 100%;
 }
 
 .volumeControl {
-  width: 100%;
-  height: 40%;
+	width: 100%;
+	height: 40%;
 }
 
 #editionToolsContainer, #tracksToolsContainer {
-  border-left : medium solid white ;
+	border-left : medium solid white ;
 }
 
 .inputfile {
@@ -107,10 +112,10 @@ li.choiceList:hover {
 }
 
 .inputfile + label {
-  background:url(./icons/down-arrow.png) no-repeat;
-  background-position: center;
-  background-size: auto 80%;
-  cursor: pointer;
+	background:url(./icons/down-arrow.png) no-repeat;
+	background-position: center;
+	background-size: auto 80%;
+	cursor: pointer;
 }
 
 div.containerWithBorder {
@@ -121,12 +126,12 @@ div.containerWithBorder {
 }
 
 div#titleContainer {
-    width: 60%;
-    height: 100%;
-    background-image: url(icons/logo.png);
-    background-position: 50% 70%;
-    background-size: auto 60%;
-    background-repeat: no-repeat;
+	width: 60%;
+	height: 100%;
+	background-image: url(icons/logo.png);
+	background-position: 50% 70%;
+	background-size: auto 60%;
+	background-repeat: no-repeat;
 }
 
 div#globalTimelineContainer {
@@ -153,97 +158,139 @@ input.volumeControl {
 }
 
 div.trackTopContainer {
-    border-bottom-style: solid;
-    border-width: medium;
-    border-color: #707070;
+	border-bottom-style: solid;
+	border-width: medium;
+	border-color: #707070;
 
-  z-index: 2;
+	z-index: 2;
 }
 
 div.trackMenu {
-  border-right-style: solid;
-  border-width: medium;
-  border-color: #707070;
+	border-right-style: solid;
+	border-width: medium;
+	border-color: #707070;
 }
 
 img.filtersPopup {
-    float: none;
-    margin:0 8px 0 5px;
-    width: 15px;
-    height: 15px;
+	float: none;
+	margin:0 8px 0 5px;
+	width: 15px;
+	height: 15px;
 }
 
 h2#tracksInsertMessage {
-  float:none;
-  z-index: 1;
-  position: absolute;
-  top: 60%;
-  left: 30%;
+	float:none;
+	z-index: 1;
+	position: absolute;
+	top: 60%;
+	left: 30%;
 }
 
 div.popup {
-  position: absolute;
-  display: none;
-  border: 2px solid #505050;
-  z-index: 3;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(100,100,100,0.95);
+	z-index: 3;
+	position: absolute;
+	display: none;
+	border: 1px solid #e6e6e6;
+	background-color: #ffffff;
+	
 }
 
 div#cursor {
-  position: absolute;
-  z-index: 2;
-  width: 2px;
-  top: 30%;
-  left: 50%;
-  background-color: #996600;
-  height: 80%;
+	position: absolute;
+	z-index: 2;
+	width: 2px;
+	top: 30%;
+	left: 50%;
+	background-color: #996600;
+	height: 80%;
 }
 
 img {
-  width: auto;
-  height: 90%;
-  display: block;
-  margin: auto;
-  float: none;
+	width: auto;
+	height: 90%;
+	display: block;
+	margin: auto;
+	float: none;
 }
 
 #globalVolumeControl {
-  width: auto;
-  height: 100%;
+	width: auto;
+	height: 100%;
 }
 
 a.simpleButton {
-    padding: 7px 15px;
-    color: #dddcce;
-    cursor: pointer;
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -o-user-select: none;
+	padding: 7px 15px;
+	color: #dddcce;
+	cursor: pointer;
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+}
+
+div.menuButton {
+	border: 1px solid #e6e6e6;
+	border-width: 0 0 1px 0;
+	display: block;
+	background-color: #ffffff;
+	line-height: 2.5em;
+	font: 14px Arial, sans-serif;
+	line-height:30px;
+	color: #1a1a1a;
+	text-decoration: none;
+	cursor: pointer;
+	user-select: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	transition:background-color 0.07s;
+}
+
+div.menuButton:hover {
+	background-color: #e6e6e6;
+}
+
+.menuInput {
+	outline: none;
+	border: 1px solid #e6e6e6;
+	border-width:0 1px 1px 1px;
+	background-color: #ffffff;
+	font:14px Arial, sans-serif;
+	transition:background-color 0.07s;
+}
+
+.menuInput:hover {
+	background-color: #e6e6e6;
+}
+
+.menuInput:focus {
+	border:2px solid #b6b6b6;
+	border-width: 0 2px;
+	background-color: #e6e6e6;
 }
 
 a.creditLink {
-    color: #e6e6e6;
-    float:none;
-    font-style: normal;
+	color: #e6e6e6;
+	float:none;
+	font-style: normal;
 }
 
 a.creditLink:visited {
-    color: #e6e6e6;
+	color: #e6e6e6;
 }
 
 a.creditLink:hover {
-    color: #dddcce;
+	color: #dddcce;
 }
 
 a.creditLink:active {
-    color: #dddcce;
+	color: #dddcce;
 }
 
 .button:active {
 	position:relative;
 	top:1px;
 }
+
