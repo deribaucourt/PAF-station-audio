@@ -45,8 +45,8 @@ var timeline = timelineC.getContext("2d");
 var timelineHeight = timelineC.clientHeight ;   // Measurement in Pixels
 var timelineWidth = timelineC.clientWidth ;
 timeline.font = "12px Arial";
-timeline.strokeStyle = "#e69900" ;
-timeline.fillStyle = "#e69900" ;
+timeline.strokeStyle = "#c09646" ;
+timeline.fillStyle = "#c09646" ;
 
 function repaintTimeline() {
   timeline.clearRect(0, 0, timelineC.width, timelineC.height);

@@ -58,20 +58,20 @@ Code starts here                                                                
 			<li onclick="exportProject()" class="listChoice"><span class="listChoice">Save to server</span></li>
 			<li class="listChoice"><span class="listChoice">Export to audio file</span></li>
 			<li class="listSeparator"></li>
-			<li class="listChoice" onclick="window.location.assign('about:home')"><span class="listChoice">Close Serval</span></li>
+			<li class="listChoice" style="padding-left:6px" onclick="window.location.assign('about:home')"><img src="icons/project_close.png" class="listChoice" /><span class="listChoice">Close Serval</span></li>
 		</ul>
 	</div>
 	
 	<!-- ************* Tracks Popup ************ -->
 	<div id="tracksPopup" class="popup" style="left:10%; top:32px; width:auto; height:auto; display:none;">
 		<ul style="width:100%">
-			<li class="listChoice"><span class="listChoice">Add from file</span></li>
-			<li class="listChoice"><span class="listChoice">Add from record</span></li>
+			<li class="listChoice" style="padding-left:6px;"><img src="icons/track_add_file.png" class="listChoice" /><span class="listChoice">Add from file</span></li>
+			<li class="listChoice" style="padding-left:6px;"><img src="icons/track_add_record.png" class="listChoice" /><span class="listChoice">Add from record</span></li>
 			<li class="listChoice"><span class="listChoice">Duplicate</span></li>
 			<li class="listSeparator"></li>
 			<li class="listChoice"><span class="listChoice">Export to audio file</span></li>
 			<li class="listSeparator"></li>
-			<li class="listChoice"><span class="listChoice">Remove</span></li>
+			<li class="listChoice" style="padding-left:6px;"><img src="icons/track_remove.png" class="listChoice" /><span class="listChoice">Remove</span></li>
 		</ul>
 	</div>
 	
@@ -139,16 +139,16 @@ Code starts here                                                                
 		</div>
 		<br style="clear:left;" />
 		
-		<div id="timelineContainer" style="width:100%; height:32px; border:2px solid #707070; border-bottom-width:0;">
-			<div id="globalTimelineContainer" style="width: 20%; height:100%; border:0 solid #707070; border-right-width:2px;">   <!-- TODO: rename this globalVolumeContainer in all files -->
-				<a href="#" id="globalMuteButton" title="Mute all" class="muteButton"><img src="icons/multimedia-1.png" id="globalMuteIcon" style="display:none;" /></a>
+		<div id="timelineContainer" style="width:100%; height:auto; border:2px solid #707070; border-bottom-width:0;">
+			<div id="globalTimelineContainer" style="width: 200px; height:100%; border:0 solid #707070; border-right-width:2px;">   <!-- TODO: rename this globalVolumeContainer in all files -->
+				<div id="globalMuteButton" class="muteButton"><img src="icons/multimedia-1.png" id="globalMuteIcon" style="display:none;" /></div>
 				<input id="globalVolumeControl" title="Volume" class="volumeControl" type="range" value="0" max="100" min="0" step="1" />
 		</div>
-		<div id="localTimelineContainer" style="width: 80%; height:100%;"><canvas id="timelineCanvas" style="width: 100%; height:100%;" /></div>
+		<div id="localTimelineContainer" style="width: calc(100% - 200px); height:32px;"><canvas id="timelineCanvas" style="width: 100%; height:100%;" /></div>
 		</div>
 		<br style="clear:left" />
 	
-		<div id="tracksContainer" ondrop="drop(event)" ondragover="allowDrop(event)" style="width:100%; height:calc(100% - 161px); overflow-y:auto; border:2px solid #707070;">
+		<div id="tracksContainer" ondrop="drop(event)" ondragover="allowDrop(event)" style="width:100%; height:calc(100% - 163px); overflow-y:auto; border:2px solid #707070;">
 			<h2 id="tracksInsertMessage">Insérez vos pistes ici</h2>
 		</div>
 	
