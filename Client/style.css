@@ -23,7 +23,7 @@ body, html {
 	min-height: 600px;
 	overflow: auto;
 	color: #000000;
-	background-color: #ff00ff;
+	background-color: #ffffff;
 }
 
 html * {
@@ -35,16 +35,6 @@ html * {
 	overflow: hidden;
 }
 
-h3 {
-	margin: 0 auto 0 auto;
-}
-
-p {
-	margin: 4px 0;
-	text-align: left;
-	font: 13px Arial, sans-serif;
-}
-
 ul {
 	margin: 0;
 	padding: 0;
@@ -54,6 +44,16 @@ ul {
 
 input:focus {
 	outline: none;
+}
+
+h3 {
+	margin: 0 auto 0 auto;
+}
+
+p {
+	margin: 4px 0;
+	text-align: left;
+	font: 13px Arial, sans-serif;
 }
 
 li.simpleList {
@@ -218,10 +218,12 @@ img {
 #globalVolumeControl {
 	margin:7px 8px;
 	width: 150px;
+	height: 20px;
 }
 
 input[type=range].volumeControl {
 	-webkit-appearance: none;
+	background-color: transparent;
 }
 
 input[type=range].volumeControl:focus {
@@ -230,7 +232,7 @@ input[type=range].volumeControl:focus {
 
 input[type=range].volumeControl::-webkit-slider-runnable-track {
 	width: 100%;
-	height: 3px;
+	height: 2px;
 	cursor: pointer;
 	background: #c09646;
 	border: 0;
@@ -365,6 +367,7 @@ div.toolsContainer {
 div.toolsHeader {
 	width: 100%;
 	float: none;
+	clear: both;
 	padding: 6px 0;
 	font:13px Arial, sans-serif;
 	cursor: default;

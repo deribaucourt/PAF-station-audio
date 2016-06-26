@@ -51,8 +51,7 @@ Code starts here                                                                
 			<li class="listChoice" style="padding-left:6px"><img src="icons/project_new.png" class="listChoice" /><span class="listChoice">New</span></li>
 			<li class="listChoice" style="padding-left:6px"><img src="icons/project_load_computer.png" class="listChoice" /><span class="listChoice">Load from computer</span></li>
 			<li class="listChoice" style="background-color:#ffffff; cursor:default;"><span class="listChoice">Load from server :</span></li>
-			<div id="projectsPopupContainer" style="float:none;"></div>
-			<br style="clear:left" />
+			<div id="projectsPopupContainer" style="float:none; clear:both;"></div>
 			<li class="listSeparator"></li>
 			<li class="listChoice" style="padding-left:6px"><img src="icons/project_save_computer.png" class="listChoice" /><span class="listChoice">Save to computer</span></li>
 			<li onclick="exportProject()" class="listChoice"><span class="listChoice">Save to server</span></li>
@@ -97,38 +96,36 @@ Code starts here                                                                
 	<!-- ************* Home Page ************ -->
 	<div id="topContainer" style="width:100%; height:100%;">
 		
-		<div id="headerContainer" style="width:100%; height:32px;">
+		<div id="headerContainer" style="width:100%; height:32px; clear:both;">
 			<div id="projectMenuButton" onclick="togglePopup(this, 'projectsPopup', retrieveProjects)" class="menuButton" style="width:10%; height:100%;">Project</div>
 			<div id="tracksMenuButton" onclick="togglePopup(this, 'tracksPopup', function(){})" class="menuButton" style="width:10%; height:100%; border-left-width:1px;">Tracks</div>
 			<input id="projectNameInput" type="text" value="My Project" class="menuInput" style="width:60%; height:100%;"/>
 			<div id="aboutMenuButton" onclick="togglePopup(this, 'aboutPopup', function(){})" class="menuButton" style="width:20%; height:100%;">About Serval</div>
 		</div>
-		<br style="clear:left;" />
 		
-		<div style="width:100%; height:16px; background: #ffffff url('icons/drop_shadow.png') repeat-x top;"></div>
-		<br style="clear:left;" />
+		<div style="width:100%; height:16px; background: #ffffff url('icons/drop_shadow.png') repeat-x top; clear:both;"></div>
 		
-		<div id="toolsContainer" style="width:100%; height:auto; border:1px solid #e6e6e6; border-width:1px 2px; background-color:#f3f3f3;">
+		<div id="toolsContainer" style="width:100%; height:auto; border:1px solid #e6e6e6; border-width:1px 2px; background-color:#f3f3f3; clear:both;">
 			<div id="playbackControllContainer" class="toolsContainer" style="width:auto; height:100%;">
-				<div class="toolsHeader">Playback</div><br style="clear:left;" />
+				<div class="toolsHeader">Playback</div>
 				<div id="rewindButton" class="toolButton" onclick="rewind()"><img src="icons/arrows.png" class="toolButton" /></div>
 				<div id="playButton" class="toolButton" onclick="listenToAll(1)"><img src="icons/play-button.png" id="playResume" class="toolButton" /></div>
 				<div id="stopButton" class="toolButton" onclick="listenToAll(0)"><img src="icons/stop.png" class="toolButton" /></div>
 			</div>
 			<div id="editionToolsContainer" class="toolsContainer" style="width:auto; height:100%;">
-				<div class="toolsHeader">Edition</div><br style="clear:left;" />
+				<div class="toolsHeader">Edition</div>
 				<div id="copyButton" class="toolButton"><img src="icons/copy-archive.png" /></div>
 				<div id="cutButton" class="toolButton"><img src="icons/scissors.png" /></div>
 				<div id="pasteButton" class="toolButton"><img src="icons/paste-file.png" /></div>
 			</div>
 			<div id="historyToolsContainer" class="toolsContainer" style="width:auto; height:100%; border-right-width:1px;">
-				<div class="toolsHeader">History</div><br style="clear:left;" />
+				<div class="toolsHeader">History</div>
 				<div id="undoButton" class="toolButton" onclick="undo();"><img src="icons/back.png" /></div>
 				<div id="redoButton" class="toolButton" onclick="redo();"><img src="icons/forward.png" /></div>
 			</div>
 			
 			<div id="filtersToolsContainer" class="toolsContainer" style="width:auto; height:100%; float:right; border-left-width:1px;">
-				<div class="toolsHeader">Filters</div><br style="clear:left;" />
+				<div class="toolsHeader">Filters</div>
 				<div id="undoButton" class="toolButton" onclick="undo();"><img src="icons/back.png" /></div>
 				<div id="redoButton" class="toolButton" onclick="redo();"><img src="icons/forward.png" /></div>
 				<div id="undoButton" class="toolButton" onclick="undo();"><img src="icons/back.png" /></div>
@@ -137,16 +134,14 @@ Code starts here                                                                
 				<div id="redoButton" class="toolButton" onclick="redo();"><img src="icons/forward.png" /></div>
 			</div>
 		</div>
-		<br style="clear:left;" />
 		
-		<div id="timelineContainer" style="width:100%; height:auto; background-color:#2e2e2e; border:2px solid #3a3a3a; border-bottom-width:0;">
+		<div id="timelineContainer" style="width:100%; height:auto; background-color:#2e2e2e; border:2px solid #3a3a3a; border-bottom-width:0; clear:both;">
 			<div id="globalTimelineContainer" style="width: 200px; height:100%; border:0 solid #3a3a3a; border-right-width:2px;">   <!-- TODO: rename this globalVolumeContainer in all files -->
 				<div id="globalMuteButton" class="muteButton"><img src="icons/multimedia-1.png" id="globalMuteIcon" style="display:none;" /></div>
 				<input id="globalVolumeControl" title="Volume" class="volumeControl" type="range" value="0" max="100" min="0" step="1" />
+			</div>
+			<div id="localTimelineContainer" style="width: calc(100% - 200px); height:32px;"><canvas id="timelineCanvas" style="width: 100%; height:100%;" /></div>
 		</div>
-		<div id="localTimelineContainer" style="width: calc(100% - 200px); height:32px;"><canvas id="timelineCanvas" style="width: 100%; height:100%;" /></div>
-		</div>
-		<br style="clear:left" />
 	
 		<div id="tracksContainer" ondrop="drop(event)" ondragover="allowDrop(event)" style="width:100%; height:calc(100% - 163px); overflow-y:auto; background-color:#242424; border:2px solid #3a3a3a;">
 			<h2 id="tracksInsertMessage">Insérez vos pistes ici</h2>
