@@ -23,7 +23,7 @@ body, html {
 	min-height: 600px;
 	overflow: auto;
 	color: #000000;
-	background-color: #2a2a2a;
+	background-color: #ff00ff;
 }
 
 html * {
@@ -164,17 +164,12 @@ input.volumeControl {
 }
 
 div.trackTopContainer {
-	border-bottom-style: solid;
-	border-width: medium;
-	border-color: #707070;
-
+	border-bottom: 2px solid #3a3a3a;
 	z-index: 2;
 }
 
 div.trackMenu {
-	border-right-style: solid;
-	border-width: medium;
-	border-color: #707070;
+	border-right: 2px solid #3a3a3a;
 }
 
 img.filtersPopup {

@@ -139,8 +139,8 @@ Code starts here                                                                
 		</div>
 		<br style="clear:left;" />
 		
-		<div id="timelineContainer" style="width:100%; height:auto; border:2px solid #707070; border-bottom-width:0;">
-			<div id="globalTimelineContainer" style="width: 200px; height:100%; border:0 solid #707070; border-right-width:2px;">   <!-- TODO: rename this globalVolumeContainer in all files -->
+		<div id="timelineContainer" style="width:100%; height:auto; background-color:#2e2e2e; border:2px solid #3a3a3a; border-bottom-width:0;">
+			<div id="globalTimelineContainer" style="width: 200px; height:100%; border:0 solid #3a3a3a; border-right-width:2px;">   <!-- TODO: rename this globalVolumeContainer in all files -->
 				<div id="globalMuteButton" class="muteButton"><img src="icons/multimedia-1.png" id="globalMuteIcon" style="display:none;" /></div>
 				<input id="globalVolumeControl" title="Volume" class="volumeControl" type="range" value="0" max="100" min="0" step="1" />
 		</div>
@@ -148,7 +148,7 @@ Code starts here                                                                
 		</div>
 		<br style="clear:left" />
 	
-		<div id="tracksContainer" ondrop="drop(event)" ondragover="allowDrop(event)" style="width:100%; height:calc(100% - 163px); overflow-y:auto; border:2px solid #707070;">
+		<div id="tracksContainer" ondrop="drop(event)" ondragover="allowDrop(event)" style="width:100%; height:calc(100% - 163px); overflow-y:auto; background-color:#242424; border:2px solid #3a3a3a;">
 			<h2 id="tracksInsertMessage">Insérez vos pistes ici</h2>
 		</div>
 	
@@ -168,6 +168,7 @@ Code starts here                                                                
 	<script type="text/javascript" src="script\controler.js"></script>
 	<script type="text/javascript" src="script\filterInterface.js"></script>
 	<script type="text/javascript" src="script\main.js"></script>
+	<script type="text/javascript" src="script\templates.js"></script>
 	
 	<script>    // IMPORT AND DRAW RECORD TRACK
 		console.log("painting record track last");
