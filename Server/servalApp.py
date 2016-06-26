@@ -17,14 +17,14 @@ app.url_map.converters['regex'] = RegexConverter
 def index():
     return app.send_static_file("station.html")
 
-@app.route("/track")
-def track_file() :
-    print("flask serving")
+@app.route("/template")
+def serve_template() :
+    template_name = request.args.get("template_name")
     
-    with open("../Client/track.html", "r") as f :
-        track_html = f.read()
+    with open("../Client/" + template_name + ".html", "r") as f :
+        template_html = f.read()
     
-    return track_html
+    return template_html
 
 @app.route("/generate", methods=["POST"])
 def generate_file() :

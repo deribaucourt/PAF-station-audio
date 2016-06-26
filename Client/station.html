@@ -77,7 +77,14 @@ Code starts here                                                                
 	<!-- ************* About Popup ************ -->
 	<div id="aboutPopup" class="popup" style="left:60%; top:32px; width:40%; height:160px; display:none; padding:10px;">
 		<div style="width:30%; height:100%; text-align:left; line-height:136px;"><img src="icons/serval_logo.png" style="height:auto; width:100%; max-width:138px; max-height:100%; display:inline-block; vertical-align:middle; float:none;" /></div>
-		<div style="width:70%; height:138px; padding:0 0 0 10px; overflow:auto; line-height:138px; float:none;"><span style="display:inline-block; float:none; vertical-align:middle; line-height:normal;"><p>Serval was created by Enguerrand de Ribaucourt, François Desrichard, Pierre Ucla and Vincent Bisogno under the supervision of Cyril Concolato and Yves Grenier.</p><p>It is open-source, currently under GPL license.</p><p>Made in Télécom ParisTech as a part of "PAF : quinze jours chrono !". Icon credits go here...</p></span></div>
+		<div style="width:70%; height:138px; padding:0 0 0 10px; overflow:auto; line-height:138px; float:none;">
+			<span style="display:inline-block; float:none; vertical-align:middle; line-height:normal;">
+				<p>Serval was created by Enguerrand de Ribaucourt, François Desrichard, Pierre Ucla and Vincent Bisogno under the supervision of Cyril Concolato and Yves Grenier.</p>
+				<p>It is open-source, currently under GPL license. Fork us on GitHub : <a href="https://github.com/deribaucourt/PAF-station-audio" class="simpleLink">here is our repository</a>.</p>
+				<p>It was made in Télécom ParisTech as a part of "PAF : quinze jours chrono !".</p>
+				<p>Icons and logo credits go to <a href="http://www.flaticon.com/authors/madebyoliver" class="simpleLink">Madebyoliver</a> for <a href="http://www.flaticon.com" class="simpleLink">Flaticons</a> and François Desrichard.</p>
+			</span>
+		</div>
 	</div>
 	
 	<!-- ************* Filters Popup ************ -->
@@ -97,7 +104,7 @@ Code starts here                                                                
 	<div id="topContainer" style="width:100%; height:100%;">
 		
 		<div id="headerContainer" style="width:100%; height:32px; clear:both;">
-			<div id="projectMenuButton" onclick="togglePopup(this, 'projectsPopup', retrieveProjects)" class="menuButton" style="width:10%; height:100%;">Project</div>
+			<div id="projectMenuButton" onclick="togglePopup(this, 'projectsPopup', retrieveProjects)" class="menuButton" style="width:10%; height:100%; border-left:1px solid #ffffff;">Project</div>
 			<div id="tracksMenuButton" onclick="togglePopup(this, 'tracksPopup', function(){})" class="menuButton" style="width:10%; height:100%; border-left-width:1px;">Tracks</div>
 			<input id="projectNameInput" type="text" value="My Project" class="menuInput" style="width:60%; height:100%;"/>
 			<div id="aboutMenuButton" onclick="togglePopup(this, 'aboutPopup', function(){})" class="menuButton" style="width:20%; height:100%;">About Serval</div>
@@ -143,7 +150,7 @@ Code starts here                                                                
 			<div id="localTimelineContainer" style="width: calc(100% - 200px); height:32px;"><canvas id="timelineCanvas" style="width: 100%; height:100%;" /></div>
 		</div>
 	
-		<div id="tracksContainer" ondrop="drop(event)" ondragover="allowDrop(event)" style="width:100%; height:calc(100% - 163px); overflow-y:auto; background-color:#242424; border:2px solid #3a3a3a;">
+		<div id="tracksContainer" ondrop="drop(event)" ondragover="allowDrop(event)" style="width:100%; height:calc(100% - 165px); overflow-y:auto; background-color:#242424; border:2px solid #3a3a3a;">
 			<h2 id="tracksInsertMessage">Insérez vos pistes ici</h2>
 		</div>
 	
