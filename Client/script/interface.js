@@ -45,8 +45,8 @@ var timeline = timelineC.getContext("2d");
 var timelineHeight = timelineC.clientHeight ;   // Measurement in Pixels
 var timelineWidth = timelineC.clientWidth ;
 timeline.font = "12px Arial";
-timeline.strokeStyle = "#c09646" ;
-timeline.fillStyle = "#c09646" ;
+timeline.strokeStyle = "#e6e6e6" ;
+timeline.fillStyle = "#e6e6e6" ;
 
 function repaintTimeline() {
   timeline.clearRect(0, 0, timelineC.width, timelineC.height);
@@ -191,7 +191,8 @@ function drawNewTrack(track) {
 
 function drawRecordTrack() {
   console.log("painting record track last");
-    document.getElementById("tracksContainer").innerHTML += recordTemplate;
+	serveTemplateIntoContainer(document.getElementById("tracksContainer"), "record")
+    //document.getElementById("tracksContainer").innerHTML += recordTemplate;
     setTimeout( function() {
       document.getElementById("recordButton").addEventListener("click",onRecordButtonPress);
     }, 1);

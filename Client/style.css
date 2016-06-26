@@ -72,11 +72,6 @@ li.listChoice {
 	border: 0 solid #e6e6e6;
 	text-align: left;
 	cursor: pointer;
-	        user-select: none;
-	-webkit-user-select: none;
-	   -moz-user-select: none;
-	    -ms-user-select: none;
-	     -o-user-select: none;
 	transition: background-color 0.07s;
 }
 li.listChoice:hover {
@@ -102,6 +97,14 @@ li.listSeparator {
 	height: 1px;
 	padding: 1px 1px 0 1px;
 	background-color: #e6e6e6;
+}
+
+.unselectable {
+	        user-select: none;
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+	    -ms-user-select: none;
+	     -o-user-select: none;
 }
 
 .muteButton {
@@ -193,10 +196,11 @@ div.popup {
 div#cursor {
 	position: absolute;
 	z-index: 2;
-	width: 2px;
+	width: 3px;
 	top: 167px;
 	left: 50%;
-	background-color: #c09646;
+	border: 1px solid #e6e6e6;
+	border-width: 0 1px;
 	height: calc(100% - 169px);
 }
 
@@ -302,11 +306,6 @@ div.menuButton {
 	font: 13px Arial, sans-serif;
 	line-height: 31px;
 	cursor: pointer;
-	        user-select: none;
-	-webkit-user-select: none;
-	   -moz-user-select: none;
-	    -ms-user-select: none;
-	     -o-user-select: none;
 	transition:background-color 0.07s;
 }
 div.menuButton:hover {
@@ -351,11 +350,6 @@ div.toolsHeader {
 	padding: 6px 0;
 	font:13px Arial, sans-serif;
 	cursor: default;
-	        user-select: none;
-	-webkit-user-select: none;
-	   -moz-user-select: none;
-	    -ms-user-select: none;
-	     -o-user-select: none;
 }
 
 div.toolButton {
@@ -392,7 +386,7 @@ div.trackToolsContainer {
 	width: 100%;
 	height:calc(100% - 60px);
 	clear:both;
-	padding:4px 0 0 0;
+	padding:6px 0 0 0;
 }
 
 div.trackButton {

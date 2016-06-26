@@ -39,6 +39,22 @@ function GetXMLHttpRequest() {
 	return xhr;
 }
 
+function serveTemplateIntoContainer(container, template) {
+	"use strict";
+	
+	var xhr = new GetXMLHttpRequest();
+	
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 0)) {
+			container.innerHTML += xhr.responseText;
+		}
+	}
+	
+	xhr.open("GET", "/template?template_name=" + template, true);
+	xhr.responseType = "text";
+	xhr.send();
+}
+
 function retrieveProjects() {
 	"use strict";
 	
@@ -74,7 +90,7 @@ function displayProjects(response) {
 		listElement = document.createElement("li");
 		listElement.appendChild(spanElement);
 		listElement.setAttribute("onclick", "loadProject('" + files[i].fileName + "')");
-		listElement.setAttribute("class", "listChoice");
+		listElement.setAttribute("class", "listChoice unselectable");
 		listElement.setAttribute("style", "padding-left:40px;");
 		
 		projectsList.appendChild(listElement);
