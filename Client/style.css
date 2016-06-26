@@ -60,11 +60,11 @@ li.listChoice {
 	text-align: left;
 	font: 13px Arial, sans-serif;
 	cursor: pointer;
-	user-select: none;
+	        user-select: none;
 	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	-o-user-select: none;
+	   -moz-user-select: none;
+	    -ms-user-select: none;
+	     -o-user-select: none;
 	transition: background-color 0.07s;
 }
 
@@ -247,14 +247,14 @@ div.menuButton {
 	padding-left: 30px;
 	text-align: left;
 	font: 13px Arial, sans-serif;
-	line-height:30px;
+	line-height: 32px;
 	text-decoration: none;
 	cursor: pointer;
-	user-select: none;
+	        user-select: none;
 	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	-o-user-select: none;
+	   -moz-user-select: none;
+	    -ms-user-select: none;
+	     -o-user-select: none;
 	transition:background-color 0.07s;
 }
 

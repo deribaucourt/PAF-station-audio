@@ -46,7 +46,7 @@ Code starts here                                                                
 	</div>
 	
 	<!-- ************* Projects Popup ************ -->
-	<div id="projectsPopup" class="popup" style="left:0; top:30px; width:auto; height:auto; display:none; border-width:0 1px;">
+	<div id="projectsPopup" class="popup" style="left:0; top:32px; width:auto; height:auto; display:none; border-width:0 1px;">
 		<ul style="width:100%">
 			<li class="listChoice" style="padding-left:6px"><img src="icons/project_new.png" class="listChoice" />New</li>
 			<li class="listChoice" style="padding-left:6px"><img src="icons/project_load_computer.png" class="listChoice" />Load from computer</li>
@@ -63,7 +63,7 @@ Code starts here                                                                
 	</div>
 	
 	<!-- ************* Tracks Popup ************ -->
-	<div id="tracksPopup" class="popup" style="left:10%; top:30px; width:auto; height:auto; display:none; border-width:0 1px 1px 1px;">
+	<div id="tracksPopup" class="popup" style="left:10%; top:32px; width:auto; height:auto; display:none; border-width:0 1px 1px 1px;">
 		<ul style="width:100%">
 			<li class="listChoice">Add from file</li>
 			<li class="listChoice">Add from record</li>
@@ -71,6 +71,12 @@ Code starts here                                                                
 			<li class="listSeparator"></li>
 			<li class="listChoice">Remove</li>
 		</ul>
+	</div>
+	
+	<!-- ************* About Popup ************ -->
+	<div id="aboutPopup" class="popup" style="left:60%; top:32px; width:40%; height:160px; display:none; border-width:0 1px 1px 1px; padding:10px;">
+		<div style="width:30%; height:100%; text-align:left; line-height:136px;"><img src="icons/serval_logo.png" style="height:auto; width:100%; max-width:138px; max-height:100%; display:inline-block; vertical-align:middle; float:none;" /></div>
+		<div style="width:70%; height:138px; padding:0 0 0 10px; overflow:auto; line-height:138px; float:none;"><span style="display:inline-block; float:none; text-align:left; vertical-align:middle; line-height:normal; font:13px Arial, sans-serif;">Serval was created by Enguerrand de Ribaucourt, François Desrichard, Pierre Ucla and Vincent Bisogno under the supervision of Cyril Concolato and Yves Grenier. It is open-source, currently under GPL license. Made in Télécom ParisTech as a part of "PAF : quinze jours chrono !"</span></div>
 	</div>
 	
 	<!-- ************* Filters Popup ************ -->
@@ -89,15 +95,15 @@ Code starts here                                                                
 	<!-- ************* Home Page ************ -->
 	<div id="topContainer" style="width:100%; height:100%;">
 		
-		<div id="headerContainer" style="width:100%; height:30px; box-shadow:2px 2px;">
+		<div id="headerContainer" style="z-index:10; width:100%; height:32px;">
 			<div id="projectMenuButton" onclick="togglePopup(this, 'projectsPopup', retrieveProjects)" class="menuButton" style="width:10%; height:100%; border-left-width:1px;">Project</div>
 			<div id="tracksMenuButton" onclick="togglePopup(this, 'tracksPopup', function(){})" class="menuButton" style="width:10%; height:100%; border-left-width:1px;">Tracks</div>
 			<input id="projectNameInput" type="text" value="My Project" class="menuInput" style="width:60%; height:100%;"/>
-			<div id="aboutMenuButton" class="menuButton" style="width:20%; height:100%; border-right-width:1px;">About Serval</div>
+			<div id="aboutMenuButton" onclick="togglePopup(this, 'aboutPopup', function(){})" class="menuButton" style="width:20%; height:100%; border-right-width:1px;">About Serval</div>
 		</div>
 		<br style="clear:left" />
 		
-		<div style="width:100%; height:30px; background-color:#ffffff; box-shadow:-1px -1px black inset;"></div>
+		<div style="width:100%; height:30px; background-color:#ffffff;"></div>
 		
 		<div id="toolsContainer" style="width:100%; height:10%;">
 			<div id="playbackControllContainer" style="width:30%;height:100%;">
