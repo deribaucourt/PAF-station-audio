@@ -174,7 +174,7 @@ Code starts here                                                                
 	
 	<script>    // IMPORT AND DRAW RECORD TRACK
 		console.log("painting record track last");
-		serveTemplateIntoContainer(document.getElementById("tracksContainer"), "record");
+		serveTemplateIntoContainer(document.getElementById("tracksContainer"), "record", "");
 		//document.getElementById("tracksContainer").innerHTML += recordTemplate;
 		setTimeout( function() {      // Add interactivity
 			document.getElementById("recordButton").addEventListener("click",onRecordButtonPress);

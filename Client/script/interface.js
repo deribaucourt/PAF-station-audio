@@ -169,12 +169,7 @@ function togglePopup(caller, elementId, loadingFunction) {
 
 function drawNewTrack(track) {
   console.log("loading html code for track number "+ track.number );
-      // Change elements' IDs to correspond with track.number
-    var htmlCode = trackTemplate ;
-    for(var i = 0; i<20; i++){
-      htmlCode = htmlCode.replace("TRACKID",track.number);
-    }
-    document.getElementById("tracksContainer").innerHTML += htmlCode;
+    serveTemplateIntoContainer(document.getElementById("tracksContainer"), "track", track.number); // Updated method to load the template
     setTimeout(function() {         //We need to wait for the innerHtml to be in the DOM
       var c = document.getElementById("trackCanvas"+track.number) ;   // Fixes canvas stretching
       c.width = c.clientWidth;

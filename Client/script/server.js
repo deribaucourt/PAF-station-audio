@@ -39,7 +39,7 @@ function GetXMLHttpRequest() {
 	return xhr;
 }
 
-function serveTemplateIntoContainer(container, template) {
+function serveTemplateIntoContainer(container, template, trackId) {
 	"use strict";
 	
 	var xhr = new GetXMLHttpRequest();
@@ -62,7 +62,7 @@ function retrieveProjects() {
 	
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 0)) {
-			displayProjects(xhr.response);
+			displayProjects(xhr.response.replace(/TRACKID/gi, trackId));
 		}
 	}
 	
