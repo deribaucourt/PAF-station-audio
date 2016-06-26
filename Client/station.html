@@ -46,37 +46,39 @@ Code starts here                                                                
 	</div>
 	
 	<!-- ************* Projects Popup ************ -->
-	<div id="projectsPopup" class="popup" style="left:0; top:32px; width:auto; height:auto; display:none; border-width:0 1px;">
+	<div id="projectsPopup" class="popup" style="left:0; top:32px; width:auto; height:auto; display:none;">
 		<ul style="width:100%">
-			<li class="listChoice" style="padding-left:6px"><img src="icons/project_new.png" class="listChoice" />New</li>
-			<li class="listChoice" style="padding-left:6px"><img src="icons/project_load_computer.png" class="listChoice" />Load from computer</li>
-			<li class="listChoice" style="background-color:#ffffff; cursor:default;">Load from server :</li>
-			<div id="projectsPopupContainer"></div>
+			<li class="listChoice" style="padding-left:6px"><img src="icons/project_new.png" class="listChoice" /><span class="listChoice">New</span></li>
+			<li class="listChoice" style="padding-left:6px"><img src="icons/project_load_computer.png" class="listChoice" /><span class="listChoice">Load from computer</span></li>
+			<li class="listChoice" style="background-color:#ffffff; cursor:default;"><span class="listChoice">Load from server :</span></li>
+			<div id="projectsPopupContainer" style="float:none;"></div>
 			<br style="clear:left" />
 			<li class="listSeparator"></li>
-			<li class="listChoice" style="padding-left:6px"><img src="icons/project_save_computer.png" class="listChoice" />Save to computer</li>
-			<li class="listChoice">Save to server</li>
-			<li class="listChoice">Export to audio file</li>
+			<li class="listChoice" style="padding-left:6px"><img src="icons/project_save_computer.png" class="listChoice" /><span class="listChoice">Save to computer</span></li>
+			<li onclick="exportProject()" class="listChoice"><span class="listChoice">Save to server</span></li>
+			<li class="listChoice"><span class="listChoice">Export to audio file</span></li>
 			<li class="listSeparator"></li>
-			<li class="listChoice" onclick="window.location.assign('about:home')">Close Serval</li>
+			<li class="listChoice" onclick="window.location.assign('about:home')"><span class="listChoice">Close Serval</span></li>
 		</ul>
 	</div>
 	
 	<!-- ************* Tracks Popup ************ -->
-	<div id="tracksPopup" class="popup" style="left:10%; top:32px; width:auto; height:auto; display:none; border-width:0 1px 1px 1px;">
+	<div id="tracksPopup" class="popup" style="left:10%; top:32px; width:auto; height:auto; display:none;">
 		<ul style="width:100%">
-			<li class="listChoice">Add from file</li>
-			<li class="listChoice">Add from record</li>
-			<li class="listChoice">Add from render</li>
+			<li class="listChoice"><span class="listChoice">Add from file</span></li>
+			<li class="listChoice"><span class="listChoice">Add from record</span></li>
+			<li class="listChoice"><span class="listChoice">Duplicate</span></li>
 			<li class="listSeparator"></li>
-			<li class="listChoice">Remove</li>
+			<li class="listChoice"><span class="listChoice">Export to audio file</span></li>
+			<li class="listSeparator"></li>
+			<li class="listChoice"><span class="listChoice">Remove</span></li>
 		</ul>
 	</div>
 	
 	<!-- ************* About Popup ************ -->
-	<div id="aboutPopup" class="popup" style="left:60%; top:32px; width:40%; height:160px; display:none; border-width:0 1px 1px 1px; padding:10px;">
+	<div id="aboutPopup" class="popup" style="left:60%; top:32px; width:40%; height:160px; display:none; padding:10px;">
 		<div style="width:30%; height:100%; text-align:left; line-height:136px;"><img src="icons/serval_logo.png" style="height:auto; width:100%; max-width:138px; max-height:100%; display:inline-block; vertical-align:middle; float:none;" /></div>
-		<div style="width:70%; height:138px; padding:0 0 0 10px; overflow:auto; line-height:138px; float:none;"><span style="display:inline-block; float:none; text-align:left; vertical-align:middle; line-height:normal; font:13px Arial, sans-serif;">Serval was created by Enguerrand de Ribaucourt, François Desrichard, Pierre Ucla and Vincent Bisogno under the supervision of Cyril Concolato and Yves Grenier. It is open-source, currently under GPL license. Made in Télécom ParisTech as a part of "PAF : quinze jours chrono !"</span></div>
+		<div style="width:70%; height:138px; padding:0 0 0 10px; overflow:auto; line-height:138px; float:none;"><span style="display:inline-block; float:none; vertical-align:middle; line-height:normal;"><p>Serval was created by Enguerrand de Ribaucourt, François Desrichard, Pierre Ucla and Vincent Bisogno under the supervision of Cyril Concolato and Yves Grenier.</p><p>It is open-source, currently under GPL license.</p><p>Made in Télécom ParisTech as a part of "PAF : quinze jours chrono !". Icon credits go here...</p></span></div>
 	</div>
 	
 	<!-- ************* Filters Popup ************ -->
@@ -95,53 +97,63 @@ Code starts here                                                                
 	<!-- ************* Home Page ************ -->
 	<div id="topContainer" style="width:100%; height:100%;">
 		
-		<div id="headerContainer" style="z-index:10; width:100%; height:32px;">
-			<div id="projectMenuButton" onclick="togglePopup(this, 'projectsPopup', retrieveProjects)" class="menuButton" style="width:10%; height:100%; border-left-width:1px;">Project</div>
+		<div id="headerContainer" style="width:100%; height:32px;">
+			<div id="projectMenuButton" onclick="togglePopup(this, 'projectsPopup', retrieveProjects)" class="menuButton" style="width:10%; height:100%;">Project</div>
 			<div id="tracksMenuButton" onclick="togglePopup(this, 'tracksPopup', function(){})" class="menuButton" style="width:10%; height:100%; border-left-width:1px;">Tracks</div>
 			<input id="projectNameInput" type="text" value="My Project" class="menuInput" style="width:60%; height:100%;"/>
-			<div id="aboutMenuButton" onclick="togglePopup(this, 'aboutPopup', function(){})" class="menuButton" style="width:20%; height:100%; border-right-width:1px;">About Serval</div>
+			<div id="aboutMenuButton" onclick="togglePopup(this, 'aboutPopup', function(){})" class="menuButton" style="width:20%; height:100%;">About Serval</div>
 		</div>
-		<br style="clear:left" />
+		<br style="clear:left;" />
 		
-		<div style="width:100%; height:30px; background-color:#ffffff;"></div>
+		<div style="width:100%; height:16px; background: #ffffff url('icons/drop_shadow.png') repeat-x top;"></div>
+		<br style="clear:left;" />
 		
-		<div id="toolsContainer" style="width:100%; height:10%;">
-			<div id="playbackControllContainer" style="width:30%;height:100%;">
-				<a href="#" id="rewindButton" title="Rewind" class="button" style="width:33%;height:100%;" onclick="rewind()"><img src="icons/arrows.png" /></a>
-				<a href="#" id="playButton" title="Play/Pause" class="playButton" onclick="listenToAll(1)" style="width:33%;height:100%;"><img src="icons/play-button.png" id="playResume" /></a>
-				<a href="#" id="stopButton" title="Stop" class="button" onclick="listenToAll(0)" style="width:33%;height:100%;"><img src="icons/stop.png" /></a>
+		<div id="toolsContainer" style="width:100%; height:auto; border:1px solid #e6e6e6; border-width:1px 2px; background-color:#f3f3f3;">
+			<div id="playbackControllContainer" class="toolsContainer" style="width:auto; height:100%;">
+				<div class="toolsHeader">Playback</div><br style="clear:left;" />
+				<div id="rewindButton" class="toolButton" onclick="rewind()"><img src="icons/arrows.png" class="toolButton" /></div>
+				<div id="playButton" class="toolButton" onclick="listenToAll(1)"><img src="icons/play-button.png" id="playResume" class="toolButton" /></div>
+				<div id="stopButton" class="toolButton" onclick="listenToAll(0)"><img src="icons/stop.png" class="toolButton" /></div>
 			</div>
-			<div id="editionToolsContainer" style="width:30%;height:100%;">
-				<a href="#" id="copyButton" title="Copy" class="button" style="width:33%;height:100%;"><img src="icons/copy-archive.png" /></a>
-				<a href="#" id="cutButton" title="Cut" class="button" style="width:33%;height:100%;"><img src="icons/scissors.png" /></a>
-				<a href="#" id="pasteButton" title="Paste" class="button" style="width:33%;height:100%;"><img src="icons/paste-file.png" /></a>
+			<div id="editionToolsContainer" class="toolsContainer" style="width:auto; height:100%;">
+				<div class="toolsHeader">Edition</div><br style="clear:left;" />
+				<div id="copyButton" class="toolButton"><img src="icons/copy-archive.png" /></div>
+				<div id="cutButton" class="toolButton"><img src="icons/scissors.png" /></div>
+				<div id="pasteButton" class="toolButton"><img src="icons/paste-file.png" /></div>
 			</div>
-			<div id="tracksToolsContainer" style="width:20%;height:100%;">
-				<a href="#" id="newTrackButton" title="New track" class="button" style="width:50%;height:100%;"><img src="icons/plus.png" /></a>
-				<a href="#" id="cloneTrackButton" title="Clone track" class="button" style="width:50%;height:100%;"><img src="icons/circle.png" /></a>
+			<div id="historyToolsContainer" class="toolsContainer" style="width:auto; height:100%; border-right-width:1px;">
+				<div class="toolsHeader">History</div><br style="clear:left;" />
+				<div id="undoButton" class="toolButton" onclick="undo();"><img src="icons/back.png" /></div>
+				<div id="redoButton" class="toolButton" onclick="redo();"><img src="icons/forward.png" /></div>
 			</div>
-			<div id="tracksToolsContainer" style="width:20%;height:100%;">
-				<a href="#" id="undoButton" title="Undo" class="button" onclick="undo();" style="width:50%;height:100%;"><img src="icons/back.png" /></a>
-				<a href="#" id="redoButton" title="Redo" class="button" onclick="redo();" style="width:50%;height:100%;"><img src="icons/forward.png" /></a>
+			
+			<div id="filtersToolsContainer" class="toolsContainer" style="width:auto; height:100%; float:right; border-left-width:1px;">
+				<div class="toolsHeader">Filters</div><br style="clear:left;" />
+				<div id="undoButton" class="toolButton" onclick="undo();"><img src="icons/back.png" /></div>
+				<div id="redoButton" class="toolButton" onclick="redo();"><img src="icons/forward.png" /></div>
+				<div id="undoButton" class="toolButton" onclick="undo();"><img src="icons/back.png" /></div>
+				<div id="redoButton" class="toolButton" onclick="redo();"><img src="icons/forward.png" /></div>
+				<div id="undoButton" class="toolButton" onclick="undo();"><img src="icons/back.png" /></div>
+				<div id="redoButton" class="toolButton" onclick="redo();"><img src="icons/forward.png" /></div>
 			</div>
 		</div>
-		<br style="clear:left" />
+		<br style="clear:left;" />
 		
-		<div id="timelineContainer" class="containerWithBorder" style="width: 100%; height:5%;">
-			<div id="globalTimelineContainer" style="width: 20%; height:100%;">   <!-- TODO: rename this globalVolumeContainer in all files -->
+		<div id="timelineContainer" style="width:100%; height:32px; border:2px solid #707070; border-bottom-width:0;">
+			<div id="globalTimelineContainer" style="width: 20%; height:100%; border:0 solid #707070; border-right-width:2px;">   <!-- TODO: rename this globalVolumeContainer in all files -->
 				<a href="#" id="globalMuteButton" title="Mute all" class="muteButton"><img src="icons/multimedia-1.png" id="globalMuteIcon" style="display:none;" /></a>
 				<input id="globalVolumeControl" title="Volume" class="volumeControl" type="range" value="0" max="100" min="0" step="1" />
 		</div>
 		<div id="localTimelineContainer" style="width: 80%; height:100%;"><canvas id="timelineCanvas" style="width: 100%; height:100%;" /></div>
-	</div>
-	<br style="clear:left" />
+		</div>
+		<br style="clear:left" />
 	
-	<div id="tracksContainer" class="containerWithBorder" ondrop="drop(event)" ondragover="allowDrop(event)" style="width:100%;height:75%;overflow-y:scroll;">
-		<h2 id="tracksInsertMessage">Insérez vos pistes ici</h2>
-	</div>
+		<div id="tracksContainer" ondrop="drop(event)" ondragover="allowDrop(event)" style="width:100%; height:calc(100% - 161px); overflow-y:auto; border:2px solid #707070;">
+			<h2 id="tracksInsertMessage">Insérez vos pistes ici</h2>
+		</div>
 	
-	<div id="cursor">
-	</div>
+		<div id="cursor">
+		</div>
 	
 	</div>
 	

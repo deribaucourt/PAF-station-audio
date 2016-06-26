@@ -60,13 +60,19 @@ function displayProjects(response) {
 	
 	var projectsPopup = document.getElementById("projectsPopupContainer");
 	var projectsList = document.createElement("ul");
+	projectsList.setAttribute("style", "width:100%");
+	
 	var listButton, listElement;
 	
 	projectsPopup.innerHTML = "";
 	
 	for (i = 0 ; i < files.length ; i++) {
+		spanElement = document.createElement("span");
+		spanElement.setAttribute("class", "listChoice");
+		spanElement.appendChild(document.createTextNode(files[i].projectName));
+		
 		listElement = document.createElement("li");
-		listElement.appendChild(document.createTextNode(files[i].projectName));
+		listElement.appendChild(spanElement);
 		listElement.setAttribute("onclick", "loadProject('" + files[i].fileName + "')");
 		listElement.setAttribute("class", "listChoice");
 		listElement.setAttribute("style", "padding-left:40px;");
@@ -101,7 +107,7 @@ function exportProject() {
 	
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 0)) {
-			//window.location.assign("/project.bin");
+			retrieveProjects();
 		}
 	}
 	
