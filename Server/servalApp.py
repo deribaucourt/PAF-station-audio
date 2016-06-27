@@ -29,7 +29,7 @@ def serve_template() :
 def generate_file() :
     project_data = json.loads(request.data)
     
-    file_name = get_min_filename
+    file_name = get_min_filename()
     
     with open("projects/" + file_name, "w+") as f :
         json.dump(project_data, f)
@@ -41,11 +41,11 @@ def get_min_filename() :
     
     for fileName in listdir("projects") :
         if fileName[-5:] == ".json" :
-            list.append(int(fileName[-5:]))
+            list.append(int(fileName[:-5]))
     
     m = min(list) + 1
     
-    return m
+    return str(m) + ".json"
 
 @app.route("/retrieve", methods=["GET"])
 def retrieve_projects() :

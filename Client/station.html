@@ -172,11 +172,10 @@ Code starts here                                                                
 	
 	<script>    // IMPORT AND DRAW RECORD TRACK
 		console.log("painting record track last");
-		serveTemplateIntoContainer(document.getElementById("tracksContainer"), "record", "");
-		//document.getElementById("tracksContainer").innerHTML += recordTemplate;
-		setTimeout( function() {      // Add interactivity
+		var callbackFunction = function() {
 			document.getElementById("recordButton").addEventListener("click",onRecordButtonPress);
-		}, 1);
+		};
+		serveTemplateIntoContainer(document.getElementById("tracksContainer"), "record", "", callbackFunction);
 	</script>
 	
 </body>
