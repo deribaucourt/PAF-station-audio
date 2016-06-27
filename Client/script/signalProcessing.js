@@ -39,9 +39,10 @@ function createRecorderNode() {
       for (var channel = 0; channel < inputBuffer.numberOfChannels; channel++) {
         var inputData = inputBuffer.getChannelData(channel);
         for(var n = 0; n<inputData.length; n++) {
-          newAudioNode.record[channel].push(inputData[n])
+          newAudioNode.record[channel].push(inputData[n]) ;
         }
       }
+      console.log(inputData[0]) ;
     }
   };
 
@@ -52,7 +53,7 @@ function createRecorderNode() {
 
   newAudioNode.stopRecording = function() {     // returns Recorder AudioBuffer
     newAudioNode.recording = false;
-    console.log("recorded channels : "+newAudioNode.record.length +" length : " + newAudioNode.record[0].length +" at rate : " + newAudioNode.recordSampleRate);
+    console.log("recorded channels : "+newAudioNode.record.length +" length : " + newAudioNode.record[0].length +" at rate : " + audioContext.sampleRate);
     recordedBuff = audioContext.createBuffer(newAudioNode.record.length,newAudioNode.record[0].length,audioContext.sampleRate) ;
     for(var channel = 0; channel < recordedBuff.numberOfChannels; channel ++) {
     //    recordedBuff.getChannelData(channel) = newAudioNode.record[channel] ;
@@ -90,14 +91,30 @@ function createDisplayNode(canvas) {      // A node that displays it's signal on
   var samplesPerDivision = timeWindowSize*audioContext.sampleRate/canvasWidth ;
   console.log(samplesPerDivision) ;
   console.log(Math.pow(2,Math.ceil(Math.log2(samplesPerDivision)))) ;
-  newAudioNode = audioContext.createScriptProcessor(Math.pow(2,Math.ceil(Math.log2(samplesPerDivision))), 2, 2);
+  newAudioNode = audioContext.createScriptProcessor(Math.pow(2,Math.floor(Math.log2(samplesPerDivision))), 2, 2);     // ceil to increase performance
   newAudioNode.c = canvas ;
   newAudioNode.offset = 0 ;
   newAudioNode.ctx = canvas.getContext("2d") ;
 
+  // Draw Axis
+  newAudioNode.ctx.beginPath();
+  newAudioNode.ctx.strokeStyle = "#664400" ;
+  newAudioNode.ctx.moveTo(0,canvasHeight/2);
+  newAudioNode.ctx.lineTo(canvasWidth,canvasHeight/2);
+  newAudioNode.ctx.stroke();
+
   newAudioNode.onaudioprocess = function(audioProcessingEvent) {
-    inputBuffer = audioProcessingEvent.inputBuffer ;
-    audioProcessingEvent.outputBuffer = inputBuffer ;
+    var inputBuffer = audioProcessingEvent.inputBuffer ;
+    var outputBuffer = audioProcessingEvent.outputBuffer;
+
+    // Simply output the data that passes throug
+    for (var channel = 0; channel < outputBuffer.numberOfChannels; channel++) {
+      var inputData = inputBuffer.getChannelData(channel);
+      var outputData = outputBuffer.getChannelData(channel);
+      for (var sample = 0; sample < inputBuffer.length; sample++) {
+        outputData[sample] = inputData[sample];
+      }
+    }
 
     /* CLASSIC REPRESENTATION OF SOUND POWER */
     newAudioNode.ctx.beginPath();

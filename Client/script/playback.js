@@ -99,7 +99,7 @@ function onRecordStart() {
       webRtcSource.connect(recordViewer);
       recordViewer.connect(recorderNodeForRecord) ;
       recordStartingPosition = cursorPosition ;
-      listenToAll(1);           //start playback
+      execute("Speakers",1) ;           //start playback
       recorderNodeForRecord.startRecording() ;
     },
     function (error) {
@@ -111,8 +111,8 @@ function onRecordStart() {
 function onRecordStop() {
   if(webRtcSource !== undefined) {
     console.log("Stoping Record") ;
-    listenToAll(1) ;            // pause Playback
-    webRtcSource.disconnect();
+    execute("Speakers",1) ;            // pause Playback (same as pressing play/pause button)
+    webRtcSource.disconnect() ;
     recordViewer.disconnect() ;
     webRtcSource = null;
     addTrack(recorderNodeForRecord.stopRecording()) ;
