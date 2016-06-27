@@ -239,8 +239,8 @@ function onClose(i) {
 }
 
 
-function createTrackSelect {
-  document.createElement("select");
+function createTrackSelect() {
+  var selectList = document.createElement("select");
   selectList.id = "trackSelect";
 
   for (var i = 0; i<tracks.length; i++) {
