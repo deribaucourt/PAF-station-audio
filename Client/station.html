@@ -87,7 +87,7 @@ Code starts here                                                                
 		</div>
 	</div>
 
-	<!-- ************* Filters Popup ************ -->
+	<!-- ************* Gain Popup ************ -->
 	<div id="gainPopup" class="popup" style="top:120px; width:64px; height:auto; display:none; background:#d6d6d6; padding:6px;">
 		<div style="width:100%; clear:both; margin-bottom:6px;">
 			<span>Duration</span><input type="text" style="width:60px; margin:4px;"/>
@@ -115,15 +115,10 @@ Code starts here                                                                
 		<div id="toolsContainer" style="width:100%; height:auto; border:1px solid #e6e6e6; border-width:1px 2px; background-color:#f3f3f3; clear:both;">
 			<div id="playbackControllContainer" class="toolsContainer" style="width:auto; height:100%;">
 				<div class="toolsHeader unselectable">Playback</div>
-				<div id="rewindButton" class="toolButton" title="Rewind" onclick="rewind()">
-					<img src="icons/arrows.png" class="toolButton" />
-				</div>
-				<div id="playButton" class="toolButton" onclick="execute('Speakers', 1)">
-					<img src="icons/play-button.png" title="Play" id="play" style="display:block" class="toolButton" />
-					<img src = "icons/pause-button.png" title="Pause" id="pause" style="display:none" class="toolButton"/>
-				</div>
-				<div id="stopButton" title="Stop" class="toolButton" onclick="execute('Speakers', 0)"><img src="icons/stop.png" class="toolButton" />
-				</div>
+				<div id="rewindButton" class="toolButton" title="Rewind" onclick="rewind()"><img src="icons/arrows.png" class="toolButton" /></div>
+				<div id="playButton" class="toolButton" onclick="execute('Speakers', 1)"><img src="icons/play-button.png" title="Play" id="play" style="display:block" class="toolButton" />
+                                                                                 <img src = "icons/pause-button.png" title="Pause" id="pause" style="display:none" class="toolButton"/></div>
+				<div id="stopButton" title="Stop" class="toolButton" onclick="execute('Speakers', 0)"><img src="icons/stop.png" class="toolButton" /></div>
 			</div>
 			<div id="editionToolsContainer" class="toolsContainer" style="width:auto; height:100%;">
 				<div class="toolsHeader unselectable">Edition</div>
@@ -140,9 +135,10 @@ Code starts here                                                                
 				<div class="toolsHeader unselectable">Effects</div>
 				<div id="deconvolveFilterButton" class="textToolButton unselectable" onclick="serverDeconvolve(0, 1);">Deconvolve</div>
 				<div id="reverbFilterButton" class="textToolButton unselectable">Reverb</div>
-				<div id="delayFilterButton" class="textToolButton unselectable">Echo</div>
+				<div id="echoFilterButton" class="textToolButton unselectable">Echo</div>
 				<div id="fadeFilterButton" class="textToolButton unselectable">Fade</div>
-				<div id="gainFilterButton" class="textToolButton unselectable" onclick="togglePopup(this, 'textToolButtonActive', 'gainPopup', function(){})">Gain</div>
+				<div id="gainFilterButton" class="textToolButton unselectable" onclick="">Gain</div>
+				<div id="offsetEffectButton" class="textToolButton unselectable" onclick="">Offset</div>
 			</div>
 		</div>
 
