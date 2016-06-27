@@ -150,6 +150,13 @@ function importFile(evt)
 
 //document.getElementById('importButton').addEventListener('change', importFile, false); //ToDo : update ref
 
+function killDelayedPlays() {
+  for(delayedPlay of delayedPlays) {
+    clearTimeout(delayedPlay) ;
+  }
+  delayedPlays = [] ;
+}
+
 var source = [];
 var play_pause = "block";
 function listenToAll(listen)

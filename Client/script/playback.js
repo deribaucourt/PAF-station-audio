@@ -35,6 +35,8 @@ function cursorFollowPlaying() {
     }
 }
 
+var delayedPlays = [] ;
+
 function play(listen, source, input, offset) {
     if (comptGeneral === 0)
     {
@@ -60,12 +62,19 @@ function play(listen, source, input, offset) {
         playingCompt++;
 
         // Play the source
-        source.start(0,cursorPosition + offset);
+        if(cursorPosition - offset < 0) {   // source.start does not handle negative offset (delay before play)
+          console.log("offset negatif");
+          delayedPlays.push(setTimeout(function() {
+            source.start(0,0) ;
+          },-(cursorPosition-offset)*1000)) ;
+        } else
+          source.start(0,cursorPosition - offset);
 
         playing = true;
     }
     else {
       playing = false;
+      killDelayedPlays() ;
       if (source.buffer) source.stop();
     }
     if (comptGeneral === length)

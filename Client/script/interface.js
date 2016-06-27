@@ -95,7 +95,7 @@ function drawSignal(track) {
   ctx.strokeStyle = "#e69900" ;
   for(i = 0; i<canvasWidth; i++) {
     previousSample = currentSample ;
-    currentSample = Math.floor((timeWindowOffset+i*timeWindowSize/canvasWidth)*track.signal.sampleRate) ;
+    currentSample = Math.floor((timeWindowOffset-track.offset+i*timeWindowSize/canvasWidth)*track.signal.sampleRate) ;
     localMax = 0;
     for(k = previousSample+1; k<currentSample; k++) {
       if(Math.abs(track.signal.getChannelData(0)[k])>localMax) {
