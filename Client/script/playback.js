@@ -114,13 +114,13 @@ function onRecordStart() {
       webRtcSource.connect(recordViewer);
       recordViewer.connect(recorderNodeForRecord) ;
       recordStartingPosition = cursorPosition ;
-      execute("Speakers",1) ;           //start playback
-      if(tracks.length == 0) {
+      if(tracks.length == 0) {                        // move cursor if no tracks
         d = new Date();
         tBegin = d.getTime() ;
         cursorFollowRecording() ;
-      }
-      recorderNodeForRecord.startRecording() ;
+      } else                                  // else play
+      execute("Speakers",1) ;
+        recorderNodeForRecord.startRecording() ;
       recording = true ;
     },
     function (error) {
