@@ -226,6 +226,8 @@ function listenToAll(listen)
 
   if (!listen)
   {
+    timeWindowOffset = 0 ;
+    repaintTracks() ;
     play_pause = "block";
     document.getElementById("play").style.display = "block";
     document.getElementById("pause").style.display = "none";
@@ -285,7 +287,6 @@ function rewind()
   }
   else execute("Speakers", 0);
   timeWindowOffset = 0;
-  repaintTracks() ;
 }
 
 repaintTracks()
