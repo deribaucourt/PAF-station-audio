@@ -27,6 +27,7 @@ gain track.number value;
 
 var instructions = [] ; // array of string
 var args ;
+var lastTrack;
 
 function execute(finalOutput, isPlayButton) {   // does the wiring to produce the sound   ["Speakers","File","Screen"] TODO: rename processTo
   for(track of tracks) {
@@ -45,6 +46,8 @@ function execute(finalOutput, isPlayButton) {   // does the wiring to produce th
         gainNode.gain.value = args[2] ;
         tracks[args[1]].outputNode.connect(gainNode) ;
         tracks[args[1]].outputNode = gainNode ;
+        lastTrack = tracks[args[1]];
+        console.log("EH OH EH OH EH OH");
         break;
 
       case "fadeIn" :
@@ -80,6 +83,28 @@ function execute(finalOutput, isPlayButton) {   // does the wiring to produce th
 
 }
 
+function soundLevel(level)
+{
+  if (!lastTrack)
+  {
+    
+  }
+  for (var i = 0 ; i < tracks.length ; i++)
+  {
+    lastTrack.audioSource = audioContext.createBufferSource() ;
+    lastTrack.outputNode = lastTrack.audioSource ;
+
+    gainNode = audioContext.createGain();
+    gainNode.gain.value = level;
+    tracks[i].outputNode.connect(gainNode);
+    tracks[i].outputNode = gainNode;
+  }
+
+listenToAll(1);
+connectFinalOutputs("Speakers", 1);
+}
+
+
 function connectFinalOutputs(finalOutput, isPlayButton) {
   switch(finalOutput)
   {
@@ -100,6 +125,44 @@ function addInstruction(instructionString) {
     undoneInstructions.pop() ;
   }
   redoneInstructionsCount = 0 ;
+}
+
+function removeInstructionsOf(i) {
+  for(var k=0; k<instructions.length; k++) {
+    args = instructions[k].split(" ") ;
+    console.log("examine "+ args) ;
+    if(args[1]==i) {
+      console.log("removing instruction for "+i) ;
+      instructions[k] = "" ;
+    }
+    else if(args[1] > i) {
+      console.log("changing instruction for new track value") ;
+      args[1] --;
+      instructions[k] = "" ;
+      for(arg of args) {
+        instructions[k] += arg + " " ;
+      }
+    }
+  }/*
+  var k = 0;
+  while(k<instructions.length) {
+    args = instructions[k].split(" ") ;
+    if(args[1] == i) {
+      instructions.splice(k,1) ;
+      console.log("removed one instructions for removed Track") ;
+    }
+    else {
+      if(args[1]>i) {
+        console.log("changing instruction for new track value") ;
+        args[1] --;
+        instructions[k] = "" ;
+        for(arg of args) {
+          instructions[k] += arg ;
+        }
+      }
+      i++;
+    }
+  }*/
 }
 
 var undoneInstructions = [] ;

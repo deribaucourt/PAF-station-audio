@@ -45,8 +45,8 @@ var timeline = timelineC.getContext("2d");
 var timelineHeight = timelineC.clientHeight ;   // Measurement in Pixels
 var timelineWidth = timelineC.clientWidth ;
 timeline.font = "12px Arial";
-timeline.strokeStyle = "#e69900" ;
-timeline.fillStyle = "#e69900" ;
+timeline.strokeStyle = "#e6e6e6" ;
+timeline.fillStyle = "#e6e6e6" ;
 
 function repaintTimeline() {
   timeline.clearRect(0, 0, timelineC.width, timelineC.height);
@@ -128,14 +128,14 @@ function repaintTracks() {    // This isn't called when scrolling the tracks, bu
 }
 
 function loadingScreenShow(boolean) {   // TODO : Maybe it is possible dispose of loading screen ?
-  if(boolean)
+/*  if(boolean)
     document.getElementById("loadingPopup").style.display = "block" ;
   else
-    document.getElementById("loadingPopup").style.display = "none" ;
+    document.getElementById("loadingPopup").style.display = "none" ;*/
 }
 
 function addTrack(audioBuff) {
-  tracks.push(new Track(audioBuff));  //TODO remove
+  tracks.push(new Track(audioBuff));
   addNewTrackToDisplay();
 }
 
@@ -155,22 +155,21 @@ function toggleFiltersPopup(toggleState) {
     }
 }
 
-function toggleProjectsPopup(toggleState) {
-    if(toggleState) {
-        document.getElementById("projectsPopup").style.display = "block";
+function togglePopup(caller, elementId, loadingFunction) {
+	var popup = document.getElementById(elementId);
+    if(popup.style.display === "none") {
+		caller.classList.add("menuButtonActive");
+		loadingFunction();
+        popup.style.display = "block";
     } else {
-        document.getElementById("projectsPopup").style.display = "none";
+		caller.classList.remove("menuButtonActive");
+        popup.style.display = "none";
     }
 }
 
 function drawNewTrack(track) {
   console.log("loading html code for track number "+ track.number );
-      // Change elements' IDs to correspond with track.number
-    var htmlCode = trackTemplate ;
-    for(var i = 0; i<20; i++){
-      htmlCode = htmlCode.replace("TRACKID",track.number);
-    }
-    document.getElementById("tracksContainer").innerHTML += htmlCode;
+    serveTemplateIntoContainer(document.getElementById("tracksContainer"), "track", track.number); // Updated method to load the template
     setTimeout(function() {         //We need to wait for the innerHtml to be in the DOM
       var c = document.getElementById("trackCanvas"+track.number) ;   // Fixes canvas stretching
       c.width = c.clientWidth;
@@ -187,10 +186,10 @@ function drawNewTrack(track) {
 
 function drawRecordTrack() {
   console.log("painting record track last");
-    document.getElementById("tracksContainer").innerHTML += recordTemplate;
+	serveTemplateIntoContainer(document.getElementById("tracksContainer"), "record", "")
     setTimeout( function() {
       document.getElementById("recordButton").addEventListener("click",onRecordButtonPress);
-    }, 1);
+    }, 1000); // ToDo : find a proper way now that the request is async (maybe via callback ?)
 }
 
     /******************** Record Track *****************/
@@ -212,8 +211,28 @@ function onRecordButtonPress(e) {
   }
 }
 
+function onClone() {
+  //TODO
+}
+
+function clone(i) {   //returns a clone of track i
+
+}
+
 function onClose(i) {
-  tracks.splice(i,1) ;
-  document.getElementById("tracksContainer").removeChild(document.getElementById("trackTopContainer"+i)) ;
+  console.log("closing "+i);
+  var previousLength = tracks.length ;
+  var previousTracks = [] ;
+  removeInstructionsOf(i) ;
+  for(var k = i; k<previousLength; k++) {
+    previousTracks.push(tracks.pop()) ;
+    console.log("removing display for track number : "+ k );
+    document.getElementById("tracksContainer").removeChild(document.getElementById("trackTopContainer"+k)) ;
+  }
+  for(var k = 1; k<previousTracks.length; k++) {
+  //  previousTracks[k].number -- ;
+    tracks.push(previousTracks[k]) ;
+    addNewTrackToDisplay() ;
+  }
   repaintTracks() ;
 }

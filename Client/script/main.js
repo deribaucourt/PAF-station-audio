@@ -148,12 +148,15 @@ function importFile(evt)
         }
     }
 
-document.getElementById('importButton').addEventListener('change', importFile, false);
+document.getElementById('importButton').addEventListener('change', importFile, false); //ToDo : update ref
 
 var source = [];
 var play_pause = "block";
 function listenToAll(listen)
 {
+
+
+
     if (play_pause === "block")
     {
       play_pause = "none";
@@ -234,4 +237,7 @@ function rewind()
   else execute("Speakers", 0);
 }
 
-repaintTracks();
+repaintTracks()
+{
+  console.log("coucou");
+}

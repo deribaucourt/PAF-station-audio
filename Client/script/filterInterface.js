@@ -19,6 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 function applyGain() {
   trackNumb = document.getElementById("trackValueInput").value ;
   gainVal = document.getElementById("gainValueInput").value ;
+  console.log("applying gain to" +trackNumb +" of "+ gainVal ) ;
   addInstruction("gain "+trackNumb+" "+gainVal) ;
   //execute("Screen") ; //redraw signal
 }

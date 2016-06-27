@@ -17,25 +17,36 @@ app.url_map.converters['regex'] = RegexConverter
 def index():
     return app.send_static_file("station.html")
 
-@app.route("/track")
-def track_file() :
-    print("flask serving")
+@app.route("/template")
+def serve_template() :
+    template_name = request.args.get("template_name")
     
-    with open("../Client/track.html", "r") as f :
-        track_html = f.read()
+    with open("../Client/" + template_name + ".html", "r") as f :
+        template_html = f.read()
     
-    return track_html
+    return template_html
 
 @app.route("/generate", methods=["POST"])
 def generate_file() :
-    data = json.loads(request.data)
+    project_data = json.loads(request.data)
     
-    fileName = slugify(data["projectName"]) + ".json"
+    file_name = slugify(project_data["projectName"]) + ".json"
     
-    with open("projects/" + fileName, "w+") as f :
-        f.write(request.data);
+    with open("projects/" + file_name, "w+") as f :
+        json.dump(project_data, f)
     
-    return "done"
+    return file_name
+
+def get_min_filename() :
+    list = []
+    
+    for fileName in listdir("projects") :
+        if fileName[-5:] == ".json" :
+            list.append(int(fileName[-5:]))
+    
+    m = min(list) + 1
+    
+    return m
 
 @app.route("/retrieve", methods=["GET"])
 def retrieve_projects() :
@@ -47,20 +58,27 @@ def retrieve_projects() :
                 data = json.load(f)
                 list.append({"fileName" : fileName, "projectName" : data["projectName"]})
     
-    return jsonify(results = list)
+    return jsonify(projects = list)
 
-'''@app.route("/<slug>.json")
-def download_file(slug) :
-    with open("projects/" + slug + ".bin", "rb") as f :
-        resp = make_response(f.read())
-        resp.headers["Content-Type"] = "application/octet-stream"
-        return resp'''
-
-@app.route("/filteraudio", methods=["POST"])
-def filter_audio() :    
-    filteredAudio = request.data #filter audio here
+@app.route("/load", methods=["GET"])
+def load_project() :
+    file_name = request.args.get("file_name")
     
-    return filteredAudio
+    with open("projects/" + file_name) as f :
+        project_data = f.read()
+    
+    return project_data
+
+@app.route("/deconvolve", methods=["POST"])
+def filter_audio() :
+    data = json.loads(request.data)
+    
+    filteredAudio = deconvolve(data["signal1"]["leftChannel"], data["signal1"]["rightChannel"], data["signal2"]["leftChannel"], data["signal2"]["rightChannel"])
+    
+    return str(filteredAudio)[1:-1]
+
+def deconvolve(sig1l, sig1r, sig2l, sig2r) :
+    return [sig1l]
 
 if __name__ == "__main__":
     app.run(debug = True)
