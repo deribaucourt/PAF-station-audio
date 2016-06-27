@@ -81,43 +81,36 @@ function addFilter(trackId) {
 /*************** Display Node **************/
 
 function createDisplayNode(canvas) {      // A node that displays it's signal on a Canvas
-  newAudioNode = audioContext.createScriptProcessor(4096, 1, 0);
+  newAudioNode = audioContext.createScriptProcessor(16384, 2, 2);
   newAudioNode.c = canvas ;
   newAudioNode.offset = 0 ;
 
   newAudioNode.onaudioprocess = function(audioProcessingEvent) {
     inputBuffer = audioProcessingEvent.inputBuffer ;
+    audioProcessingEvent.outputBuffer = inputBuffer ;
     var ctx=newAudioNode.c.getContext("2d");
 
     var canvasWidth = newAudioNode.c.clientWidth;
     var canvasHeight = newAudioNode.c.clientHeight;
     var samplesPerDivision = timeWindowSize*inputBuffer.sampleRate ;
 
-    ctx.clearRect(0, 0, newAudioNode.c.width, newAudioNode.c.height); ;
-
-    // Trace Time axis
-    ctx.beginPath();
-    ctx.strokeStyle = "#664400" ;
-    ctx.moveTo(0,canvasHeight/2);
-    ctx.lineTo(canvasWidth,canvasHeight/2);
-    ctx.stroke();
-
     /* CLASSIC REPRESENTATION OF SOUND POWER */
-    var localMax, previousSample, k;
-    var currentSample = Math.floor(timeWindowOffset*inputBuffer.sampleRate);
+    var localMax, previousSample;
+    var currentSample = 0; //Math.floor(timeWindowOffset*inputBuffer.sampleRate);
     ctx.beginPath();
     ctx.strokeStyle = "#e69900" ;
-    for(i = 0; i<canvasWidth; i++) {
+    pixelsToDraw = 16384/samplesPerDivision ;
+    for(i = 0; i<pixelsToDraw; i++) {
       previousSample = currentSample ;
-      currentSample = Math.floor((timeWindowOffset+newAudioNode.offset+i*timeWindowSize/canvasWidth)*inputBuffer.sampleRate) ;
+      currentSample += samplesPerDivision ;
       localMax = 0;
       for(k = previousSample+1; k<currentSample; k++) {
         if(Math.abs(inputBuffer.getChannelData(0)[k])>localMax) {
           localMax = Math.abs(inputBuffer.getChannelData(0)[k]) ;
         }
       }
-      ctx.moveTo(i,-(localMax-1)*canvasHeight*0.5);
-      ctx.lineTo(i,(localMax+1)*canvasHeight*0.5);
+      ctx.moveTo(i+cursorPosition/timeWindowSize,-(localMax-1)*canvasHeight*0.5);
+      ctx.lineTo(i+cursorPosition/timeWindowSize,(localMax+1)*canvasHeight*0.5);
     }
     ctx.stroke();
 

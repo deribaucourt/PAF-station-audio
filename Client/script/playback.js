@@ -89,12 +89,14 @@ var recordStartingPosition = 0 ;
 
 function onRecordStart() {
   console.log("Starting Record") ;
+  recordViewer = createDisplayNode(document.getElementById("recordTrack")) ;
   navigator.getUserMedia =  navigator.mozGetUserMedia ;
   navigator.getUserMedia(
     { audio: true, video: false },
     function (mediaStream) {        // called once the user has agreed to record
       webRtcSource = audioContext.createMediaStreamSource(mediaStream);
-      webRtcSource.connect(recorderNodeForRecord);
+      webRtcSource.connect(recordViewer);
+      recordViewer.connect(recorderNodeForRecord) ;
       recordStartingPosition = cursorPosition ;
       listenToAll(1);           //start playback
       recorderNodeForRecord.startRecording() ;
