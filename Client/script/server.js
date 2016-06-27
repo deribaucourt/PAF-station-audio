@@ -158,12 +158,14 @@ function serverDeconvolve(id1, id2) {
 		if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 0)) {
 			var binary_string = xhr.responseText;
 			var len = binary_string.length;
-			test = AudioContext.createBuffer(1, len, 44100);
+			var responseBuffer = audioContext.createBuffer(1, len, 44100);
     		for(var i = 0 ; i < len ; i++)        {
-        		test.getChannelData(0)[i] = binary_string.charCodeAt(i);
+        		responseBuffer.getChannelData(0)[i] = binary_string.charCodeAt(i);
     		}
-			
-			
+			var source = audioContext.createBufferSource();
+ 			source.buffer = responseBuffer;
+ 			source.connect(audioContext.destination);
+ 			//source.start(); DONT EVER DECOMMENT
 		}
 	}
 	
