@@ -67,7 +67,7 @@ function play(listen, source, input, offset) {
           console.log("offset negatif");
           delayedPlays.push(setTimeout(function() {
             source.start(0,0) ;
-              playingSources.push(source) ;
+            playingSources.push(source) ;
           },-(cursorPosition-offset)*1000)) ;
         } else {
           source.start(0,cursorPosition - offset);
@@ -78,6 +78,7 @@ function play(listen, source, input, offset) {
     }
     else {
       playing = false;
+      stopRecord() ;
       killDelayedPlays() ;
       if (source.buffer && playingSources.includes(source)) source.stop();
     }
@@ -100,6 +101,7 @@ var webRtcSource;
 var recorderNodeForRecord = createRecorderNode() ;
 var recordViewer ;
 var recordStartingPosition = 0 ;
+var recording = false ;
 
 function onRecordStart() {
   console.log("Starting Record") ;
@@ -114,6 +116,7 @@ function onRecordStart() {
       recordStartingPosition = cursorPosition ;
       execute("Speakers",1) ;           //start playback
       recorderNodeForRecord.startRecording() ;
+      recording = true ;
     },
     function (error) {
       console.log("There was an error when getting microphone input: " + err);
@@ -123,12 +126,19 @@ function onRecordStart() {
 
 function onRecordStop() {
   if(webRtcSource !== undefined) {
-    console.log("Stoping Record") ;
     execute("Speakers",1) ;            // pause Playback (same as pressing play/pause button)
+    stopRecord() ;
+  }
+}
+
+function stopRecord() {
+  if(recording) {
+    console.log("Stoping Record") ;
     webRtcSource.disconnect() ;
     recordViewer.disconnect() ;
     webRtcSource = null;
     addTrack(recorderNodeForRecord.stopRecording()) ;
     tracks[tracks.length-1].offset = recordStartingPosition ;
+    recording = false ;
   }
 }
