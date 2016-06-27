@@ -151,7 +151,8 @@ function serverDeconvolve(id1, id2) {
 	var signal2ArrayRight = Array.prototype.slice.call(tracks[id2].signal.getChannelData(1));
 	
 	var channelData = JSON.stringify({"signal1" : {"leftChannel" : signal1ArrayLeft, "rightChannel" : signal1ArrayRight},
-									  "signal2" : {"leftChannel" : signal2ArrayLeft, "rightChannel" : signal2ArrayRight}});
+									  "signal2" : {"leftChannel" : signal2ArrayLeft, "rightChannel" : signal2ArrayRight},
+									  "sampleRate" : tracks[id1].signal.sampleRate});
 	
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 0)) {

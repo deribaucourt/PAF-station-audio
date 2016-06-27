@@ -148,22 +148,14 @@ function addNewTrackToDisplay() {
   drawRecordTrack();                        // finally add record track
 }
 
-function toggleFiltersPopup(toggleState) {
-    if(toggleState) {
-        document.getElementById("filtersPopup").style.display = "block";
-    } else {
-        document.getElementById("filtersPopup").style.display = "none";
-    }
-}
-
-function togglePopup(caller, elementId, loadingFunction) {
+function togglePopup(caller, className, elementId, loadingFunction) {
 	var popup = document.getElementById(elementId);
     if(popup.style.display === "none") {
-		caller.classList.add("menuButtonActive");
+		caller.classList.add(className);
 		loadingFunction();
         popup.style.display = "block";
     } else {
-		caller.classList.remove("menuButtonActive");
+		caller.classList.remove(className);
         popup.style.display = "none";
     }
 }
@@ -238,3 +230,13 @@ function onClose(i) {
   }
   repaintTracks() ;
 }
+
+function resizeEffectPopups() {
+	var gainPopup = document.getElementById("gainPopup");
+	var toolsContainer = document.getElementById("effectsToolsContainer");
+	
+	gainPopup.style.left = "calc(100% - " + (toolsContainer.clientWidth - 4) + "px)";
+	gainPopup.style.width = (toolsContainer.clientWidth - 12) + "px";
+}
+
+resizeEffectPopups();

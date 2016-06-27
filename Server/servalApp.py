@@ -1,7 +1,9 @@
-from flask import Flask, request, make_response, jsonify
+from flask import Flask, request, make_response, jsonify, send_file
 from werkzeug.routing import BaseConverter
 from os import listdir
+import tempfile
 import json
+from signalProcessing import deconvolve
 
 app = Flask(__name__, static_url_path="", static_folder="../Client")
 
@@ -72,12 +74,13 @@ def load_project() :
 def filter_audio() :
     data = json.loads(request.data)
     
-    filteredAudio = deconvolve(data["signal1"]["leftChannel"], data["signal1"]["rightChannel"], data["signal2"]["leftChannel"], data["signal2"]["rightChannel"])
+    filteredAudio = deconvolve(data["signal1"]["leftChannel"], data["signal2"]["leftChannel"], data["sampleRate"])
     
-    return str(filteredAudio)[1:-1]
+    temporaryFile = tempfile.TemporaryFile()
+    temporaryFile.write(filteredAudio)
+    
+    return send_file(temporaryFile)
 
-def deconvolve(sig1l, sig1r, sig2l, sig2r) :
-    return [sig1l]
 
 if __name__ == "__main__":
     app.run(debug = True)

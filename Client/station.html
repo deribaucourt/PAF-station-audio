@@ -88,7 +88,7 @@ Code starts here                                                                
 	</div>
 
 	<!-- ************* Filters Popup ************ -->
-	<div id="filtersPopup" class="popup" style="left:70%; top:120px; width:64px; width:30%; height:20%; display:none; background:#d6d6d6; padding:6px;">
+	<div id="gainPopup" class="popup" style="top:120px; width:64px; height:auto; display:none; background:#d6d6d6; padding:6px;">
 		<div style="width:100%; clear:both; margin-bottom:6px;">
 			<span>Duration</span><input type="text" style="width:60px; margin:4px;"/>
 		</div>
@@ -104,10 +104,10 @@ Code starts here                                                                
 	<div id="topContainer" style="width:100%; height:100%;">
 
 		<div id="headerContainer" style="width:100%; height:32px; clear:both;">
-			<div id="projectMenuButton" onclick="togglePopup(this, 'projectsPopup', retrieveProjects)" class="menuButton unselectable" style="width:10%; height:100%; border-left:1px solid #ffffff;">Project</div>
-			<div id="tracksMenuButton" onclick="togglePopup(this, 'tracksPopup', function(){})" class="menuButton unselectable" style="width:10%; height:100%; border-left-width:1px;">Tracks</div>
+			<div id="projectMenuButton" onclick="togglePopup(this, 'menuButtonActive', 'projectsPopup', retrieveProjects)" class="menuButton unselectable" style="width:10%; height:100%; border-left:1px solid #ffffff;">Project</div>
+			<div id="tracksMenuButton" onclick="togglePopup(this, 'menuButtonActive', 'tracksPopup', function(){})" class="menuButton unselectable" style="width:10%; height:100%; border-left-width:1px;">Tracks</div>
 			<input id="projectNameInput" type="text" value="My Project" class="menuInput" style="width:60%; height:100%;"/>
-			<div id="aboutMenuButton" onclick="togglePopup(this, 'aboutPopup', function(){})" class="menuButton unselectable" style="width:20%; height:100%;">About Serval</div>
+			<div id="aboutMenuButton" onclick="togglePopup(this, 'menuButtonActive', 'aboutPopup', function(){})" class="menuButton unselectable" style="width:20%; height:100%;">About Serval</div>
 		</div>
 
 		<div style="width:100%; height:16px; background: #ffffff url('icons/drop_shadow.png') repeat-x top; clear:both;"></div>
@@ -115,10 +115,15 @@ Code starts here                                                                
 		<div id="toolsContainer" style="width:100%; height:auto; border:1px solid #e6e6e6; border-width:1px 2px; background-color:#f3f3f3; clear:both;">
 			<div id="playbackControllContainer" class="toolsContainer" style="width:auto; height:100%;">
 				<div class="toolsHeader unselectable">Playback</div>
-				<div id="rewindButton" class="toolButton" title="Rewind" onclick="rewind()"><img src="icons/arrows.png" class="toolButton" /></div>
-				<div id="playButton" class="toolButton" onclick="execute('Speakers', 1)"><img src="icons/play-button.png" title="Play" id="play" style="display:block" class="toolButton" />
-                                                                                 <img src = "icons/pause-button.png" title="Pause" id="pause" style="display:none" class="toolButton"/></div>
-				<div id="stopButton" title="Stop" class="toolButton" onclick="execute('Speakers', 0)"><img src="icons/stop.png" class="toolButton" /></div>
+				<div id="rewindButton" class="toolButton" title="Rewind" onclick="rewind()">
+					<img src="icons/arrows.png" class="toolButton" />
+				</div>
+				<div id="playButton" class="toolButton" onclick="execute('Speakers', 1)">
+					<img src="icons/play-button.png" title="Play" id="play" style="display:block" class="toolButton" />
+					<img src = "icons/pause-button.png" title="Pause" id="pause" style="display:none" class="toolButton"/>
+				</div>
+				<div id="stopButton" title="Stop" class="toolButton" onclick="execute('Speakers', 0)"><img src="icons/stop.png" class="toolButton" />
+				</div>
 			</div>
 			<div id="editionToolsContainer" class="toolsContainer" style="width:auto; height:100%;">
 				<div class="toolsHeader unselectable">Edition</div>
@@ -131,14 +136,13 @@ Code starts here                                                                
 				<div id="undoButton" title="Undo" class="toolButton" onclick="undo();"><img src="icons/back.png" /></div>
 				<div id="redoButton" title="Redo" class="toolButton" onclick="redo();"><img src="icons/forward.png" /></div>
 			</div>
-
-			<div id="filtersToolsContainer" class="toolsContainer" style="width:auto; height:100%; float:right; border-left-width:1px;">
-				<div class="toolsHeader unselectable">Filters</div>
-				<div id="deconvolveFilterButton" class="textToolButton unselectable">Deconvolve</div>
+			<div id="effectsToolsContainer" class="toolsContainer" style="width:auto; height:100%; float:right; border-left-width:1px;">
+				<div class="toolsHeader unselectable">Effects</div>
+				<div id="deconvolveFilterButton" class="textToolButton unselectable" onclick="serverDeconvolve(0, 1);">Deconvolve</div>
 				<div id="reverbFilterButton" class="textToolButton unselectable">Reverb</div>
-				<div id="delayFilterButton" class="textToolButton unselectable">Delay</div>
+				<div id="delayFilterButton" class="textToolButton unselectable">Echo</div>
 				<div id="fadeFilterButton" class="textToolButton unselectable">Fade</div>
-				<div id="gainFilterButton" class="textToolButton unselectable" onclick="">Gain</div>
+				<div id="gainFilterButton" class="textToolButton unselectable" onclick="togglePopup(this, 'textToolButtonActive', 'gainPopup', function(){})">Gain</div>
 			</div>
 		</div>
 
