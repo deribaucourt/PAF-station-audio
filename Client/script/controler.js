@@ -28,6 +28,7 @@ gain track.number value;
 var instructions = [] ; // array of string
 var args ;
 var lastTrack = [];
+var generalSound = 1;
 
 function execute(finalOutput, isPlayButton) {   // does the wiring to produce the sound   ["Speakers","File","Screen"] TODO: rename processTo
   for(track of tracks) {
@@ -50,28 +51,71 @@ function execute(finalOutput, isPlayButton) {   // does the wiring to produce th
 
     }
   }
+  for (var j = 0 ; j < tracks.length ; j++)
+    {
+/*     if(tracks[j].audioSource.buffer)
+        tracks[j].audioSource.stop() ;
+      tracks[j].audioSource = audioContext.createBufferSource() ;
+      tracks[j].outputNode = tracks[j].audioSource ;*/
+
+      SoundLevelNode = audioContext.createGain() ;
+      SoundLevelNode.gain.value = generalSound * tracks[j].volume ;
+      tracks[j].outputNode.connect(SoundLevelNode) ;
+      tracks[j].outputNode = SoundLevelNode ;
+    }
+
 
   connectFinalOutputs(finalOutput, isPlayButton) ;
 
 }
-function soundLevel(level)
+function soundLevel(value, string )
 {
-  console.log("sound = " +level);
-  for (var j = 0 ; j < tracks.length ; j++)
-    {
-      if(tracks[j].audioSource.buffer)
-        tracks[j].audioSource.stop() ;
-      tracks[j].audioSource = audioContext.createBufferSource() ;
-      tracks[j].outputNode = tracks[j].audioSource ;
+  if (string === "global")
+  {
+    generalSound = value;
+  }
+  else {
+    tracks[string].volume = value;
+  }
+/*  for (var j = 0 ; j < tracks.length ; j++)
+  {
+    if(tracks[j].audioSource.buffer)
+      tracks[j].audioSource.stop() ;
+    tracks[j].audioSource = audioContext.createBufferSource() ;
+    tracks[j].outputNode = tracks[j].audioSource ;
 
-      SoundLevelNode = audioContext.createGain() ;
-      SoundLevelNode.gain.value = level;
-      tracks[j].outputNode.connect(SoundLevelNode) ;
-      tracks[j].outputNode = SoundLevelNode ;
-    }
+    SoundLevelNode = audioContext.createGain() ;
+    SoundLevelNode.gain.value = generalSound * tracks[j].volume ;
+    tracks[j].outputNode.connect(SoundLevelNode) ;
+    tracks[j].outputNode = SoundLevelNode ;
+  }
   listenToAll(1);
-  listenToAll(1);
+  listenToAll(1);*/
+  execute("Speakers", 1);
+  execute("Speakers", 1);
 }
+
+function volumeBalance(trackId, value)
+{
+
+}
+
+/*function soundTrackVolume(trackId, value)
+{
+  tracks[trackId].volume = value;
+  if(tracks[trackId].audioSource.buffer)
+    tracks[trackId].audioSource.stop() ;
+  tracks[trackId].audioSource = audioContext.createBufferSource() ;
+  tracks[trackId].outputNode = tracks[trackId].audioSource ;
+
+  SoundLevelNode = audioContext.createGain() ;
+  SoundLevelNode.gain.value = value * generalSound;
+  tracks[trackId].outputNode.connect(SoundLevelNode) ;
+  tracks[trackId].outputNode = SoundLevelNode ;
+
+  listenToAll(1);
+  listenToAll(1);
+}*/
 
 
 function connectFinalOutputs(finalOutput, isPlayButton) {

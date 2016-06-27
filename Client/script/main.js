@@ -154,9 +154,6 @@ var source = [];
 var play_pause = "block";
 function listenToAll(listen)
 {
-
-
-
     if (play_pause === "block")
     {
       play_pause = "none";

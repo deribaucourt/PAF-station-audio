@@ -42,7 +42,6 @@ function play(listen, source, input, offset) {
     }
     comptGeneral++;
     length = tracks.length;
-    console.log(playingCompt);
     if (listen)
       {
         if (!soundBuffer) return;
