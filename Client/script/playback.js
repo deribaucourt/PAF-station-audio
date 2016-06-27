@@ -125,6 +125,7 @@ function onRecordStart() {
 }
 
 function onRecordStop() {
+  recording = true;
   if(webRtcSource !== undefined) {
     execute("Speakers",1) ;            // pause Playback (same as pressing play/pause button)
     stopRecord() ;

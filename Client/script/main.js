@@ -204,6 +204,9 @@ function listenToAll(listen)
     cursorPosition = 0;
     offset = 0;
     drawCursor();
+
+    if(recording && tracks.length ===0)
+      stopRecord() ;
   }
 }
 

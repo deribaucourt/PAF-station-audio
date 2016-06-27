@@ -50,7 +50,7 @@ function execute(finalOutput, isPlayButton) {   // does the wiring to produce th
         tracks[args[1]].outputNode.connect(gainNode) ;
         tracks[args[1]].outputNode = gainNode ;
         lastTrack = tracks[args[1]];
-        console.log("EH OH EH OH EH OH");
+        console.log("applying gain");
         break;
 
     }
@@ -77,8 +77,8 @@ function soundLevel(level)
     tracks[i].outputNode = gainNode;
   }
 
-listenToAll(1);
-connectFinalOutputs("Speakers", 1);
+  listenToAll(1);
+  connectFinalOutputs("Speakers", 1);
 }
 
 
