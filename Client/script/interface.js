@@ -182,7 +182,7 @@ function drawNewTrack(track) {
       	}
       	document.getElementById("tracksInsertMessage").style.display = "none";
 	};
-	var callbackClosure = function() {callbackFunction(track);}
+	var callbackClosure = function() { callbackFunction(track); }
     serveTemplateIntoContainer(document.getElementById("tracksContainer"), "track", track.number, callbackClosure);
 }
 

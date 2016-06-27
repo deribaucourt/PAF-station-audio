@@ -145,9 +145,9 @@ function serverDeconvolve(id1, id2) {
 	"use strict";
 	
 	var xhr = new GetXMLHttpRequest();
-	var signal1ArrayLeft = Array.prototype.slice.call(tracks[id1].signal.getChannelData(0));
+	var signal1ArrayLeft = 	Array.prototype.slice.call(tracks[id1].signal.getChannelData(0));
 	var signal1ArrayRight = Array.prototype.slice.call(tracks[id1].signal.getChannelData(1));
-	var signal2ArrayLeft = Array.prototype.slice.call(tracks[id2].signal.getChannelData(0));
+	var signal2ArrayLeft = 	Array.prototype.slice.call(tracks[id2].signal.getChannelData(0));
 	var signal2ArrayRight = Array.prototype.slice.call(tracks[id2].signal.getChannelData(1));
 	
 	var channelData = JSON.stringify({"signal1" : {"leftChannel" : signal1ArrayLeft, "rightChannel" : signal1ArrayRight},
