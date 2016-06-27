@@ -54,10 +54,14 @@ function repaintTimeline() {
 /*  timeline.moveTo(0,timelineHeight/2); // Trace axis
   timeline.lineTo(timelineWidth,timelineHeight/2);
   timeline.stroke(); */
-  for(var i = 0; i<6; i++) {  // Trace 6 big time divisions
-    timeline.moveTo(i*timelineWidth/5, 0);
-    timeline.lineTo(i*timelineWidth/5, timelineHeight);
-    timeline.fillText(i*timeWindowSize/5 + timeWindowOffset, i*timelineWidth/5, timelineHeight*19/30);
+  timeDivision = Math.pow(10,Math.floor(Math.log10(timeWindowSize / 5))) ;
+  firstDivision = Math.floor(timeWindowOffset/timeDivision) ;
+  numberOfDivisions = Math.ceil( timeWindowSize / timeDivision ) ;
+  for(var i = 0; i<numberOfDivisions; i++) {  // Trace 6 big time divisions
+    bigDivisionLocation = ( i + firstDivision - timeWindowOffset/timeDivision ) * timelineWidth / numberOfDivisions ;
+    timeline.moveTo(bigDivisionLocation, 0);
+    timeline.lineTo(bigDivisionLocation, timelineHeight);
+    timeline.fillText((i + firstDivision)*timeDivision, bigDivisionLocation, timelineHeight*19/30);
   }
   timeline.stroke();
 }
