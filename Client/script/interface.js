@@ -97,15 +97,13 @@ function drawSignal(track) {
   var currentSample = Math.floor(timeWindowOffset*track.signal.sampleRate);
   ctx.beginPath();
   ctx.strokeStyle = "#e69900" ;
-  for(i = 0; i<canvasWidth; i++) {
+  firstPixel = Math.max(0, Math.ceil((track.offset-timeWindowOffset)*canvasWidth/timeWindowSize ) ) ;
+  lastPixel = Math.min(canvasWidth, Math.floor((track.offset-timeWindowOffset + timeWindowSize)*canvasWidth/timeWindowSize ) ) ;
+  for(i = firstPixel; i<=lastPixel; i++) {
     previousSample = currentSample ;
     currentSample = Math.floor((timeWindowOffset-track.offset+i*timeWindowSize/canvasWidth)*track.signal.sampleRate) ;
-    localMax = 0;
-    for(k = previousSample+1; k<currentSample; k++) {
-      if(Math.abs(track.signal.getChannelData(0)[k])>localMax) {
-        localMax = Math.abs(track.signal.getChannelData(0)[k]) ;
-      }
-    }
+    localArray = track.signal.getChannelData(0).slice(previousSample, currentSample) ;
+    localMax = Math.max.apply(null, localArray.map(Math.abs));
     ctx.moveTo(i,-(localMax-1)*canvasHeight*0.5);
     ctx.lineTo(i,(localMax+1)*canvasHeight*0.5);
   }
