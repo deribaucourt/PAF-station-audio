@@ -100,7 +100,6 @@ li.listSeparator {
 }
 
 .unselectable {
-	cursor: default;
 	        user-select: none;
 	-webkit-user-select: none;
 	   -moz-user-select: none;
@@ -365,7 +364,21 @@ div.toolButton {
 	transition: background-color 0.07s;
 }
 div.toolButton:hover {
+	background-color: #d6d6d6;
+}
+
+div.textToolButton {
+	margin: 4px 2px;
+	width: auto;
+	height: 40px;
 	background-color: #e6e6e6;
+	padding: 2px 16px;
+	line-height: 36px;
+	cursor: pointer;
+	transition: background-color 0.07s;
+}
+div.textToolButton:hover {
+	background-color: #d6d6d6;
 }
 
 img.toolButton {

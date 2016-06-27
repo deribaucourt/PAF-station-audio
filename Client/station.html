@@ -88,16 +88,16 @@ Code starts here                                                                
 	</div>
 	
 	<!-- ************* Filters Popup ************ -->
-	<div id="filtersPopup" class="popup" style="left:60%; width:40%; height:auto">
-		<ul>
-			<li class="simpleList"><img src="icons/close.png" class="filtersPopup" style="width:30px; height:30px" onClick="toggleFiltersPopup(false)" /></li>
-			<li class="simpleList"><img src="icons/megaphone.png" class="filtersPopup" />Gain : <input type="text" id="trackValueInput"><input type="text" id="gainValueInput"><a class="button" onclick="applyGain();">Apply</a></li>
-			<li class="simpleList">Deconvolve : <input type="text" id="deconvolveTrack1"><input type="text" id="deconvolveTrack2"><a class="button" onclick="applyDeconvolve();">Apply</a><a class="button" onclick="addTrack(genSin());">addSin</a></li>
-			<li class="simpleList"><img src="icons/fade_in.png" class="filtersPopup" />Fade in : <a class="button" style="float:none">linear</a><a class="button" style="float:none">exponential</a><a class="button" style="float:none">logarithmic</a></li>
-			<li class="simpleList"><img src="icons/fade_out.png" class="filtersPopup" />Fade out : <a class="button" style="float:none">linear</a><a class="button" style="float:none">exponential</a><a class="button" style="float:none">logarithmic</a></li>
-			<li class="simpleList"><img src="icons/mix.png" class="filtersPopup" />Mix tracks : <a class="button" style="float:none">2 tracks</a><a class="button" style="float:none">3 tracks</a><a class="button" style="float:none">4 tracks</a></li>
-			<li class="simpleList"><img src="icons/deconvolve.png" class="filtersPopup" />Convolve : <a class="button" style="float:none" onclick="addFilter(0)">from track</a><a class="button" style="float:none">from file</a></li>
-		</ul>
+	<div id="filtersPopup" class="popup" style="left:70%; top:120px; width:64px; width:30%; height:20%; display:none; background:#d6d6d6; padding:6px;">
+		<div style="width:100%; clear:both; margin-bottom:6px;">
+			<span>Duration</span><input type="text" style="width:60px; margin:4px;"/>
+		</div>
+		<div style="width:100%; clear:both;">
+			<span>Mix</span><input type="text" style="width:60px; margin:4px;" />
+		</div>
+		<div style="width:100%; clear:both;">
+			<span style="text-decoration:underline;">Import impulse response...</span>
+		</div>
 	</div>
 	
 	<!-- ************* Home Page ************ -->
@@ -133,12 +133,10 @@ Code starts here                                                                
 			
 			<div id="filtersToolsContainer" class="toolsContainer" style="width:auto; height:100%; float:right; border-left-width:1px;">
 				<div class="toolsHeader unselectable">Filters</div>
-				<div id="undoButton" class="toolButton" onclick="undo();"><img src="icons/back.png" /></div>
-				<div id="redoButton" class="toolButton" onclick="redo();"><img src="icons/forward.png" /></div>
-				<div id="undoButton" class="toolButton" onclick="undo();"><img src="icons/back.png" /></div>
-				<div id="redoButton" class="toolButton" onclick="redo();"><img src="icons/forward.png" /></div>
-				<div id="undoButton" class="toolButton" onclick="undo();"><img src="icons/back.png" /></div>
-				<div id="redoButton" class="toolButton" onclick="redo();"><img src="icons/forward.png" /></div>
+				<div id="filterButton" class="textToolButton unselectable">Deconvolve</div>
+				<div id="filterButton" class="textToolButton unselectable">Reverb</div>
+				<div id="filterButton" class="textToolButton unselectable">Delay</div>
+				<div id="filterButton" class="textToolButton unselectable">Fade</div>
 			</div>
 		</div>
 		
@@ -151,7 +149,7 @@ Code starts here                                                                
 		</div>
 	
 		<div id="tracksContainer" ondrop="drop(event)" ondragover="allowDrop(event)" style="width:100%; height:calc(100% - 165px); overflow-y:auto; background-color:#242424; border:2px solid #3a3a3a;">
-			<h2 id="tracksInsertMessage">Insérez vos pistes ici</h2>
+			<h2 id="tracksInsertMessage">Drag songs here</h2>
 		</div>
 	
 		<div id="cursor">
