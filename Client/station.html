@@ -145,7 +145,7 @@ Code starts here                                                                
 		<div id="timelineContainer" style="width:100%; height:auto; background-color:#2e2e2e; border:2px solid #3a3a3a; border-bottom-width:0; clear:both;">
 			<div id="globalTimelineContainer" style="width: 200px; height:100%; border:0 solid #3a3a3a; border-right-width:2px;">   <!-- TODO: rename this globalVolumeContainer in all files -->
 				<div id="globalMuteButton" class="muteButton"><img src="icons/multimedia-1.png" id="globalMuteIcon" style="display:none;" /></div>
-				<input id="globalVolumeControl" title="Volume" class="volumeControl" type="range" min="0" max="100" step="1" value="100" />
+				<input id="globalVolumeControl" title="Volume" class="volumeControl" type="range" min="0" max="2" step="0.05" value="1" onchange="soundLevel(this.value)"/>
 			</div>
 			<div id="localTimelineContainer" style="width: calc(100% - 200px); height:32px;"><canvas id="timelineCanvas" style="width: 100%; height:100%;" /></div>
 		</div>

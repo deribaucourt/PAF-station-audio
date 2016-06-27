@@ -27,7 +27,7 @@ gain track.number value;
 
 var instructions = [] ; // array of string
 var args ;
-var lastTrack;
+var lastTrack = [];
 
 function execute(finalOutput, isPlayButton) {   // does the wiring to produce the sound   ["Speakers","File","Screen"] TODO: rename processTo
   for(track of tracks) {
@@ -46,8 +46,6 @@ function execute(finalOutput, isPlayButton) {   // does the wiring to produce th
         gainNode.gain.value = args[2] ;
         tracks[args[1]].outputNode.connect(gainNode) ;
         tracks[args[1]].outputNode = gainNode ;
-        lastTrack = tracks[args[1]];
-        console.log("EH OH EH OH EH OH");
         break;
 
     }
@@ -56,26 +54,23 @@ function execute(finalOutput, isPlayButton) {   // does the wiring to produce th
   connectFinalOutputs(finalOutput, isPlayButton) ;
 
 }
-
 function soundLevel(level)
 {
-  if (!lastTrack)
-  {
-    
-  }
-  for (var i = 0 ; i < tracks.length ; i++)
-  {
-    lastTrack.audioSource = audioContext.createBufferSource() ;
-    lastTrack.outputNode = lastTrack.audioSource ;
+  console.log("sound = " +level);
+  for (var j = 0 ; j < tracks.length ; j++)
+    {
+      if(tracks[j].audioSource.buffer)
+        tracks[j].audioSource.stop() ;
+      tracks[j].audioSource = audioContext.createBufferSource() ;
+      tracks[j].outputNode = tracks[j].audioSource ;
 
-    gainNode = audioContext.createGain();
-    gainNode.gain.value = level;
-    tracks[i].outputNode.connect(gainNode);
-    tracks[i].outputNode = gainNode;
-  }
-
-listenToAll(1);
-connectFinalOutputs("Speakers", 1);
+      SoundLevelNode = audioContext.createGain() ;
+      SoundLevelNode.gain.value = level;
+      tracks[j].outputNode.connect(SoundLevelNode) ;
+      tracks[j].outputNode = SoundLevelNode ;
+    }
+  listenToAll(1);
+  listenToAll(1);
 }
 
 
