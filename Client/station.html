@@ -115,21 +115,21 @@ Code starts here                                                                
 		<div id="toolsContainer" style="width:100%; height:auto; border:1px solid #e6e6e6; border-width:1px 2px; background-color:#f3f3f3; clear:both;">
 			<div id="playbackControllContainer" class="toolsContainer" style="width:auto; height:100%;">
 				<div class="toolsHeader unselectable">Playback</div>
-				<div id="rewindButton" class="toolButton" onclick="rewind()"><img src="icons/arrows.png" class="toolButton" /></div>
-				<div id="playButton" class="toolButton" onclick="execute('Speakers', 1)"><img src="icons/play-button.png" id="play" style="display:block" class="toolButton" />
-                                                                                 <img src = "icons/pause-button.png" id="pause" style="display:none" class="toolButton"/></div>
-				<div id="stopButton" class="toolButton" onclick="execute('Speakers', 0)"><img src="icons/stop.png" class="toolButton" /></div>
+				<div id="rewindButton" class="toolButton" title="Rewind" onclick="rewind()"><img src="icons/arrows.png" class="toolButton" /></div>
+				<div id="playButton" class="toolButton" onclick="execute('Speakers', 1)"><img src="icons/play-button.png" title="Play" id="play" style="display:block" class="toolButton" />
+                                                                                 <img src = "icons/pause-button.png" title="Pause" id="pause" style="display:none" class="toolButton"/></div>
+				<div id="stopButton" title="Stop" class="toolButton" onclick="execute('Speakers', 0)"><img src="icons/stop.png" class="toolButton" /></div>
 			</div>
 			<div id="editionToolsContainer" class="toolsContainer" style="width:auto; height:100%;">
 				<div class="toolsHeader unselectable">Edition</div>
-				<div id="copyButton" class="toolButton"><img src="icons/copy-archive.png" /></div>
-				<div id="cutButton" class="toolButton"><img src="icons/scissors.png" /></div>
-				<div id="pasteButton" class="toolButton"><img src="icons/paste-file.png" /></div>
+				<div id="copyButton" title="Copy" class="toolButton"><img src="icons/copy-archive.png" /></div>
+				<div id="cutButton" title="Cut" class="toolButton"><img src="icons/scissors.png" /></div>
+				<div id="pasteButton" title="Paste" class="toolButton"><img src="icons/paste-file.png" /></div>
 			</div>
 			<div id="historyToolsContainer" class="toolsContainer" style="width:auto; height:100%; border-right-width:1px;">
 				<div class="toolsHeader unselectable">History</div>
-				<div id="undoButton" class="toolButton" onclick="undo();"><img src="icons/back.png" /></div>
-				<div id="redoButton" class="toolButton" onclick="redo();"><img src="icons/forward.png" /></div>
+				<div id="undoButton" title="Undo" class="toolButton" onclick="undo();"><img src="icons/back.png" /></div>
+				<div id="redoButton" title="Redo" class="toolButton" onclick="redo();"><img src="icons/forward.png" /></div>
 			</div>
 
 			<div id="filtersToolsContainer" class="toolsContainer" style="width:auto; height:100%; float:right; border-left-width:1px;">
@@ -150,7 +150,7 @@ Code starts here                                                                
 			<div id="localTimelineContainer" style="width: calc(100% - 200px); height:32px;"><canvas id="timelineCanvas" style="width: 100%; height:100%;" /></div>
 		</div>
 
-		<div id="tracksContainer" ondrop="drop(event)" ondragover="allowDrop(event)" style="width:100%; height:calc(100% - 165px); overflow-y:auto; background-color:#242424; border:2px solid #3a3a3a;">
+		<div id="tracksContainer" ondrop="drop(event);" ondragover="allowDrop(event)" style="width:100%; height:calc(100% - 165px); overflow-y:auto; background-color:#242424; border:2px solid #3a3a3a;">
 			<h2 id="tracksInsertMessage">Drag songs here</h2>
 		</div>
 
