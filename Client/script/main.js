@@ -190,6 +190,10 @@ var play_pause = "block";
 function listenToAll(listen)
 {
 
+    if(cursorPosition > timeWindowOffset + timeWindowSize || cursorPosition < timeWindowOffset) {
+      timeWindowOffset = cursorPosition ;
+      repaintTracks();
+    }
 
 
     if (play_pause === "block")
@@ -226,8 +230,6 @@ function listenToAll(listen)
 
   if (!listen)
   {
-    timeWindowOffset = 0 ;
-    repaintTracks() ;
     play_pause = "block";
     document.getElementById("play").style.display = "block";
     document.getElementById("pause").style.display = "none";

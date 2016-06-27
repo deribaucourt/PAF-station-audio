@@ -57,7 +57,7 @@ function repaintTimeline() {
   timeDivision = Math.pow(10,Math.floor(Math.log10(timeWindowSize / 5))) ;
   firstDivision = Math.floor(timeWindowOffset/timeDivision) ;
   numberOfDivisions = Math.ceil( timeWindowSize / timeDivision ) ;
-  for(var i = 0; i<numberOfDivisions; i++) {  // Trace 6 big time divisions
+  for(var i = 0; i<=numberOfDivisions; i++) {  // Trace 6 big time divisions
     bigDivisionLocation = ( i + firstDivision - timeWindowOffset/timeDivision ) * timelineWidth / numberOfDivisions ;
     timeline.moveTo(bigDivisionLocation, 0);
     timeline.lineTo(bigDivisionLocation, timelineHeight);
