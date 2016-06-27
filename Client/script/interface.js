@@ -169,7 +169,7 @@ function togglePopup(caller, elementId, loadingFunction) {
 
 function drawNewTrack(track) {
   	console.log("loading html code for track number "+ track.number );
-	var callbackFunction = function() {
+	setTimeout(function() {
 		var c = document.getElementById("trackCanvas"+track.number) ;   // Fixes canvas stretching
       	c.width = c.clientWidth;
       	c.height = c.clientHeight;
@@ -180,16 +180,17 @@ function drawNewTrack(track) {
         	drawSignal(tracks[j]);
       	}
       	document.getElementById("tracksInsertMessage").style.display = "none";
-	};
-    serveTemplateIntoContainer(document.getElementById("tracksContainer"), "track", track.number, callbackFunction); // Updated method to load the template
+	}, 1000);
+	//var callbackFunctionPartial = callbackFunction(track);
+    serveTemplateIntoContainer(document.getElementById("tracksContainer"), "track", track.number, function(){}); // Updated method to load the template
 }
 
 function drawRecordTrack() {
 	console.log("painting record track last");
-	var callbackFunction = function() {
+	setTimeout(function() {
 		document.getElementById("recordButton").addEventListener("click", onRecordButtonPress);
-	};
-	serveTemplateIntoContainer(document.getElementById("tracksContainer"), "record", "")
+	}, 1000);
+	serveTemplateIntoContainer(document.getElementById("tracksContainer"), "record", "", function(){})
 }
 
     /******************** Record Track *****************/
