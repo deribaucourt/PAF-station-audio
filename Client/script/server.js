@@ -17,96 +17,149 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 
 function GetXMLHttpRequest() {
-    "use strict";
+	"use strict";
 
-    var xhr = null;
+	var xhr = null;
 
-    if (window.XMLHttpRequest || window.ActiveXObject) {
-        if (window.ActiveXObject) {
-            try {
-                xhr = new ActiveXObject("Msxml2.XMLHTTP");
-            } catch(e) {
-                xhr = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-        } else {
-            xhr = new XMLHttpRequest();
-        }
-    } else {
-        alert("Votre navigateur ne supporte pas l'objet XMLHTTPRequest");
-        return null;
-    }
-    
-    return xhr;
+	if (window.XMLHttpRequest || window.ActiveXObject) {
+		if (window.ActiveXObject) {
+			try {
+				xhr = new ActiveXObject("Msxml2.XMLHTTP");
+			} catch(e) {
+				xhr = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+		} else {
+			xhr = new XMLHttpRequest();
+		}
+	} else {
+		alert("Votre navigateur ne supporte pas l'objet XMLHTTPRequest");
+		return null;
+	}
+	
+	return xhr;
+}
+
+function serveTemplateIntoContainer(container, template, trackId) {
+	"use strict";
+	
+	var xhr = new GetXMLHttpRequest();
+	
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 0)) {
+			container.innerHTML += xhr.responseText.replace(/TRACKID/gi, trackId);
+		}
+	}
+	
+	xhr.open("GET", "/template?template_name=" + template, true);
+	xhr.responseType = "text";
+	xhr.send();
 }
 
 function retrieveProjects() {
-    "use strict";
-    
-    var xhr = new GetXMLHttpRequest();
-    
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
-            parseProjects(xhr.responseText);
-        }
-    }
-    
-    xhr.open("GET", "/retrieve", true);
-    xhr.send();
+	"use strict";
+	
+	var xhr = new GetXMLHttpRequest();
+	
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 0)) {
+			displayProjects(xhr.response);
+		}
+	}
+	
+	xhr.open("GET", "/retrieve", true);
+	xhr.responseType = "json";
+	xhr.send();
 }
 
-function parseProjects(responseText) {
-    var responseObj = JSON.parse(responseText);
-    var files = responseObj.results;
-    
-    for (i = 0 ; i < files.length ; i++) {
-        console.log(files[i].projectName);
-        document.getElementById("projectsPopup").innerHTML += files[i].projectName + " ; "
-    }
-    
-    toggleProjectsPopup(true);
+function displayProjects(response) {
+	var files = response.projects;
+	
+	var projectsPopup = document.getElementById("projectsPopupContainer");
+	var projectsList = document.createElement("ul");
+	projectsList.setAttribute("style", "width:100%");
+	
+	var listButton, listElement;
+	
+	projectsPopup.innerHTML = "";
+	
+	for (i = 0 ; i < files.length ; i++) {
+		spanElement = document.createElement("span");
+		spanElement.setAttribute("class", "listChoice");
+		spanElement.appendChild(document.createTextNode(files[i].projectName));
+		
+		listElement = document.createElement("li");
+		listElement.appendChild(spanElement);
+		listElement.setAttribute("onclick", "loadProject('" + files[i].fileName + "')");
+		listElement.setAttribute("class", "listChoice unselectable");
+		listElement.setAttribute("style", "padding-left:40px;");
+		
+		projectsList.appendChild(listElement);
+	}
+	
+	projectsPopup.appendChild(projectsList);
 }
 
-function generateProject() {
-    var projectName = document.getElementById("projectNameInput").value
-    
-    var dataObject = {"projectName" : projectName}
-    
-    return JSON.stringify(dataObject)
+function loadProject(fileName) {
+	"use strict";
+	
+	var xhr = new GetXMLHttpRequest();
+	
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 0)) {
+			console.log(xhr.response);
+		}
+	}
+	
+	xhr.open("GET", "/load?file_name=" + fileName, true);
+	xhr.responseType = "json";
+	xhr.send();
 }
 
 function exportProject() {
-    "use strict";
-    
-    var xhr = new GetXMLHttpRequest();
-    var sentText = generateProject();
-    
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0) && xhr.responseText == "done") {
-            //window.location.assign("/project.bin");
-        }
-    }
-    
-    xhr.open("POST", "/generate", true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send(sentText);
+	"use strict";
+	
+	var xhr = new GetXMLHttpRequest();
+	var project = JSON.stringify(generateProject());
+	
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 0)) {
+			retrieveProjects();
+		}
+	}
+	
+	xhr.open("POST", "/generate", true);
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send(project);
 }
 
-function exportChannelData(id) {
-    "use strict";
-    
-    var xhr = new GetXMLHttpRequest();
-    var arrayLeft = Array.prototype.slice.call(tracks[id].signal.getChannelData(0));
-    var arrayRight = Array.prototype.slice.call(tracks[id].signal.getChannelData(1));
-    
-    var channelData = JSON.stringify({"leftChannel" : arrayLeft, "rightChannel" : arrayRight});
-    
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
-            //console.log(xhr.responseText);
-        }
-    }
-    
-    xhr.open("POST", "/filteraudio", true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send(channelData);
+function generateProject() {
+	var projectName = document.getElementById("projectNameInput").value
+	
+	var project = {"projectName" : projectName};
+	
+	return project
+}
+
+function serverDeconvolve(id1, id2) {
+	"use strict";
+	
+	var xhr = new GetXMLHttpRequest();
+	var signal1ArrayLeft = Array.prototype.slice.call(tracks[id1].signal.getChannelData(0));
+	var signal1ArrayRight = Array.prototype.slice.call(tracks[id1].signal.getChannelData(1));
+	var signal2ArrayLeft = Array.prototype.slice.call(tracks[id2].signal.getChannelData(0));
+	var signal2ArrayRight = Array.prototype.slice.call(tracks[id2].signal.getChannelData(1));
+	
+	var channelData = JSON.stringify({"signal1" : {"leftChannel" : signal1ArrayLeft, "rightChannel" : signal1ArrayRight},
+									  "signal2" : {"leftChannel" : signal2ArrayLeft, "rightChannel" : signal2ArrayRight}});
+	
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 0)) {
+			console.log(xhr.response); // the result
+		}
+	}
+	
+	xhr.open("POST", "/deconvolve", true);
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.responseType = "arraybuffer";
+	xhr.send(channelData);
 }
