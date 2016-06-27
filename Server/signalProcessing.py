@@ -1,25 +1,35 @@
-"""Copyright© 2016 Vincent Bisogno, François Desrichard, Enguerrand de Ribaucourt, Pierre Ucla
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Jun 27 14:52:35 2016
 
-This file is part of Serval Audio Editor.
+@author: pierreucla
+"""
 
-Serval Audio Editor is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>."""
-
-import numpy as np
-
-def deconvolve(sig1, sig2) :
-    K = max(len(sig1), len(sig2))
+def deconvolve(sig1, sig2,Fe) :
+    
+    n=len(sig2);
+    K = 2**(n).bit_length() 
     fft1 = np.fft.fft(sig1,K)
     fft2 = np.fft.fft(sig2,K)
-    tmp = fft1 / fft2
+    """
+    borneinf = int(20*K/Fe) + 2;
+    bornesup = int(20000*K/Fe);
+    
+    """
+    
+    tmp = fft2 / fft1;
+   
+   """
+   
+    
+    for k in range(borneinf):
+        tmp[k] = 0;
+       
+    
+    for k in range(bornesup,K):
+        tmp[k] = 0;
+       
+     """
+   
     return np.real(np.fft.ifft(tmp))

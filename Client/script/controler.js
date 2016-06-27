@@ -53,6 +53,32 @@ function execute(finalOutput, isPlayButton) {   // does the wiring to produce th
         console.log("EH OH EH OH EH OH");
         break;
 
+      case "fadeIn" :
+        var gainNode = audioContext.createGain();
+        var duration = track.audioSource.buffer.duration;
+        var currTime = audioContext.currentTime;
+        var fadeTime = args[2];
+
+        tracks[args[1]].outputNode.connect(gainNode) ;
+        tracks[args[1]].outputNode = gainNode ;
+
+        gainNode.gain.linearRampToValueAtTime(0, currTime);
+        gainNode.gain.linearRampToValueAtTime(1, currTime + fadeTime);
+        break;
+
+        case "fadeOut" :
+          var gainNode = audioContext.createGain();
+          var duration = track.audioSource.buffer.duration;
+          var currTime = audioContext.currentTime;
+          var fadeTime = args[2];
+
+          tracks[args[1]].outputNode.connect(gainNode) ;
+          tracks[args[1]].outputNode = gainNode ;
+
+          gainNode.gain.linearRampToValueAtTime(1, currTime + duration-fadeTime);
+          gainNode.gain.linearRampToValueAtTime(0, currTime + duration);
+          break;
+
     }
   }
 
