@@ -31,8 +31,9 @@ var lastTrack;
 
 function execute(finalOutput, isPlayButton) {   // does the wiring to produce the sound   ["Speakers","File","Screen"] TODO: rename processTo
   for(track of tracks) {
-    if(track.audioSource.buffer)
+    if(track.audioSource.buffer) {
       track.audioSource.stop() ;
+    }
     track.audioSource = audioContext.createBufferSource() ;
     track.outputNode = track.audioSource ;
   }
@@ -87,7 +88,7 @@ function soundLevel(level)
 {
   if (!lastTrack)
   {
-    
+
   }
   for (var i = 0 ; i < tracks.length ; i++)
   {

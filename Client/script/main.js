@@ -148,7 +148,14 @@ function importFile(evt)
         }
     }
 
-document.getElementById('importButton').addEventListener('change', importFile, false); //ToDo : update ref
+//document.getElementById('importButton').addEventListener('change', importFile, false); //ToDo : update ref
+
+function killDelayedPlays() {
+  for(delayedPlay of delayedPlays) {
+    clearTimeout(delayedPlay) ;
+  }
+  delayedPlays = [] ;
+}
 
 var source = [];
 var play_pause = "block";
@@ -160,12 +167,14 @@ function listenToAll(listen)
     if (play_pause === "block")
     {
       play_pause = "none";
-      document.getElementById("playResume").style.display = "none";
+      document.getElementById("play").style.display = "none";
+      document.getElementById("pause").style.display = "block";
     }
     else
     {
       play_pause = "block";
-      document.getElementById("playResume").style.display = "block";
+      document.getElementById("pause").style.display = "none";
+      document.getElementById("play").style.display = "block";
     }
 
   var length = tracks.length;
@@ -190,7 +199,8 @@ function listenToAll(listen)
   if (!listen)
   {
     play_pause = "block";
-    document.getElementById("playResume").style.display = "block";
+    document.getElementById("play").style.display = "block";
+    document.getElementById("pause").style.display = "none";
     cursorPosition = 0;
     offset = 0;
     drawCursor();
@@ -203,33 +213,41 @@ function soloPlay(trackId)
   for (track of tracks)
   {
     track.listen = 0;
-    document.getElementById("muteButtonIcon"+i).style.display = "block";
+    document.getElementById("trackSoloButtonOn"+i).style.display = "none";
+    document.getElementById("trackSoloButtonOff"+i).style.display = "block";
+    mute(i);
     i++;
   }
   i = 0;
   tracks[trackId].listen = 1;
-  document.getElementById("muteButtonIcon"+trackId).style.display = "none";
+  document.getElementById("trackSoloButtonOn"+trackId).style.display = "none";
+  document.getElementById("trackSoloButtonOff"+trackId).style.display = "block";
+
+  document.getElementById("muteButtonIconOff"+trackId).style.display = "block";
+  document.getElementById("muteButtonIconOn"+trackId).style.display = "none";
 
   execute("Speakers", 1);
 }
 
 function mute(trackId)
 {
-  if (document.getElementById("muteButtonIcon"+trackId).style.display === "none")
+  if (document.getElementById("muteButtonIconOn"+trackId).style.display === "none")
   {
     tracks[trackId].listen = 0;
-    document.getElementById("muteButtonIcon"+trackId).style.display = "block";
+    document.getElementById("muteButtonIconOn"+trackId).style.display = "block";
+    document.getElementById("muteButtonIconOff"+trackId).style.display = "none";
   }
   else
   {
     tracks[trackId].listen = 1;
-    document.getElementById("muteButtonIcon"+trackId).style.display = "none";
+    document.getElementById("muteButtonIconOff"+trackId).style.display = "block";
+    document.getElementById("muteButtonIconOn"+trackId).style.display = "none";
   }
 }
 
 function rewind()
 {
-  if (document.getElementById("playResume").style.display === "none")
+  if (document.getElementById("play").style.display === "none")
   {
     execute("Speakers", 0);
     execute("Speakers", 1);

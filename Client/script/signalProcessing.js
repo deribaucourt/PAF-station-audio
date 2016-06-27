@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
   /***************** Recorder Node *****************/
 
 function createRecorderNode() {
-  newAudioNode = audioContext.createScriptProcessor(16384, 1, 0);        // this is a node which stocks several samples.
+  newAudioNode = audioContext.createScriptProcessor(16384, 2, 0);        // this is a node which stocks several samples.
   newAudioNode.record = [[]] ;            //carefull, the first index is for the channel
   newAudioNode.recording = false ;
   newAudioNode.recordSampleRate = 0 ;
@@ -39,9 +39,10 @@ function createRecorderNode() {
       for (var channel = 0; channel < inputBuffer.numberOfChannels; channel++) {
         var inputData = inputBuffer.getChannelData(channel);
         for(var n = 0; n<inputData.length; n++) {
-          newAudioNode.record[channel].push(inputData[n])
+          newAudioNode.record[channel].push(inputData[n]) ;
         }
       }
+      console.log(inputData[0]) ;
     }
   };
 
@@ -52,8 +53,8 @@ function createRecorderNode() {
 
   newAudioNode.stopRecording = function() {     // returns Recorder AudioBuffer
     newAudioNode.recording = false;
-    console.log("recorded channels : "+newAudioNode.record.length +" length : " + newAudioNode.record[0].length +" at rate : " + newAudioNode.recordSampleRate);
-    recordedBuff = audioContext.createBuffer(newAudioNode.record.length,newAudioNode.record[0].length,newAudioNode.recordSampleRate) ;
+    console.log("recorded channels : "+newAudioNode.record.length +" length : " + newAudioNode.record[0].length +" at rate : " + audioContext.sampleRate);
+    recordedBuff = audioContext.createBuffer(newAudioNode.record.length,newAudioNode.record[0].length,audioContext.sampleRate) ;
     for(var channel = 0; channel < recordedBuff.numberOfChannels; channel ++) {
     //    recordedBuff.getChannelData(channel) = newAudioNode.record[channel] ;
       for(var n = 0; n<newAudioNode.record[0].length; n++) {
@@ -81,53 +82,55 @@ function addFilter(trackId) {
 /*************** Display Node **************/
 
 function createDisplayNode(canvas) {      // A node that displays it's signal on a Canvas
-  newAudioNode = audioContext.createScriptProcessor(4096, 1, 0);
+
+  var canvasWidth = canvas.clientWidth;
+  var canvasHeight = canvas.clientHeight;
+  canvas.width = canvasWidth;
+  canvas.height = canvasHeight;
+
+  var samplesPerDivision = timeWindowSize*audioContext.sampleRate/canvasWidth ;
+  console.log(samplesPerDivision) ;
+  console.log(Math.pow(2,Math.ceil(Math.log2(samplesPerDivision)))) ;
+  newAudioNode = audioContext.createScriptProcessor(Math.pow(2,Math.floor(Math.log2(samplesPerDivision))), 2, 2);     // ceil to increase performance
   newAudioNode.c = canvas ;
   newAudioNode.offset = 0 ;
+  newAudioNode.ctx = canvas.getContext("2d") ;
+
+  // Draw Axis
+  newAudioNode.ctx.beginPath();
+  newAudioNode.ctx.strokeStyle = "#664400" ;
+  newAudioNode.ctx.moveTo(0,canvasHeight/2);
+  newAudioNode.ctx.lineTo(canvasWidth,canvasHeight/2);
+  newAudioNode.ctx.stroke();
 
   newAudioNode.onaudioprocess = function(audioProcessingEvent) {
-    inputBuffer = audioProcessingEvent.inputBuffer ;
-    var ctx=newAudioNode.c.getContext("2d");
+    var inputBuffer = audioProcessingEvent.inputBuffer ;
+    var outputBuffer = audioProcessingEvent.outputBuffer;
 
-    var canvasWidth = newAudioNode.c.clientWidth;
-    var canvasHeight = newAudioNode.c.clientHeight;
-    var samplesPerDivision = timeWindowSize*inputBuffer.sampleRate ;
-
-    ctx.clearRect(0, 0, newAudioNode.c.width, newAudioNode.c.height); ;
-
-    // Trace Time axis
-    ctx.beginPath();
-    ctx.strokeStyle = "#664400" ;
-    ctx.moveTo(0,canvasHeight/2);
-    ctx.lineTo(canvasWidth,canvasHeight/2);
-    ctx.stroke();
+    // Simply output the data that passes throug
+    for (var channel = 0; channel < outputBuffer.numberOfChannels; channel++) {
+      var inputData = inputBuffer.getChannelData(channel);
+      var outputData = outputBuffer.getChannelData(channel);
+      for (var sample = 0; sample < inputBuffer.length; sample++) {
+        outputData[sample] = inputData[sample];
+      }
+    }
 
     /* CLASSIC REPRESENTATION OF SOUND POWER */
-    var localMax, previousSample, k;
-    var currentSample = Math.floor(timeWindowOffset*inputBuffer.sampleRate);
-    ctx.beginPath();
-    ctx.strokeStyle = "#e69900" ;
-    for(i = 0; i<canvasWidth; i++) {
-      previousSample = currentSample ;
-      currentSample = Math.floor((timeWindowOffset+newAudioNode.offset+i*timeWindowSize/canvasWidth)*inputBuffer.sampleRate) ;
-      localMax = 0;
-      for(k = previousSample+1; k<currentSample; k++) {
-        if(Math.abs(inputBuffer.getChannelData(0)[k])>localMax) {
-          localMax = Math.abs(inputBuffer.getChannelData(0)[k]) ;
-        }
-      }
-      ctx.moveTo(i,-(localMax-1)*canvasHeight*0.5);
-      ctx.lineTo(i,(localMax+1)*canvasHeight*0.5);
-    }
-    ctx.stroke();
+    newAudioNode.ctx.beginPath();
+    newAudioNode.ctx.strokeStyle = "#e69900" ;
+    localMax = Math.max(...inputBuffer.getChannelData(0)) ;
+    newAudioNode.ctx.moveTo((cursorPosition-timeWindowOffset)/timeWindowSize*canvasWidth,-(localMax-1)*canvasHeight*0.5);
+    newAudioNode.ctx.lineTo((cursorPosition-timeWindowOffset)/timeWindowSize*canvasWidth,(localMax+1)*canvasHeight*0.5);
+    newAudioNode.ctx.stroke();
 
     /*    RAW PCM REPRESENTATION  */ /*
-    ctx.moveTo(0,inputBuffer.getChannelData(0)[timeWindowOffset*inputBuffer.sampleRate]*canvasHeight);
+    newAudioNode.ctx.moveTo(0,inputBuffer.getChannelData(0)[timeWindowOffset*inputBuffer.sampleRate]*canvasHeight);
     for(i = 1; i<canvasWidth; i++) {
-      ctx.lineTo(i,(inputBuffer.getChannelData(0)[Math.floor((timeWindowOffset+i*timeWindowSize/canvasWidth)*inputBuffer.sampleRate)]+0.5)*canvasHeight);
+      newAudioNode.ctx.lineTo(i,(inputBuffer.getChannelData(0)[Math.floor((timeWindowOffset+i*timeWindowSize/canvasWidth)*inputBuffer.sampleRate)]+0.5)*canvasHeight);
     }
     console.log("drawing PCM for "+track.number);
-    ctx.stroke();*/
+    newAudioNode.ctx.stroke();*/
   };
 
   return newAudioNode ;

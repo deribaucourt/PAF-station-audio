@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 function Track(audioBuff) {
   console.log("Instanciating new Track") ;
   this.volume = 100 ;
+  this.title = "Darude - Sandstorm" ;
   this.offset = 0 ;
   this.number = tracks.length ;
   this.signal = audioBuff ;
@@ -32,7 +33,7 @@ function Track(audioBuff) {
   /* *************** Global Variables **************** */
 
 var tracks = [] ;   // Contains the tracks with their signal, volume, ...
-var cursorPosition = 0 ;  // Current cursor time position
+var cursorPosition = 0 ;  // Current cursor time position in s
 var timeWindowOffset = 0 ; // time offset in s
 var timeWindowSize = 60 ;    // zoom level / window time in s
 
@@ -95,7 +96,7 @@ function drawSignal(track) {
   ctx.strokeStyle = "#e69900" ;
   for(i = 0; i<canvasWidth; i++) {
     previousSample = currentSample ;
-    currentSample = Math.floor((timeWindowOffset+i*timeWindowSize/canvasWidth)*track.signal.sampleRate) ;
+    currentSample = Math.floor((timeWindowOffset-track.offset+i*timeWindowSize/canvasWidth)*track.signal.sampleRate) ;
     localMax = 0;
     for(k = previousSample+1; k<currentSample; k++) {
       if(Math.abs(track.signal.getChannelData(0)[k])>localMax) {
@@ -168,28 +169,29 @@ function togglePopup(caller, elementId, loadingFunction) {
 }
 
 function drawNewTrack(track) {
-  console.log("loading html code for track number "+ track.number );
-    serveTemplateIntoContainer(document.getElementById("tracksContainer"), "track", track.number); // Updated method to load the template
-    setTimeout(function() {         //We need to wait for the innerHtml to be in the DOM
-      var c = document.getElementById("trackCanvas"+track.number) ;   // Fixes canvas stretching
-      c.width = c.clientWidth;
-      c.height = c.clientHeight;
-      c.addEventListener("mousedown", tracksMouseDownHandler, false);
-      drawSignal(track);
-      for(var j = 0; j<tracks.length-1; j++) {  // repaint all other canvas (they clear for some reason)
-        console.log("repainting track "+ j);
-        drawSignal(tracks[j]);
-      }
-      document.getElementById("tracksInsertMessage").style.display = "none";
-    },1);
+  	console.log("loading html code for track number "+ track.number );
+	var callbackFunction = function(partialTrack) {
+		var c = document.getElementById("trackCanvas" + partialTrack.number);
+      	c.width = c.clientWidth;
+      	c.height = c.clientHeight;
+      	c.addEventListener("mousedown", tracksMouseDownHandler, false);
+      	drawSignal(partialTrack);
+      	for(var j = 0 ; j < tracks.length - 1 ; j++) {  // repaint all other canvas (they clear for some reason)
+        	console.log("repainting track " + j);
+        	drawSignal(tracks[j]);
+      	}
+      	document.getElementById("tracksInsertMessage").style.display = "none";
+	};
+	var callbackClosure = function() {callbackFunction(track);}
+    serveTemplateIntoContainer(document.getElementById("tracksContainer"), "track", track.number, callbackClosure);
 }
 
 function drawRecordTrack() {
-  console.log("painting record track last");
-	serveTemplateIntoContainer(document.getElementById("tracksContainer"), "record", "")
-    setTimeout( function() {
-      document.getElementById("recordButton").addEventListener("click",onRecordButtonPress);
-    }, 1000); // ToDo : find a proper way now that the request is async (maybe via callback ?)
+	console.log("painting record track last");
+	var callbackFunction = function() {
+		document.getElementById("recordButton").addEventListener("click", onRecordButtonPress);
+	};
+	serveTemplateIntoContainer(document.getElementById("tracksContainer"), "record", "", callbackFunction);
 }
 
     /******************** Record Track *****************/

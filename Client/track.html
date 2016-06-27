@@ -16,19 +16,21 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>. -->
 
 <!-- all TRACK_ID will be replaced with the number -->
-<div class="trackTopContainer" id="trackTopContainerTRACKID"> 
+<div class="trackTopContainer" id="trackTopContainerTRACKID">
 	<div class="trackMenu" id="trackMenuTRACKID" style="width:200px; height:100%; overflow:hidden">
-		<div id="trackTitleTRACKID" class="trackMenuTitle">Darude-Sandstorm</div>
+		<div id="trackTitleTRACKID" class="trackMenuTitle"><input type="text" class="trackMenuTitleInput" value="Track TRACKID" id="trackTitleInputTRACKID"></div>
 		<div class="trackToolsContainer" style="width:100%; height:calc(100% - 30px);">
 			<div style="width:100%; height:calc(100% - 36px); float:none; clear:both; padding:0 0 4px 0;">
 				<div class="trackButton" style="width:34%; height:100%;" onclick="onClose(TRACKID);" id="closeButtonTRACKID">
 					<img class="trackButton" src="icons/line.png"/>
 				</div>
 				<div class="trackButton" style="width:33%; height:100%;" id="trackSoloButtonTRACKID" onclick="soloPlay(TRACKID)">
-					<img class="trackButton" src="icons/track_solo.png" />
+					<img class="trackButton" id="trackSoloButtonOffTRACKID" src="icons/track_solo_off.png" style="display:block" />
+					<img class="trackButton" id="trackSoloButtonOnTRACKID" src="icons/track_solo_on.png" style="display:none"/>
 				</div>
 				<div class="trackButton" style="width:33%; height:100%;" id="trackMuteButtonTRACKID" onclick="mute(TRACKID)" >
-					<img class="trackButton" id="muteButtonIconTRACKID" src="icons/track_mute.png" />
+					<img class="trackButton" id="muteButtonIconOffTRACKID" src="icons/track_mute_off.png" style="display:block" />
+					<img class="trackButton" id="muteButtonIconOnTRACKID" src="icons/track_mute_on.png" style="display:none" />
 				</div>
 			</div>
 			<div class="trackBalanceVolume" id="trackVolumeControlTRACKID">
@@ -39,7 +41,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. -->
 				</div>
 				<div style="width:100%; clear:both;">
 					<div class="trackBalanceVolumeLabel unselectable">0</div>
-					<input id="volumeControlTRACKID" title="Record volume" class="volumeControl" style="width:calc(100% - 32px); height:16px; margin:0;" type="range" min="0" max="100" step="1" value="0" />
+					<input id="volumeControlTRACKID" title="Record volume" class="volumeControl" style="width:calc(100% - 32px); height:16px; margin:0;" type="range" min="0" max="100" step="1" value="100" />
 					<div class="trackBalanceVolumeLabel unselectable">1</div>
 				</div>
 			</div>

@@ -35,6 +35,8 @@ function cursorFollowPlaying() {
     }
 }
 
+var delayedPlays = [] ;
+
 function play(listen, source, input, offset) {
     if (comptGeneral === 0)
     {
@@ -60,12 +62,19 @@ function play(listen, source, input, offset) {
         playingCompt++;
 
         // Play the source
-        source.start(0,cursorPosition + offset);
+        if(cursorPosition - offset < 0) {   // source.start does not handle negative offset (delay before play)
+          console.log("offset negatif");
+          delayedPlays.push(setTimeout(function() {
+            source.start(0,0) ;
+          },-(cursorPosition-offset)*1000)) ;
+        } else
+          source.start(0,cursorPosition - offset);
 
         playing = true;
     }
     else {
       playing = false;
+      killDelayedPlays() ;
       if (source.buffer) source.stop();
     }
     if (comptGeneral === length)
@@ -85,18 +94,21 @@ function playback(audioBuffer, listen, source, input, offset) {  // ArrayBuffer 
 
 var webRtcSource;
 var recorderNodeForRecord = createRecorderNode() ;
+var recordViewer ;
 var recordStartingPosition = 0 ;
 
 function onRecordStart() {
   console.log("Starting Record") ;
+  recordViewer = createDisplayNode(document.getElementById("recordTrack")) ;
   navigator.getUserMedia =  navigator.mozGetUserMedia ;
   navigator.getUserMedia(
     { audio: true, video: false },
     function (mediaStream) {        // called once the user has agreed to record
       webRtcSource = audioContext.createMediaStreamSource(mediaStream);
-      webRtcSource.connect(recorderNodeForRecord);
+      webRtcSource.connect(recordViewer);
+      recordViewer.connect(recorderNodeForRecord) ;
       recordStartingPosition = cursorPosition ;
-      listenToAll(1);           //start playback
+      execute("Speakers",1) ;           //start playback
       recorderNodeForRecord.startRecording() ;
     },
     function (error) {
@@ -108,11 +120,11 @@ function onRecordStart() {
 function onRecordStop() {
   if(webRtcSource !== undefined) {
     console.log("Stoping Record") ;
-    listenToAll(1) ;            // pause Playback
-    webRtcSource.disconnect();
+    execute("Speakers",1) ;            // pause Playback (same as pressing play/pause button)
+    webRtcSource.disconnect() ;
+    recordViewer.disconnect() ;
     webRtcSource = null;
     addTrack(recorderNodeForRecord.stopRecording()) ;
     tracks[tracks.length-1].offset = recordStartingPosition ;
-  //  tracks[tracks.length-1].rename("Recorded Track") ;  //TODO : track names
   }
 }
