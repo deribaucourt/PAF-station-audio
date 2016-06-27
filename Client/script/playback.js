@@ -36,6 +36,7 @@ function cursorFollowPlaying() {
 }
 
 var delayedPlays = [] ;
+var playingSources = [];
 
 function play(listen, source, input, offset) {
     if (comptGeneral === 0)
@@ -67,15 +68,17 @@ function play(listen, source, input, offset) {
           delayedPlays.push(setTimeout(function() {
             source.start(0,0) ;
           },-(cursorPosition-offset)*1000)) ;
-        } else
+        } else {
           source.start(0,cursorPosition - offset);
+          playingSources.push(source) ;
+        }
 
         playing = true;
     }
     else {
       playing = false;
       killDelayedPlays() ;
-      if (source.buffer) source.stop();
+      if (source.buffer && playingSources.includes(source)) source.stop();
     }
     if (comptGeneral === length)
     {
