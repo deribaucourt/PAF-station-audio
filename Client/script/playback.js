@@ -67,6 +67,7 @@ function play(listen, source, input, offset) {
           console.log("offset negatif");
           delayedPlays.push(setTimeout(function() {
             source.start(0,0) ;
+              playingSources.push(source) ;
           },-(cursorPosition-offset)*1000)) ;
         } else {
           source.start(0,cursorPosition - offset);
