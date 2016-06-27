@@ -1,7 +1,6 @@
 from flask import Flask, request, make_response, jsonify
 from werkzeug.routing import BaseConverter
 from os import listdir
-from slugify import slugify
 import json
 
 app = Flask(__name__, static_url_path="", static_folder="../Client")
@@ -30,7 +29,7 @@ def serve_template() :
 def generate_file() :
     project_data = json.loads(request.data)
     
-    file_name = slugify(project_data["projectName"]) + ".json"
+    file_name = get_min_filename
     
     with open("projects/" + file_name, "w+") as f :
         json.dump(project_data, f)
