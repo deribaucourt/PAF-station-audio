@@ -148,7 +148,7 @@ function importFile(evt)
         }
     }
 
-document.getElementById('importButton').addEventListener('change', importFile, false); //ToDo : update ref
+//document.getElementById('importButton').addEventListener('change', importFile, false); //ToDo : update ref
 
 var source = [];
 var play_pause = "block";
@@ -160,12 +160,14 @@ function listenToAll(listen)
     if (play_pause === "block")
     {
       play_pause = "none";
-      document.getElementById("playResume").style.display = "none";
+      document.getElementById("play").style.display = "none";
+      document.getElementById("pause").style.display = "block";
     }
     else
     {
       play_pause = "block";
-      document.getElementById("playResume").style.display = "block";
+      document.getElementById("pause").style.display = "none";
+      document.getElementById("play").style.display = "block";
     }
 
   var length = tracks.length;
