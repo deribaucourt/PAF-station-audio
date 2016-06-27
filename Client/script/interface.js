@@ -97,8 +97,8 @@ function drawSignal(track) {
   var currentSample = Math.floor(timeWindowOffset*track.signal.sampleRate);
   ctx.beginPath();
   ctx.strokeStyle = "#e69900" ;
-  firstPixel = Math.max(0, Math.ceil((track.offset-timeWindowOffset)*canvasWidth/timeWindowSize ) ) ;
-  lastPixel = Math.min(canvasWidth, Math.floor((track.offset-timeWindowOffset + timeWindowSize)*canvasWidth/timeWindowSize ) ) ;
+  firstPixel = Math.max(0, Math.floor((track.offset-timeWindowOffset)*canvasWidth/timeWindowSize ) ) ;
+  lastPixel = Math.min(canvasWidth, Math.ceil( canvasWidth + (track.offset + track.signal.duration -timeWindowOffset)*canvasWidth/timeWindowSize ) ) ;
   for(i = firstPixel; i<=lastPixel; i++) {
     previousSample = currentSample ;
     currentSample = Math.floor((timeWindowOffset-track.offset+i*timeWindowSize/canvasWidth)*track.signal.sampleRate) ;
