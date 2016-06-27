@@ -169,28 +169,28 @@ function togglePopup(caller, elementId, loadingFunction) {
 
 function drawNewTrack(track) {
   	console.log("loading html code for track number "+ track.number );
-	setTimeout(function() {
-		var c = document.getElementById("trackCanvas"+track.number) ;   // Fixes canvas stretching
+	var callbackFunction = function(partialTrack) {
+		var c = document.getElementById("trackCanvas" + partialTrack.number);
       	c.width = c.clientWidth;
       	c.height = c.clientHeight;
       	c.addEventListener("mousedown", tracksMouseDownHandler, false);
-      	drawSignal(track);
-      	for(var j = 0; j<tracks.length-1; j++) {  // repaint all other canvas (they clear for some reason)
-        	console.log("repainting track "+ j);
+      	drawSignal(partialTrack);
+      	for(var j = 0 ; j < tracks.length - 1 ; j++) {  // repaint all other canvas (they clear for some reason)
+        	console.log("repainting track " + j);
         	drawSignal(tracks[j]);
       	}
       	document.getElementById("tracksInsertMessage").style.display = "none";
-	}, 1000);
-	//var callbackFunctionPartial = callbackFunction(track);
-    serveTemplateIntoContainer(document.getElementById("tracksContainer"), "track", track.number, function(){}); // Updated method to load the template
+	};
+	var callbackClosure = function() {callbackFunction(track);}
+    serveTemplateIntoContainer(document.getElementById("tracksContainer"), "track", track.number, callbackClosure);
 }
 
 function drawRecordTrack() {
 	console.log("painting record track last");
-	setTimeout(function() {
+	var callbackFunction = function() {
 		document.getElementById("recordButton").addEventListener("click", onRecordButtonPress);
-	}, 1000);
-	serveTemplateIntoContainer(document.getElementById("tracksContainer"), "record", "", function(){})
+	};
+	serveTemplateIntoContainer(document.getElementById("tracksContainer"), "record", "", callbackFunction);
 }
 
     /******************** Record Track *****************/

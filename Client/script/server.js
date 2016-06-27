@@ -47,7 +47,7 @@ function serveTemplateIntoContainer(container, template, trackId, callback) {
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 0)) {
 			container.innerHTML += xhr.responseText.replace(/TRACKID/gi, trackId);
-			callback();
+			setTimeout(callback, 1000);
 		}
 	}
 	
