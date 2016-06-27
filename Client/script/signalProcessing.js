@@ -84,43 +84,41 @@ function createDisplayNode(canvas) {      // A node that displays it's signal on
   newAudioNode = audioContext.createScriptProcessor(16384, 2, 2);
   newAudioNode.c = canvas ;
   newAudioNode.offset = 0 ;
+  newAudioNode.ctx = canvas.getContext("2d") ;
+
+  var canvasWidth = newAudioNode.c.clientWidth;
+  var canvasHeight = newAudioNode.c.clientHeight;
 
   newAudioNode.onaudioprocess = function(audioProcessingEvent) {
     inputBuffer = audioProcessingEvent.inputBuffer ;
     audioProcessingEvent.outputBuffer = inputBuffer ;
-    var ctx=newAudioNode.c.getContext("2d");
-
-    var canvasWidth = newAudioNode.c.clientWidth;
-    var canvasHeight = newAudioNode.c.clientHeight;
     var samplesPerDivision = timeWindowSize*inputBuffer.sampleRate ;
 
     /* CLASSIC REPRESENTATION OF SOUND POWER */
     var localMax, previousSample;
     var currentSample = 0; //Math.floor(timeWindowOffset*inputBuffer.sampleRate);
-    ctx.beginPath();
-    ctx.strokeStyle = "#e69900" ;
+    newAudioNode.ctx.beginPath();
+    newAudioNode.ctx.strokeStyle = "#e69900" ;
     pixelsToDraw = 16384/samplesPerDivision ;
-    for(i = 0; i<pixelsToDraw; i++) {
-      previousSample = currentSample ;
-      currentSample += samplesPerDivision ;
+    for(currentSample = 0; currentSample<16384; currentSample+=samplesPerDivision) {
       localMax = 0;
-      for(k = previousSample+1; k<currentSample; k++) {
+      for(k = currentSample; k<currentSample+samplesPerDivision; k++) {
         if(Math.abs(inputBuffer.getChannelData(0)[k])>localMax) {
           localMax = Math.abs(inputBuffer.getChannelData(0)[k]) ;
         }
       }
-      ctx.moveTo(i+cursorPosition/timeWindowSize,-(localMax-1)*canvasHeight*0.5);
-      ctx.lineTo(i+cursorPosition/timeWindowSize,(localMax+1)*canvasHeight*0.5);
+      newAudioNode.ctx.moveTo(currentSample+cursorPosition/timeWindowSize,-(localMax-1)*canvasHeight*0.5);
+      newAudioNode.ctx.lineTo(currentSample+cursorPosition/timeWindowSize,(localMax+1)*canvasHeight*0.5);
     }
-    ctx.stroke();
+    newAudioNode.ctx.stroke();
 
     /*    RAW PCM REPRESENTATION  */ /*
-    ctx.moveTo(0,inputBuffer.getChannelData(0)[timeWindowOffset*inputBuffer.sampleRate]*canvasHeight);
+    newAudioNode.ctx.moveTo(0,inputBuffer.getChannelData(0)[timeWindowOffset*inputBuffer.sampleRate]*canvasHeight);
     for(i = 1; i<canvasWidth; i++) {
-      ctx.lineTo(i,(inputBuffer.getChannelData(0)[Math.floor((timeWindowOffset+i*timeWindowSize/canvasWidth)*inputBuffer.sampleRate)]+0.5)*canvasHeight);
+      newAudioNode.ctx.lineTo(i,(inputBuffer.getChannelData(0)[Math.floor((timeWindowOffset+i*timeWindowSize/canvasWidth)*inputBuffer.sampleRate)]+0.5)*canvasHeight);
     }
     console.log("drawing PCM for "+track.number);
-    ctx.stroke();*/
+    newAudioNode.ctx.stroke();*/
   };
 
   return newAudioNode ;
