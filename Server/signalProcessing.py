@@ -20,7 +20,7 @@ def deconvolve(sig1, sig2, Fe) :
     
     #for k in range(borneinf):
     #    tmp[k] = 0;
-       
+    
     
     #for k in range(bornesup,K):
     #    tmp[k] = 0;

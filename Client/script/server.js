@@ -156,12 +156,19 @@ function serverDeconvolve(id1, id2) {
 	
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 0)) {
-			console.log(xhr.response); // the result
+			var binary_string = xhr.responseText;
+			var len = binary_string.length;
+			test = AudioContext.createBuffer(1, len, 44100);
+    		for(var i = 0 ; i < len ; i++)        {
+        		test.getChannelData(0)[i] = binary_string.charCodeAt(i);
+    		}
+			
+			
 		}
 	}
 	
 	xhr.open("POST", "/deconvolve", true);
 	xhr.setRequestHeader("Content-Type", "application/json");
-	xhr.responseType = "arraybuffer";
+	xhr.responseType = "text";
 	xhr.send(channelData);
 }
