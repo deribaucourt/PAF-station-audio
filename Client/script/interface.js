@@ -21,7 +21,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 function Track(audioBuff) {
   console.log("Instanciating new Track") ;
   this.volume = 100 ;
-  this.title = "Darude - Sandstorm" ;
   this.offset = 0 ;
   this.number = tracks.length ;
   this.signal = audioBuff ;
@@ -237,4 +236,19 @@ function onClose(i) {
     addNewTrackToDisplay() ;
   }
   repaintTracks() ;
+}
+
+
+function createTrackSelect {
+  document.createElement("select");
+  selectList.id = "trackSelect";
+
+  for (var i = 0; i<tracks.length; i++) {
+      var option = document.createElement("option");
+      option.value = i;
+      option.text = document.getElementById("trackTitleInput"+i).value;
+      selectList.appendChild(option);
+  }
+
+  return selectList ;
 }
