@@ -168,28 +168,28 @@ function togglePopup(caller, elementId, loadingFunction) {
 }
 
 function drawNewTrack(track) {
-  console.log("loading html code for track number "+ track.number );
-    serveTemplateIntoContainer(document.getElementById("tracksContainer"), "track", track.number); // Updated method to load the template
-    setTimeout(function() {         //We need to wait for the innerHtml to be in the DOM
-      var c = document.getElementById("trackCanvas"+track.number) ;   // Fixes canvas stretching
-      c.width = c.clientWidth;
-      c.height = c.clientHeight;
-      c.addEventListener("mousedown", tracksMouseDownHandler, false);
-      drawSignal(track);
-      for(var j = 0; j<tracks.length-1; j++) {  // repaint all other canvas (they clear for some reason)
-        console.log("repainting track "+ j);
-        drawSignal(tracks[j]);
-      }
-      document.getElementById("tracksInsertMessage").style.display = "none";
-    },1);
+  	console.log("loading html code for track number "+ track.number );
+	var callbackFunction = function() {
+		var c = document.getElementById("trackCanvas"+track.number) ;   // Fixes canvas stretching
+      	c.width = c.clientWidth;
+      	c.height = c.clientHeight;
+      	c.addEventListener("mousedown", tracksMouseDownHandler, false);
+      	drawSignal(track);
+      	for(var j = 0; j<tracks.length-1; j++) {  // repaint all other canvas (they clear for some reason)
+        	console.log("repainting track "+ j);
+        	drawSignal(tracks[j]);
+      	}
+      	document.getElementById("tracksInsertMessage").style.display = "none";
+	};
+    serveTemplateIntoContainer(document.getElementById("tracksContainer"), "track", track.number, callbackFunction); // Updated method to load the template
 }
 
 function drawRecordTrack() {
-  console.log("painting record track last");
+	console.log("painting record track last");
+	var callbackFunction = function() {
+		document.getElementById("recordButton").addEventListener("click", onRecordButtonPress);
+	};
 	serveTemplateIntoContainer(document.getElementById("tracksContainer"), "record", "")
-    setTimeout( function() {
-      document.getElementById("recordButton").addEventListener("click",onRecordButtonPress);
-    }, 1000); // ToDo : find a proper way now that the request is async (maybe via callback ?)
 }
 
     /******************** Record Track *****************/
