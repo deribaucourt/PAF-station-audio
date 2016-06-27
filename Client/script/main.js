@@ -192,7 +192,8 @@ function listenToAll(listen)
   if (!listen)
   {
     play_pause = "block";
-    document.getElementById("playResume").style.display = "block";
+    document.getElementById("play").style.display = "block";
+    document.getElementById("pause").style.display = "none";
     cursorPosition = 0;
     offset = 0;
     drawCursor();
@@ -231,7 +232,7 @@ function mute(trackId)
 
 function rewind()
 {
-  if (document.getElementById("playResume").style.display === "none")
+  if (document.getElementById("play").style.display === "none")
   {
     execute("Speakers", 0);
     execute("Speakers", 1);
