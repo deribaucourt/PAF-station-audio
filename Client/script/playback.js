@@ -115,6 +115,11 @@ function onRecordStart() {
       recordViewer.connect(recorderNodeForRecord) ;
       recordStartingPosition = cursorPosition ;
       execute("Speakers",1) ;           //start playback
+      if(tracks.length == 0) {
+        d = new Date();
+        tBegin = d.getTime() ;
+        cursorFollowRecording() ;
+      }
       recorderNodeForRecord.startRecording() ;
       recording = true ;
     },
@@ -142,4 +147,15 @@ function stopRecord() {
     tracks[tracks.length-1].offset = recordStartingPosition ;
     recording = false ;
   }
+}
+
+function cursorFollowRecording() {
+    if (recording)
+    {
+      d = new Date();
+      cursorPosition = (d.getTime()-tBegin)/1000 + recordStartingPosition;
+      console.log("new Cursor position :" + cursorPosition) ;
+      drawCursor();
+      setTimeout(cursorFollowRecording, 50);
+    }
 }
