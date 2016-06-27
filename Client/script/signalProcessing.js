@@ -81,35 +81,28 @@ function addFilter(trackId) {
 /*************** Display Node **************/
 
 function createDisplayNode(canvas) {      // A node that displays it's signal on a Canvas
+
+  var canvasWidth = canvas.clientWidth;
+  var canvasHeight = canvas.clientHeight;
+
+  var samplesPerDivision = timeWindowSize*audioContext.sampleRate/canvasWidth ;
+  console.log(samplesPerDivision) ;
   newAudioNode = audioContext.createScriptProcessor(16384, 2, 2);
   newAudioNode.c = canvas ;
   newAudioNode.offset = 0 ;
   newAudioNode.ctx = canvas.getContext("2d") ;
 
-  var canvasWidth = newAudioNode.c.clientWidth;
-  var canvasHeight = newAudioNode.c.clientHeight;
-
   newAudioNode.onaudioprocess = function(audioProcessingEvent) {
     inputBuffer = audioProcessingEvent.inputBuffer ;
     audioProcessingEvent.outputBuffer = inputBuffer ;
-    var samplesPerDivision = timeWindowSize*inputBuffer.sampleRate ;
 
     /* CLASSIC REPRESENTATION OF SOUND POWER */
-    var localMax, previousSample;
-    var currentSample = 0; //Math.floor(timeWindowOffset*inputBuffer.sampleRate);
+    var localMax = 0;
     newAudioNode.ctx.beginPath();
     newAudioNode.ctx.strokeStyle = "#e69900" ;
-    pixelsToDraw = 16384/samplesPerDivision ;
-    for(currentSample = 0; currentSample<16384; currentSample+=samplesPerDivision) {
-      localMax = 0;
-      for(k = currentSample; k<currentSample+samplesPerDivision; k++) {
-        if(Math.abs(inputBuffer.getChannelData(0)[k])>localMax) {
-          localMax = Math.abs(inputBuffer.getChannelData(0)[k]) ;
-        }
-      }
-      newAudioNode.ctx.moveTo(currentSample+cursorPosition/timeWindowSize,-(localMax-1)*canvasHeight*0.5);
-      newAudioNode.ctx.lineTo(currentSample+cursorPosition/timeWindowSize,(localMax+1)*canvasHeight*0.5);
-    }
+    localMax = Math.max(inputBuffer.getChannelData(0)) ;
+    newAudioNode.ctx.moveTo((cursorPosition-timeWindowOffset)/timeWindowSize,-(localMax-1)*canvasHeight*0.5);
+    newAudioNode.ctx.lineTo((cursorPosition-timeWindowOffset)/timeWindowSize,(localMax+1)*canvasHeight*0.5);
     newAudioNode.ctx.stroke();
 
     /*    RAW PCM REPRESENTATION  */ /*

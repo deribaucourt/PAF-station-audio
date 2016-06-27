@@ -85,6 +85,7 @@ function playback(audioBuffer, listen, source, input, offset) {  // ArrayBuffer 
 
 var webRtcSource;
 var recorderNodeForRecord = createRecorderNode() ;
+var recordViewer ;
 var recordStartingPosition = 0 ;
 
 function onRecordStart() {
@@ -112,6 +113,7 @@ function onRecordStop() {
     console.log("Stoping Record") ;
     listenToAll(1) ;            // pause Playback
     webRtcSource.disconnect();
+    recordViewer.disconnect() ;
     webRtcSource = null;
     addTrack(recorderNodeForRecord.stopRecording()) ;
     tracks[tracks.length-1].offset = recordStartingPosition ;
