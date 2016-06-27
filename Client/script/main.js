@@ -120,14 +120,21 @@ function tracksMouseDownHandler(e) {     // this moves the offset
 function timelineMouseDownHandler(e) {     // this moves the offset
   document.body.style.cursor = "e-resize" ;
   movingCursor = true ;
+  cursorPosition = (e.clientX - document.getElementById("globalTimelineContainer").clientWidth) * timeWindowSize/timelineWidth + timeWindowOffset ;
+  drawCursor() ;
 }
 
+var mouseMoveTimeout = 0;
 function mouseMoveHandler(e) {
-  if(movingCursor) {
-    console.log("movingCursor");
-    cursorPosition = (e.clientX - document.getElementById("globalTimelineContainer").clientWidth) * timeWindowSize/timelineWidth + timeWindowOffset ;
-    drawCursor() ;
-  }
+  d = new Date();
+  currentTime = d.getTime();
+  if(currentTime > mouseMoveTimeout)         // Don't redraw too often
+    if(movingCursor) {
+      console.log("movingCursor");
+      cursorPosition = (e.clientX - document.getElementById("globalTimelineContainer").clientWidth) * timeWindowSize/timelineWidth + timeWindowOffset ;
+      drawCursor() ;
+      mouseMoveTimeout = currentTime + 50 ;
+    }
 }
 
 function mouseUpHandler(e) {
