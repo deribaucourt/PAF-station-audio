@@ -46,7 +46,7 @@ function serveTemplateIntoContainer(container, template, trackId) {
 	
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 0)) {
-			container.innerHTML += xhr.responseText;
+			container.innerHTML += xhr.responseText.replace(/TRACKID/gi, trackId);
 		}
 	}
 	
@@ -62,7 +62,7 @@ function retrieveProjects() {
 	
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 0)) {
-			displayProjects(xhr.response.replace(/TRACKID/gi, trackId));
+			displayProjects(xhr.response);
 		}
 	}
 	

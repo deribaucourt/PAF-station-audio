@@ -186,11 +186,10 @@ function drawNewTrack(track) {
 
 function drawRecordTrack() {
   console.log("painting record track last");
-	serveTemplateIntoContainer(document.getElementById("tracksContainer"), "record")
-    //document.getElementById("tracksContainer").innerHTML += recordTemplate;
+	serveTemplateIntoContainer(document.getElementById("tracksContainer"), "record", "")
     setTimeout( function() {
       document.getElementById("recordButton").addEventListener("click",onRecordButtonPress);
-    }, 1);
+    }, 1000); // ToDo : find a proper way now that the request is async (maybe via callback ?)
 }
 
     /******************** Record Track *****************/

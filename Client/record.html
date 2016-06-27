@@ -16,17 +16,18 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>. -->
 
 
-<div id="recordTrackContainer" class="trackTopContainer" style="width:100%; height:25%;">
+<div id="recordTrackContainer" class="trackTopContainer">
 	<div class="trackMenu" style="width:200px; height:100%;">
 		<div class="trackMenuTitle">Record track</div>
-		<div class="trackToolsContainer">
-			<div id="recordButton" class="trackButton" style="width:100%; height:100%;">
+		<div class="trackToolsContainer" style="height:calc(100% - 60px);">
+			<div id="recordButton" style="width:100%; height:100%; cursor:pointer;">
 				<img id="recordButtonImg" src="icons/microphone.png" />
 				<img id="stopRecordButtonImg" style="display:none;" src="icons/stop.png" />
 			</div>
 		</div>
 		<div style="width:100%; height:30px; padding:5px 8px; clear:both;">
-			<input id="recordVolumeControl" title="Record volume" class="volumeControl" style="width:100%; height:100%; margin:0;" type="range" value="0" max="100" min="0" step="1" />
+			<input id="recordVolumeControl" title="Record volume" class="volumeControl" style="width:100%; height:100%; margin:0;" type="range" min="0" max="100" step="1" value="0" />
+		</div>
 	</div>
+	<canvas id="recordTrack" class="trackCanvas" />
 </div>
-<canvas id="recordTrack" class="trackCanvas" /> </div>
