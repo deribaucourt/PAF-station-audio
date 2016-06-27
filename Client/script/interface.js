@@ -103,7 +103,7 @@ function drawSignal(track) {
     previousSample = currentSample ;
     currentSample = Math.floor((timeWindowOffset-track.offset+i*timeWindowSize/canvasWidth)*track.signal.sampleRate) ;
     localArray = track.signal.getChannelData(0).slice(previousSample, currentSample) ;
-    localMax = Math.max.apply(null, localArray.map(Math.abs));
+    localMax = Math.max(...localArray);
     ctx.moveTo(i,-(localMax-1)*canvasHeight*0.5);
     ctx.lineTo(i,(localMax+1)*canvasHeight*0.5);
   }
