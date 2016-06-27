@@ -32,7 +32,7 @@ function Track(audioBuff) {
   /* *************** Global Variables **************** */
 
 var tracks = [] ;   // Contains the tracks with their signal, volume, ...
-var cursorPosition = 0 ;  // Current cursor time position
+var cursorPosition = 0 ;  // Current cursor time position in s
 var timeWindowOffset = 0 ; // time offset in s
 var timeWindowSize = 60 ;    // zoom level / window time in s
 

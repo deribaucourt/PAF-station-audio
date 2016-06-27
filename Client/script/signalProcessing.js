@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
   /***************** Recorder Node *****************/
 
 function createRecorderNode() {
-  newAudioNode = audioContext.createScriptProcessor(16384, 1, 0);        // this is a node which stocks several samples.
+  newAudioNode = audioContext.createScriptProcessor(16384, 2, 0);        // this is a node which stocks several samples.
   newAudioNode.record = [[]] ;            //carefull, the first index is for the channel
   newAudioNode.recording = false ;
   newAudioNode.recordSampleRate = 0 ;
@@ -53,7 +53,7 @@ function createRecorderNode() {
   newAudioNode.stopRecording = function() {     // returns Recorder AudioBuffer
     newAudioNode.recording = false;
     console.log("recorded channels : "+newAudioNode.record.length +" length : " + newAudioNode.record[0].length +" at rate : " + newAudioNode.recordSampleRate);
-    recordedBuff = audioContext.createBuffer(newAudioNode.record.length,newAudioNode.record[0].length,newAudioNode.recordSampleRate) ;
+    recordedBuff = audioContext.createBuffer(newAudioNode.record.length,newAudioNode.record[0].length,audioContext.sampleRate) ;
     for(var channel = 0; channel < recordedBuff.numberOfChannels; channel ++) {
     //    recordedBuff.getChannelData(channel) = newAudioNode.record[channel] ;
       for(var n = 0; n<newAudioNode.record[0].length; n++) {
@@ -84,10 +84,13 @@ function createDisplayNode(canvas) {      // A node that displays it's signal on
 
   var canvasWidth = canvas.clientWidth;
   var canvasHeight = canvas.clientHeight;
+  canvas.width = canvasWidth;
+  canvas.height = canvasHeight;
 
   var samplesPerDivision = timeWindowSize*audioContext.sampleRate/canvasWidth ;
   console.log(samplesPerDivision) ;
-  newAudioNode = audioContext.createScriptProcessor(16384, 2, 2);
+  console.log(Math.pow(2,Math.ceil(Math.log2(samplesPerDivision)))) ;
+  newAudioNode = audioContext.createScriptProcessor(Math.pow(2,Math.ceil(Math.log2(samplesPerDivision))), 2, 2);
   newAudioNode.c = canvas ;
   newAudioNode.offset = 0 ;
   newAudioNode.ctx = canvas.getContext("2d") ;
@@ -97,12 +100,11 @@ function createDisplayNode(canvas) {      // A node that displays it's signal on
     audioProcessingEvent.outputBuffer = inputBuffer ;
 
     /* CLASSIC REPRESENTATION OF SOUND POWER */
-    var localMax = 0;
     newAudioNode.ctx.beginPath();
     newAudioNode.ctx.strokeStyle = "#e69900" ;
-    localMax = Math.max(inputBuffer.getChannelData(0)) ;
-    newAudioNode.ctx.moveTo((cursorPosition-timeWindowOffset)/timeWindowSize,-(localMax-1)*canvasHeight*0.5);
-    newAudioNode.ctx.lineTo((cursorPosition-timeWindowOffset)/timeWindowSize,(localMax+1)*canvasHeight*0.5);
+    localMax = Math.max(...inputBuffer.getChannelData(0)) ;
+    newAudioNode.ctx.moveTo((cursorPosition-timeWindowOffset)/timeWindowSize*canvasWidth,-(localMax-1)*canvasHeight*0.5);
+    newAudioNode.ctx.lineTo((cursorPosition-timeWindowOffset)/timeWindowSize*canvasWidth,(localMax+1)*canvasHeight*0.5);
     newAudioNode.ctx.stroke();
 
     /*    RAW PCM REPRESENTATION  */ /*
