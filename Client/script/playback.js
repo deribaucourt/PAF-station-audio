@@ -30,6 +30,10 @@ function cursorFollowPlaying() {
     {
       d = new Date();
       cursorPosition = (d.getTime() - tBegin)/1000 + startCursorPosition;
+      if(cursorPosition > timeWindowOffset + timeWindowSize) {
+        timeWindowOffset += timeWindowSize ;
+        repaintTracks();
+      }
       drawCursor();
       setTimeout(cursorFollowPlaying, 50);
     }

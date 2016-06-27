@@ -284,6 +284,8 @@ function rewind()
     execute("Speakers", 1);
   }
   else execute("Speakers", 0);
+  timeWindowOffset = 0;
+  repaintTracks() ;
 }
 
 repaintTracks()
