@@ -128,27 +128,51 @@ Code starts here                                                                
 		</div>
 		<!-- ************* Fade Popup ************ -->
 		<div id="fadePopup" class="popup effectPopup" style="display:none;">
-			<div style="width:100%; clear:both; margin-bottom:6px;">
-				<span>Duration</span><input type="text" style="width:60px; margin:4px;"/>
-			</div>
-			<div style="width:100%; clear:both;">
-				<span>Mix</span><input type="text" style="width:60px; margin:4px;" />
-			</div>
-			<div style="width:100%; clear:both;">
-				<span style="text-decoration:underline;">Import impulse response...</span>
-			</div>
+			<form onsubmit="submitEffect()" target="_self">
+				<div style="width:100%; clear:both;">
+					<span>Gain begin :</span><input type="text" style="width:60px; margin:4px;" />
+				</div>
+				<div style="width:100%; clear:both;">
+					<span>Gain end :</span><input type="text" style="width:60px; margin:4px;" />
+				</div>
+				<div style="width:100%; clear:both;">
+					<span>Duration :</span><input type="text" style="width:60px; margin:4px;" />
+				</div>
+				<div>
+					<select>
+  						<option value="volvo">Volvo</option>
+  						<option value="saab">Saab</option>
+  						<option value="mercedes">Mercedes</option>
+  						<option value="audi">Audi</option></select>
+				</div>
+				<div>
+					<button>Apply gain</button>
+				</div>
+				<div>
+					<input type="radio" />
+				</div>
+			</form>
 		</div>
 		<!-- ************* Gain Popup ************ -->
 		<div id="gainPopup" class="popup effectPopup" style="display:none;">
-			<div style="width:100%; clear:both; margin-bottom:6px;">
-				<span>Duration</span><input type="text" style="width:60px; margin:4px;"/>
-			</div>
-			<div style="width:100%; clear:both;">
-				<span>Mix</span><input type="text" style="width:60px; margin:4px;" />
-			</div>
-			<div style="width:100%; clear:both;">
-				<span style="text-decoration:underline;">Import impulse response...</span>
-			</div>
+			<form onsubmit="submitEffect()" target="_self">
+				<div style="width:100%; clear:both;">
+					<span>Gain :</span><input type="text" style="width:60px; margin:4px;" />
+				</div>
+				<div style="width:100%; clear:both;">
+					<span style="text-decoration:underline;">Import impulse response...</span>
+				</div>
+				<div>
+					<select>
+  						<option value="volvo">Volvo</option>
+  						<option value="saab">Saab</option>
+  						<option value="mercedes">Mercedes</option>
+  						<option value="audi">Audi</option></select>
+				</div>
+				<div>
+					<button>Apply gain</button>
+				</div>
+			</form>
 		</div>
 		<!-- ************* Offset Popup ************ -->
 		<div id="offsetPopup" class="popup effectPopup" style="display:none;">

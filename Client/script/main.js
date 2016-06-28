@@ -296,3 +296,7 @@ repaintTracks()
 {
   console.log("coucou");
 }
+
+function submitEffect() {
+	alert("Effect submitted");
+}
