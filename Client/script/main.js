@@ -292,7 +292,48 @@ function rewind()
   timeWindowOffset = 0;
 }
 
-repaintTracks()
+var trackBufferTampon = audioContext.createBufferSource();
+
+function copyTrack(trackId, begin, end)
 {
-  console.log("coucou");
+  var Channel0 = tracks[trackId].signal.getChannelData(0);
+  var Channel1 = tracks[trackId].signal.getChannelData(1);
+  channel0.splice(end);
+  channel1.splice(end);
+  trackBufferTampon.copyToChannel(channel0, 0, end*audioContext.sampleRate);
+  trackBufferTampon.copyToChannel(channel1, 1, end*audioContext.sampleRate);
+}
+
+function cutTrack(trackId, begin, end)
+{
+  var Channel0 = tracks[trackId].signal.getChannelData(0);
+  var Channel1 = tracks[trackId].signal.getChannelData(1);
+  var channelTampon0 = channel0;
+  var channelTampon1 = channel1;
+  var sampleRate = audioContext.sampleRate;
+
+  channel0.splice(end);
+  channel1.splice(end);
+  trackBufferTampon.copyToChannel(channel0, 0, begin*sampleRate);
+  trackBufferTampon.copyToChannel(channel1, 1, begin*sampleRate);
+
+  for (var i = begin*sampleRate ; i <  end*sampleRate ; i++)
+  {
+    channelTampon0[i] = 0;
+    channelTampon1[i] = 0;
+  }
+
+  tracks[trackId].copyToChannel(channelTampon0, 0, 0);
+  tracks[trackId].copyToChannel(channelTampon1, 1, 0);
+}
+
+function clone(trackId)
+{
+  trackBufferTampon.copyToChannel(tracks[trackId].signal.getChannelData(0), 0, 0);
+  trackBufferTampon.copyToChannel(tracks[trackId].signal.getChannelData(1), 1, 0);
+}
+
+function pasteTrack(trackId)
+{
+
 }
