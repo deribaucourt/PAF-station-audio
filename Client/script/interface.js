@@ -152,11 +152,11 @@ function addNewTrackToDisplay() {
 function togglePopup(caller, className, elementId, loadingFunction) {
 	var popup = document.getElementById(elementId);
     if(popup.style.display === "none") {
-		caller.classList.add(className);
+		caller.classList.add(className + "Active");
 		loadingFunction();
         popup.style.display = "block";
     } else {
-		caller.classList.remove(className);
+		caller.classList.remove(className + "Active");
         popup.style.display = "none";
     }
 }
