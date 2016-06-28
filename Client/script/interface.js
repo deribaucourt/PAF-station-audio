@@ -25,8 +25,8 @@ function Track(audioBuff) {
   this.offset = 0 ;
   this.number = tracks.length ;
   this.signal = audioBuff ;
-  this.listen = 1;
-  this.audioSource = audioContext.createBufferSource();
+  this.muted = false ;
+  this.source = audioContext.createBufferSource();
   this.outputNode = this.audioSource;
 }
 
@@ -103,7 +103,7 @@ function drawSignal(track) {
   for(i = firstPixel; i<=lastPixel; i++) {
     previousSample = currentSample ;
     currentSample = Math.floor((timeWindowOffset-track.offset+i*timeWindowSize/canvasWidth)*track.signal.sampleRate) ;
-    localArray = track.signal.getChannelData(0).slice(previousSample, currentSample) ;
+    localArray = track.signal.getChannelData(0).slice(previousSample, Math.min(currentSample,previousSample + 50000)) ;
     localMax = Math.max(...localArray);
     ctx.moveTo(i,-(localMax-1)*canvasHeight*0.5);
     ctx.lineTo(i,(localMax+1)*canvasHeight*0.5);
@@ -191,37 +191,11 @@ function drawNewTrack(track) {
 function drawRecordTrack() {
 	console.log("painting record track last");
 	var callbackFunction = function() {
-		document.getElementById("recordButton").addEventListener("click", onRecordButtonPress);
 	};
 	serveTemplateIntoContainer(document.getElementById("tracksContainer"), "record", "", callbackFunction);
 }
 
-    /******************** Record Track *****************/
-
-var recording = false ;
-
-function onRecordButtonPress(e) {
-  console.log("record Button Pressed");
-  if(!recording) {
-    recording = true ;
-    document.getElementById("stopRecordButtonImg").style.display = "block" ;
-    document.getElementById("recordButtonImg").style.display = "none" ;
-    onRecordStart() ;
-  } else {
-    recording = false ;
-    document.getElementById("recordButtonImg").style.display = "block" ;
-    document.getElementById("stopRecordButtonImg").style.display = "none" ;
-    onRecordStop() ;
-  }
-}
-
-function onClone() {
-  //TODO
-}
-
-function clone(i) {   //returns a clone of track i
-
-}
+    /******************** Tracks *****************/
 
 function onClose(i) {
   console.log("closing "+i);
