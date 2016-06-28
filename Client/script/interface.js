@@ -103,7 +103,7 @@ function drawSignal(track) {
   for(i = firstPixel; i<=lastPixel; i++) {
     previousSample = currentSample ;
     currentSample = Math.floor((timeWindowOffset-track.offset+i*timeWindowSize/canvasWidth)*track.signal.sampleRate) ;
-    localArray = track.signal.getChannelData(0).slice(previousSample, Math.min(currentSample,previousSample + 50000)) ;
+    localArray = track.signal.getChannelData(0).slice(previousSample, Math.min(currentSample,previousSample + 30000)) ; // prevents too many arguments Error
     localMax = Math.max(...localArray);
     ctx.moveTo(i,-(localMax-1)*canvasHeight*0.5);
     ctx.lineTo(i,(localMax+1)*canvasHeight*0.5);

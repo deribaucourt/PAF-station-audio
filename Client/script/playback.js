@@ -138,6 +138,10 @@ function centerCursor() {
   if(cursorPosition > timeWindowOffset + timeWindowSize || cursorPosition < timeWindowOffset) {
     timeWindowOffset = cursorPosition ;
     repaintTracks();
+    if(recording) {
+      var recordCanvas = document.getElementById(recordTrack)
+      recordCanvas.getContext("2d").clearRect(0,0,recordCanvas.width, recordCanvas.height) ;
+    }
   }
 }
 
