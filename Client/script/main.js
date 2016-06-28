@@ -179,8 +179,10 @@ function importFile(evt)
 //document.getElementById('importButton').addEventListener('change', importFile, false); //ToDo : update ref
 
 function onExport() {
+  onStop();
   processTo("File") ;
-  onPlay() ;
+  alert("File will be ready soon");
+  //onPlay() ;
 }
 
 repaintTracks() ;

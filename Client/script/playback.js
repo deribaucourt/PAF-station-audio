@@ -27,7 +27,6 @@ function onPlay() {
 
 function onPause() {
   stopRecord() ;
-  stopFileRecording() ;
   stopSources() ;
   displayPlayButton() ;
   displaySoloPlays() ;

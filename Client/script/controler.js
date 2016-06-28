@@ -190,6 +190,14 @@ function connectFinalOutputs(finalOutput) {
      }
      fileRecording = true ;
      mediaRecorder.start() ;
+
+     // Stop recording at the end of the song
+     var totalDuration = 0;
+     for(track of tracks) {
+       if(track.offset + track.signal.duration > totalDuration)
+        totalDuration = track.offset + track.signal.duration ;
+     }
+     setTimeout(stopFileRecording, totalDuration * 1000);
      break;
 
     case "Screen" :
