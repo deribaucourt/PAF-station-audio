@@ -109,11 +109,8 @@ function cursorFollowPlaying() {
   if (playing || recording)  {
     d = new Date();
     cursorPosition = (d.getTime() - tBegin)/1000 + startCursorPosition;
-    if(cursorPosition > timeWindowOffset + timeWindowSize) {
-      timeWindowOffset += timeWindowSize ;
-      repaintTracks();
-    }
     drawCursor();
+    centerCursor();
     setTimeout(cursorFollowPlaying, 50);
   }
 }

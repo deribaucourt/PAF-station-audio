@@ -40,12 +40,13 @@ function onStop() {
 }
 
 function onRewind() {
-  if(playing) {
-    onStop() ;
-    onPlay() ;
-  } else {
-    onStop() ;
-  }
+  if(!recording)
+    if(playing) {
+      onStop() ;
+      onPlay() ;
+    } else {
+      onStop() ;
+    }
 }
 
 function onMute(i) {
@@ -138,9 +139,15 @@ function centerCursor() {
   if(cursorPosition > timeWindowOffset + timeWindowSize || cursorPosition < timeWindowOffset) {
     timeWindowOffset = cursorPosition ;
     repaintTracks();
-    if(recording) {
-      var recordCanvas = document.getElementById(recordTrack)
-      recordCanvas.getContext("2d").clearRect(0,0,recordCanvas.width, recordCanvas.height) ;
+    if(recording) {     // clear and redraw axis
+      var recordCanvas = document.getElementById("recordTrack") ;
+      var recordCtx = recordCanvas.getContext("2d");
+      recordCtx.clearRect(0,0,recordCanvas.width, recordCanvas.height) ;
+      recordCtx.beginPath();
+      recordCtx.strokeStyle = "#664400" ;
+      recordCtx.moveTo(0,recordCanvas.height/2);
+      recordCtx.lineTo(recordCanvas.width,recordCanvas.height/2);
+      recordCtx.stroke();
     }
   }
 }
