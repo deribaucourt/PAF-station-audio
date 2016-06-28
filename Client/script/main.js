@@ -154,7 +154,7 @@ function mouseUpHandler(e) {
 }
 
 timelineCanvas.addEventListener("click", mouseClickHandler, false);
-document.getElementById("timelineContainer").addEventListener("mousedown", timelineMouseDownHandler, false);
+document.getElementById("localTimelineContainer").addEventListener("mousedown", timelineMouseDownHandler, false);
 document.addEventListener("mousemove", mouseMoveHandler, false);
 document.addEventListener("mouseup", mouseUpHandler, false);
 
@@ -225,6 +225,7 @@ function listenToAll(listen)
       else
         listenTo[i] = 0;
     }
+
     playback(tracks[i].signal, listenTo[i], source[i], tracks[i].outputNode, tracks[i].offset);
   }
 

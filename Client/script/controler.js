@@ -27,7 +27,8 @@ gain track.number value;
 
 var instructions = [] ; // array of string
 var args ;
-var lastTrack;
+var lastTrack = [];
+var generalSound = 1;
 
 function execute(finalOutput, isPlayButton) {   // does the wiring to produce the sound   ["Speakers","File","Screen"] TODO: rename processTo
   for(track of tracks) {
@@ -49,62 +50,56 @@ function execute(finalOutput, isPlayButton) {   // does the wiring to produce th
         gainNode.gain.value = args[2] ;
         tracks[args[1]].outputNode.connect(gainNode) ;
         tracks[args[1]].outputNode = gainNode ;
-        lastTrack = tracks[args[1]];
-        console.log("applying gain");
         break;
 
-      case "fadeIn" :
-        var gainNode = audioContext.createGain();
-        var duration = track.audioSource.buffer.duration;
-        var currTime = audioContext.currentTime;
-        var fadeTime = args[2];
+      case "convolve" :
 
-        tracks[args[1]].outputNode.connect(gainNode) ;
-        tracks[args[1]].outputNode = gainNode ;
+      case "delay" :
 
-        gainNode.gain.linearRampToValueAtTime(0, currTime);
-        gainNode.gain.linearRampToValueAtTime(1, currTime + fadeTime);
-        break;
-
-        case "fadeOut" :
-          var gainNode = audioContext.createGain();
-          var duration = track.audioSource.buffer.duration;
-          var currTime = audioContext.currentTime;
-          var fadeTime = args[2];
-
-          tracks[args[1]].outputNode.connect(gainNode) ;
-          tracks[args[1]].outputNode = gainNode ;
-
-          gainNode.gain.linearRampToValueAtTime(1, currTime + duration-fadeTime);
-          gainNode.gain.linearRampToValueAtTime(0, currTime + duration);
-          break;
+      case "fade" :
 
     }
   }
+  for (var j = 0 ; j < tracks.length ; j++)
+    {
+
+      SoundLevelNode = audioContext.createGain() ;
+      SoundLevelNode.gain.value = generalSound * tracks[j].volume ;
+      tracks[j].outputNode.connect(SoundLevelNode) ;
+      tracks[j].outputNode = SoundLevelNode ;
+    }
+
+  for (var j = 0 ; j < tracks.length ; j++)
+  {
+    panNode = audioContext.createStereoPanner();
+    panNode.pan.value = tracks[j].balance;
+
+    tracks[j].outputNode.connect(panNode);
+    tracks[j].outputNode = panNode;
+  }
+
 
   connectFinalOutputs(finalOutput, isPlayButton) ;
 
 }
-
-function soundLevel(level)
+function soundLevel(value, string )
 {
-  if (!lastTrack)
+  if (string === "global")
   {
-
+    generalSound = value;
   }
-  for (var i = 0 ; i < tracks.length ; i++)
-  {
-    lastTrack.audioSource = audioContext.createBufferSource() ;
-    lastTrack.outputNode = lastTrack.audioSource ;
-
-    gainNode = audioContext.createGain();
-    gainNode.gain.value = level;
-    tracks[i].outputNode.connect(gainNode);
-    tracks[i].outputNode = gainNode;
+  else {
+    tracks[string].volume = value;
   }
+  execute("Speakers", 1);
+  execute("Speakers", 1);
+}
 
-  listenToAll(1);
-  connectFinalOutputs("Speakers", 1);
+function volumeBalance(trackId, value)
+{
+  tracks[trackId].balance = value;
+  execute("Speakers", 1);
+  execute("Speakers", 1);
 }
 
 
@@ -114,10 +109,15 @@ function connectFinalOutputs(finalOutput, isPlayButton) {
     case "Speakers" :
       if (isPlayButton) listenToAll(1);
       else listenToAll(0);
-    case "File" :
-      //TODO
+      break;
+
+    case "File" :     //TODO
+     var dest = audioContext.createMediaStreamDestination();
+     var mediaRecorder = new MediaRecorder(dest.stream);
+     break;
+
     case "Screen" :
-      //TODO
+      //Unused
   }
 }
 

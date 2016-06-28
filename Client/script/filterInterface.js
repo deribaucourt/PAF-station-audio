@@ -23,3 +23,15 @@ function applyGain() {
   addInstruction("gain "+trackNumb+" "+gainVal) ;
   //execute("Screen") ; //redraw signal
 }
+
+function applyConvol() {
+
+}
+
+function applyDelay() {
+
+}
+
+function applyFade() {
+  
+}
