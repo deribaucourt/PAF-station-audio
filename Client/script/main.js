@@ -142,6 +142,8 @@ function mouseUpHandler(e) {
     document.body.style.cursor = "auto" ;
     console.log("detected mouse up. changing window offset.") ;
     timeWindowOffset -= (e.clientX - previousMousex)*timeWindowSize/document.body.clientWidth;
+    if(timeWindowOffset < 0)
+      timeWindowOffset = 0 ;
     console.log("new offset is "+timeWindowOffset) ;
     repaintTracks();
   }
