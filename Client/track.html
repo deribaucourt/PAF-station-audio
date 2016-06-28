@@ -24,24 +24,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. -->
 				<div class="trackButton" style="width:34%; height:100%;" onclick="onClose(TRACKID);" id="closeButtonTRACKID">
 					<img class="trackButton" src="icons/line.png"/>
 				</div>
-				<div class="trackButton" style="width:33%; height:100%;" id="trackSoloButtonTRACKID" onclick="soloPlay(TRACKID)">
-					<img class="trackButton" id="trackSoloButtonOffTRACKID" src="icons/track_solo_off.png" style="display:block" />
-					<img class="trackButton" id="trackSoloButtonOnTRACKID" src="icons/track_solo_on.png" style="display:none"/>
+				<div class="trackButton" style="width:33%; height:100%;" id="trackSoloButtonTRACKID">
+					<img class="trackButton" id="trackSoloButtonOffTRACKID" src="icons/track_solo_off.png" onclick="onPause();" style="display:none;" />
+					<img class="trackButton" id="trackSoloButtonOnTRACKID" src="icons/track_solo_on.png" onclick="onSoloPlay(TRACKID);" style="display:block;"/>
 				</div>
-				<div class="trackButton" style="width:33%; height:100%;" id="trackMuteButtonTRACKID" onclick="mute(TRACKID)" >
-					<img class="trackButton" id="muteButtonIconOffTRACKID" src="icons/track_mute_off.png" style="display:block" />
-					<img class="trackButton" id="muteButtonIconOnTRACKID" src="icons/track_mute_on.png" style="display:none" />
+				<div class="trackButton" style="width:33%; height:100%;" id="trackMuteButtonTRACKID" >
+					<img class="trackButton" id="muteButtonIconOffTRACKID" src="icons/track_mute_off.png" onclick="onMute(TRACKID);" style="display:block" />
+					<img class="trackButton" id="muteButtonIconOnTRACKID" src="icons/track_mute_on.png" onclick="onUnmute(TRACKID);" style="display:none" />
 				</div>
 			</div>
 			<div class="trackBalanceVolume" id="trackVolumeControlTRACKID">
 				<div style="width:100%; clear:both;">
 					<div class="trackBalanceVolumeLabel unselectable">L</div>
-					<input id="balanceControlTRACKID" title="Record volume" class="volumeControl" style="width:calc(100% - 32px); height:16px; margin:0;" type="range" min="-1" max="1" step="0.05" value="50" onclick="volumeBalance('TRACKID', this.value)" />
+					<input id="balanceControlTRACKID" title="Record volume" class="volumeControl" style="width:calc(100% - 32px); height:16px; margin:0;" type="range" min="-1" max="1" step="0.05" value="50" onclick="onBalance(this.value, TRACKID);" />
 					<div class="trackBalanceVolumeLabel unselectable">R</div>
 				</div>
 				<div style="width:100%; clear:both;">
 					<div class="trackBalanceVolumeLabel unselectable">0</div>
-					<input id="volumeControlTRACKID" title="Record volume" class="volumeControl" style="width:calc(100% - 32px); height:16px; margin:0;" type="range" min="0" max="2" step="0.05" value="1" onclick="soundLevel(this.value, 'TRACKID')" />
+					<input id="volumeControlTRACKID" title="Record volume" class="volumeControl" style="width:calc(100% - 32px); height:16px; margin:0;" type="range" min="0" max="2" step="0.05" value="1" onclick="onTrackVolume(this.value, TRACKID);" />
 					<div class="trackBalanceVolumeLabel unselectable">1</div>
 				</div>
 			</div>

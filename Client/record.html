@@ -21,8 +21,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>. -->
 		<div class="trackMenuTitle">Record track</div>
 		<div class="trackToolsContainer" style="height:calc(100% - 60px);">
 			<div id="recordButton" style="width:100%; height:100%; cursor:pointer;">
-				<img id="recordButtonImg" src="icons/microphone.png" />
-				<img id="stopRecordButtonImg" style="display:none;" src="icons/stop.png" />
+				<img id="recordButtonImg" onclick="onRecordStart();" src="icons/microphone.png" />
+				<img id="stopRecordButtonImg" onclick="onRecordStop();" style="display:none;" src="icons/stop.png" />
 			</div>
 		</div>
 		<div style="width:100%; height:30px; padding:5px 8px; clear:both;">

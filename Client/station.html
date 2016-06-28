@@ -115,10 +115,10 @@ Code starts here                                                                
 		<div id="toolsContainer" style="width:100%; height:auto; border:1px solid #e6e6e6; border-width:1px 2px; background-color:#f3f3f3; clear:both;">
 			<div id="playbackControllContainer" class="toolsContainer" style="width:auto; height:100%;">
 				<div class="toolsHeader unselectable">Playback</div>
-				<div id="rewindButton" class="toolButton" title="Rewind" onclick="rewind()"><img src="icons/arrows.png" class="toolButton" /></div>
-				<div id="playButton" class="toolButton" onclick="execute('Speakers', 1)"><img src="icons/play-button.png" title="Play" id="play" style="display:block" class="toolButton" />
-                                                                                 <img src = "icons/pause-button.png" title="Pause" id="pause" style="display:none" class="toolButton"/></div>
-				<div id="stopButton" title="Stop" class="toolButton" onclick="execute('Speakers', 0)"><img src="icons/stop.png" class="toolButton" /></div>
+				<div id="rewindButton" class="toolButton" title="Rewind" onclick="onRewind();"><img src="icons/arrows.png" class="toolButton" /></div>
+				<div id="playButton" class="toolButton" ><img src="icons/play-button.png" title="Play" id="play" style="display:block" onclick="onPlay();" class="toolButton" />
+                                                                                 <img src = "icons/pause-button.png" title="Pause" onclick="onPause();" id="pause" style="display:none" class="toolButton"/></div>
+				<div id="stopButton" title="Stop" class="toolButton" onclick="onStop();"><img src="icons/stop.png" class="toolButton" /></div>
 			</div>
 			<div id="editionToolsContainer" class="toolsContainer" style="width:auto; height:100%;">
 				<div class="toolsHeader unselectable">Edition</div>
@@ -146,7 +146,7 @@ Code starts here                                                                
 		<div id="timelineContainer" style="width:100%; height:auto; background-color:#2e2e2e; border:2px solid #3a3a3a; border-bottom-width:0; clear:both;">
 			<div id="globalTimelineContainer" style="width: 200px; height:100%; border:0 solid #3a3a3a; border-right-width:2px;">   <!-- TODO: rename this globalVolumeContainer in all files -->
 				<div id="globalMuteButton" class="muteButton"><img src="icons/multimedia-1.png" id="globalMuteIcon" style="display:none;" /></div>
-				<input id="globalVolumeControl" title="Volume" class="volumeControl" type="range" min="0" max="3" step="0.05" value="1" onchange="soundLevel(this.value, 'global')"/>
+				<input id="globalVolumeControl" title="Volume" class="volumeControl" type="range" min="0" max="3" step="0.05" value="1" onchange="onGlobalVolume(this.value);"/>
 			</div>
 			<div id="localTimelineContainer" style="width: calc(100% - 200px); height:32px;"><canvas id="timelineCanvas" style="width: 100%; height:100%;" /></div>
 		</div>
