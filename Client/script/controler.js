@@ -27,7 +27,8 @@ gain track.number value;
 
 var instructions = [] ; // array of string
 var args ;
-var lastTrack;
+var lastTrack = [];
+var generalSound = 1;
 
 function execute(finalOutput, isPlayButton) {   // does the wiring to produce the sound   ["Speakers","File","Screen"] TODO: rename processTo
   for(track of tracks) {
@@ -49,8 +50,11 @@ function execute(finalOutput, isPlayButton) {   // does the wiring to produce th
         gainNode.gain.value = args[2] ;
         tracks[args[1]].outputNode.connect(gainNode) ;
         tracks[args[1]].outputNode = gainNode ;
+<<<<<<< HEAD
         lastTrack = tracks[args[1]];
         console.log("applying gain");
+=======
+>>>>>>> origin/Vincent
         break;
 
       case "convolve" :
@@ -61,30 +65,46 @@ function execute(finalOutput, isPlayButton) {   // does the wiring to produce th
 
     }
   }
+  for (var j = 0 ; j < tracks.length ; j++)
+    {
+
+      SoundLevelNode = audioContext.createGain() ;
+      SoundLevelNode.gain.value = generalSound * tracks[j].volume ;
+      tracks[j].outputNode.connect(SoundLevelNode) ;
+      tracks[j].outputNode = SoundLevelNode ;
+    }
+
+  for (var j = 0 ; j < tracks.length ; j++)
+  {
+    panNode = audioContext.createStereoPanner();
+    panNode.pan.value = tracks[j].balance;
+
+    tracks[j].outputNode.connect(panNode);
+    tracks[j].outputNode = panNode;
+  }
+
 
   connectFinalOutputs(finalOutput, isPlayButton) ;
 
 }
-
-function soundLevel(level)
+function soundLevel(value, string )
 {
-  if (!lastTrack)
+  if (string === "global")
   {
-
+    generalSound = value;
   }
-  for (var i = 0 ; i < tracks.length ; i++)
-  {
-    lastTrack.audioSource = audioContext.createBufferSource() ;
-    lastTrack.outputNode = lastTrack.audioSource ;
-
-    gainNode = audioContext.createGain();
-    gainNode.gain.value = level;
-    tracks[i].outputNode.connect(gainNode);
-    tracks[i].outputNode = gainNode;
+  else {
+    tracks[string].volume = value;
   }
+  execute("Speakers", 1);
+  execute("Speakers", 1);
+}
 
-  listenToAll(1);
-  connectFinalOutputs("Speakers", 1);
+function volumeBalance(trackId, value)
+{
+  tracks[trackId].balance = value;
+  execute("Speakers", 1);
+  execute("Speakers", 1);
 }
 
 

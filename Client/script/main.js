@@ -225,6 +225,7 @@ function listenToAll(listen)
       else
         listenTo[i] = 0;
     }
+
     playback(tracks[i].signal, listenTo[i], source[i], tracks[i].outputNode, tracks[i].offset);
   }
 

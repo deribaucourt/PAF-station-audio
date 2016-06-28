@@ -20,7 +20,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 function Track(audioBuff) {
   console.log("Instanciating new Track") ;
-  this.volume = 100 ;
+  this.volume = 1 ;
+  this.balance = 0;
   this.offset = 0 ;
   this.number = tracks.length ;
   this.signal = audioBuff ;
