@@ -94,8 +94,12 @@ function connectFinalOutputs(finalOutput, isPlayButton) {
     case "Speakers" :
       if (isPlayButton) listenToAll(1);
       else listenToAll(0);
-    case "File" :
-      //TODO
+
+    case "File" :     //TODO
+     var dest = ac.createMediaStreamDestination();
+     var mediaRecorder = new MediaRecorder(dest.stream);
+     break;
+
     case "Screen" :
       //Unused
   }
