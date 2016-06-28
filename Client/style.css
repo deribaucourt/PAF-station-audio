@@ -60,6 +60,14 @@ a {
 	outline: none;
 }
 
+img {
+	width: auto;
+	height: 100%;
+	display: block;
+	margin: auto;
+	float: none;
+}
+
 li.simpleList {
 	float: none;
 	text-align: left;
@@ -196,6 +204,16 @@ div.popup {
 	background-color: #ffffff;
 }
 
+div.effectPopup {
+	position: relative;
+	width: 100%;
+	height: auto;
+	float: none;
+	clear: both;
+	background: #d6d6d6;
+	padding: 6px;
+}
+
 div#cursor {
 	position: absolute;
 	z-index: 2;
@@ -205,14 +223,6 @@ div#cursor {
 	border: 1px solid #e6e6e6;
 	border-width: 0 1px;
 	height: calc(100% - 169px);
-}
-
-img {
-	width: auto;
-	height: 100%;
-	display: block;
-	margin: auto;
-	float: none;
 }
 
 #globalVolumeControl {

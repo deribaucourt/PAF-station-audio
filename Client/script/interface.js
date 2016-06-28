@@ -20,7 +20,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 function Track(audioBuff) {
   console.log("Instanciating new Track") ;
-  this.volume = 100 ;
+  this.volume = 1 ;
+  this.balance = 0;
   this.offset = 0 ;
   this.number = tracks.length ;
   this.signal = audioBuff ;
@@ -149,14 +150,24 @@ function addNewTrackToDisplay() {
   drawRecordTrack();                        // finally add record track
 }
 
+function resizeEffectsPopup() {
+	var effectsPopup = document.getElementById("effectsPopup");
+	var toolsContainer = document.getElementById("effectsToolsContainer");
+	
+	effectsPopup.style.left = "calc(100% - " + (toolsContainer.clientWidth - 4) + "px)";
+	effectsPopup.style.width = (toolsContainer.clientWidth - 12) + "px";
+}
+
+resizeEffectsPopup();
+
 function togglePopup(caller, className, elementId, loadingFunction) {
 	var popup = document.getElementById(elementId);
     if(popup.style.display === "none") {
-		caller.classList.add(className);
+		caller.classList.add(className + "Active");
 		loadingFunction();
         popup.style.display = "block";
     } else {
-		caller.classList.remove(className);
+		caller.classList.remove(className + "Active");
         popup.style.display = "none";
     }
 }
