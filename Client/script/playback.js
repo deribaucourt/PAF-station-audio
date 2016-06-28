@@ -44,6 +44,7 @@ function play(listen, source, input, offset) {
     length = tracks.length;
     if (listen)
       {
+
         if (!soundBuffer) return;
 
         // Create AudioBufferSourceNode and attach buffer

@@ -53,16 +53,21 @@ function execute(finalOutput, isPlayButton) {   // does the wiring to produce th
   }
   for (var j = 0 ; j < tracks.length ; j++)
     {
-/*     if(tracks[j].audioSource.buffer)
-        tracks[j].audioSource.stop() ;
-      tracks[j].audioSource = audioContext.createBufferSource() ;
-      tracks[j].outputNode = tracks[j].audioSource ;*/
 
       SoundLevelNode = audioContext.createGain() ;
       SoundLevelNode.gain.value = generalSound * tracks[j].volume ;
       tracks[j].outputNode.connect(SoundLevelNode) ;
       tracks[j].outputNode = SoundLevelNode ;
     }
+
+  for (var j = 0 ; j < tracks.length ; j++)
+  {
+    panNode = audioContext.createStereoPanner();
+    panNode.pan.value = tracks[j].balance;
+
+    tracks[j].outputNode.connect(panNode);
+    tracks[j].outputNode = panNode;
+  }
 
 
   connectFinalOutputs(finalOutput, isPlayButton) ;
@@ -77,45 +82,17 @@ function soundLevel(value, string )
   else {
     tracks[string].volume = value;
   }
-/*  for (var j = 0 ; j < tracks.length ; j++)
-  {
-    if(tracks[j].audioSource.buffer)
-      tracks[j].audioSource.stop() ;
-    tracks[j].audioSource = audioContext.createBufferSource() ;
-    tracks[j].outputNode = tracks[j].audioSource ;
-
-    SoundLevelNode = audioContext.createGain() ;
-    SoundLevelNode.gain.value = generalSound * tracks[j].volume ;
-    tracks[j].outputNode.connect(SoundLevelNode) ;
-    tracks[j].outputNode = SoundLevelNode ;
-  }
-  listenToAll(1);
-  listenToAll(1);*/
   execute("Speakers", 1);
   execute("Speakers", 1);
 }
 
 function volumeBalance(trackId, value)
 {
+  tracks[trackId].balance = value;
 
+  execute("Speakers", 1);
+  execute("Speakers", 1);
 }
-
-/*function soundTrackVolume(trackId, value)
-{
-  tracks[trackId].volume = value;
-  if(tracks[trackId].audioSource.buffer)
-    tracks[trackId].audioSource.stop() ;
-  tracks[trackId].audioSource = audioContext.createBufferSource() ;
-  tracks[trackId].outputNode = tracks[trackId].audioSource ;
-
-  SoundLevelNode = audioContext.createGain() ;
-  SoundLevelNode.gain.value = value * generalSound;
-  tracks[trackId].outputNode.connect(SoundLevelNode) ;
-  tracks[trackId].outputNode = SoundLevelNode ;
-
-  listenToAll(1);
-  listenToAll(1);
-}*/
 
 
 function connectFinalOutputs(finalOutput, isPlayButton) {
