@@ -61,6 +61,19 @@ function processTo(finalOutput) {   // does the wiring to produce the sound   ["
       case "delay" :
 
       case "fade" :
+        gainNode = audioContext.createGain();
+        gainNode.gain.value = parseInt(args[3]);
+        switch(args[2]) {
+          case "linear" :
+            gainNode.gain.linearRampToValueAtTime(parseInt(args[4]), parseInt(args[5])) ;
+            break;
+          case "exponential":
+            gainNode.gain.exponentialRampToValueAtTime(parseInt(args[4]), parseInt(args[5])) ;
+            break;
+        }
+        tracks[args[1]].outputNode.connect(gainNode) ;
+        tracks[args[1]].outputNode = gainNode ;
+        break;
 
     }
   }

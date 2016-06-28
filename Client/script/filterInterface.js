@@ -17,11 +17,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 
 function applyGain() {
-  trackNumb = document.getElementById("trackValueInput").value ;
-  gainVal = document.getElementById("gainValueInput").value ;
+  var trackNumb = null;  //document.getElementById("trackValueInput").value ;   TODO : get correct values
+  var gainVal = null;        //document.getElementById("gainValueInput").value ;
   console.log("applying gain to" +trackNumb +" of "+ gainVal ) ;
   addInstruction("gain "+trackNumb+" "+gainVal) ;
-  //execute("Screen") ; //redraw signal
 }
 
 function applyConvol() {
@@ -33,5 +32,10 @@ function applyDelay() {
 }
 
 function applyFade() {
-  
+  var trackNumb = null;
+  var type = null; // "exponential" or "linear"
+  var startGain = null;
+  var endGain = null;
+  var endTime = null;
+  addInstruction("fade "+trackNumb+" "+type+" "+startGain+" "+endGain+" "+endTime) ;
 }
