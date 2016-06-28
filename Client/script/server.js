@@ -156,16 +156,22 @@ function serverDeconvolve(id1, id2) {
 	
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 0)) {
-			var binary_string = xhr.responseText;
-			var len = binary_string.length;
-			var responseBuffer = audioContext.createBuffer(1, len, 44100);
-    		for(var i = 0 ; i < len ; i++)        {
-        		responseBuffer.getChannelData(0)[i] = binary_string.charCodeAt(i);
+			var enc_str = xhr.responseText;
+			var data = atob(enc_str);
+			console.log(data.length / 4);
+			var data_bytes = new Uint8Array(data.length);
+			for (i = 0 ; i < data.length ; i++) {
+				data_bytes[i] = data.charCodeAt(i);
+			}
+			var floatView = new Float32Array(data_bytes.buffer);
+			var responseBuffer = audioContext.createBuffer(1, data.length / 4, 44100);
+    		for(var i = 0 ; i < data.length / 4 ; i++) {
+        		responseBuffer.getChannelData(0)[i] = floatView[i];
     		}
 			var source = audioContext.createBufferSource();
  			source.buffer = responseBuffer;
  			source.connect(audioContext.destination);
- 			//source.start(); DONT EVER DECOMMENT
+ 			source.start();
 		}
 	}
 	

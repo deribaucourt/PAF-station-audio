@@ -158,6 +158,8 @@ function resizeEffectsPopup() {
 	effectsPopup.style.width = (toolsContainer.clientWidth - 12) + "px";
 }
 
+resizeEffectsPopup();
+
 function togglePopup(caller, className, elementId, loadingFunction) {
 	var popup = document.getElementById(elementId);
     if(popup.style.display === "none") {
