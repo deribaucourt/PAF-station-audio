@@ -198,6 +198,10 @@ function drawRecordTrack() {
     /******************** Tracks *****************/
 
 function onClose(i) {
+  tracks[i].signal = audioContext.createBuffer(2,1,audioContext.sampleRate);    // just put signal to 0. Full version is bugged due to async html
+  tracks[i].offset = 0 ;
+  drawSignal(tracks[i]);
+  /*
   console.log("closing "+i);
   var previousLength = tracks.length ;
   var previousTracks = [] ;
@@ -212,7 +216,7 @@ function onClose(i) {
     tracks.push(previousTracks[k]) ;
     addNewTrackToDisplay() ;
   }
-  repaintTracks() ;
+  repaintTracks() ;*/
 }
 
 
