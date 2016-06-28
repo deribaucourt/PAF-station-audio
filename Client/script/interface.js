@@ -149,6 +149,14 @@ function addNewTrackToDisplay() {
   drawRecordTrack();                        // finally add record track
 }
 
+function resizeEffectsPopup() {
+	var effectsPopup = document.getElementById("effectsPopup");
+	var toolsContainer = document.getElementById("effectsToolsContainer");
+	
+	effectsPopup.style.left = "calc(100% - " + (toolsContainer.clientWidth - 4) + "px)";
+	effectsPopup.style.width = (toolsContainer.clientWidth - 12) + "px";
+}
+
 function togglePopup(caller, className, elementId, loadingFunction) {
 	var popup = document.getElementById(elementId);
     if(popup.style.display === "none") {

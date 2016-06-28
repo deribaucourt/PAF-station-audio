@@ -88,9 +88,9 @@ Code starts here                                                                
 	</div>
 	
 	<!-- ************* Effects Popup ************ -->
-	<div id="effectsPopup" style="top:120px; height:auto;">
+	<div id="effectsPopup" style="position:absolute; top:120px; width:100px; height:auto;">
 		<!-- ************* Gain Popup ************ -->
-		<div id="gainPopup" class="popup" style="width:100%; height:auto; display:none; background:#d6d6d6; padding:6px;">
+		<div id="gainPopup" class="popup" style="position:relative; width:100%; height:auto; display:none; background:#d6d6d6; padding:6px;">
 			<div style="width:100%; clear:both; margin-bottom:6px;">
 				<span>Duration</span><input type="text" style="width:60px; margin:4px;"/>
 			</div>
@@ -152,12 +152,12 @@ Code starts here                                                                
 			</div>
 			<div id="effectsToolsContainer" class="toolsContainer" style="width:auto; height:100%; float:right; border-left-width:1px;">
 				<div class="toolsHeader unselectable">Effects</div>
-				<div id="deconvolveFilterButton" class="textToolButton unselectable" onclick="serverDeconvolve(0, 1);">Deconvolve</div>
-				<div id="reverbFilterButton" class="textToolButton unselectable">Reverb</div>
-				<div id="echoFilterButton" class="textToolButton unselectable">Echo</div>
-				<div id="fadeFilterButton" class="textToolButton unselectable">Fade</div>
-				<div id="gainFilterButton" class="textToolButton unselectable" onclick="togglePopup(this, 'textToolButton', 'gainPopup', function(){})">Gain</div>
-				<div id="offsetEffectButton" class="textToolButton unselectable" onclick="">Offset</div>
+				<div id="deconvolveFilterButton" class="textToolButton unselectable" onclick="serverDeconvolve(0, 1);" onclick="togglePopup(this, 'textToolButton', 'deconvolvePopup', resizeEffectsPopup)">Deconvolve</div>
+				<div id="reverbFilterButton" class="textToolButton unselectable" onclick="togglePopup(this, 'textToolButton', 'reverbPopup', resizeEffectsPopup)">Reverb</div>
+				<div id="echoFilterButton" class="textToolButton unselectable" onclick="togglePopup(this, 'textToolButton', 'echoPopup', resizeEffectsPopup)">Echo</div>
+				<div id="fadeFilterButton" class="textToolButton unselectable" onclick="togglePopup(this, 'textToolButton', 'fadePopup', resizeEffectsPopup)">Fade</div>
+				<div id="gainFilterButton" class="textToolButton unselectable" onclick="togglePopup(this, 'textToolButton', 'gainPopup', resizeEffectsPopup)">Gain</div>
+				<div id="offsetEffectButton" class="textToolButton unselectable" onclick="togglePopup(this, 'textToolButton', 'offsetPopup', resizeEffectsPopup)">Offset</div>
 			</div>
 		</div>
 
