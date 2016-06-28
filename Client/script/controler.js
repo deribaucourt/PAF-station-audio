@@ -171,7 +171,7 @@ function connectFinalOutputs(finalOutput) {
       }
       break;
 
-    case "File" :     //TODO
+    case "File" :
      fileParts = [];
      var fileDest = audioContext.createMediaStreamDestination();
      mediaRecorder = new MediaRecorder(fileDest.stream);

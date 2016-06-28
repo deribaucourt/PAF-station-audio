@@ -181,7 +181,7 @@ function importFile(evt)
 function onExport() {
   onStop();
   processTo("File") ;
-  alert("File will be ready soon");
+  alert("File will be ready soon. Alow popups then Save As...");
   //onPlay() ;
 }
 
