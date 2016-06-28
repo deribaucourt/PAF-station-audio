@@ -27,6 +27,7 @@ function onPlay() {
 
 function onPause() {
   stopRecord() ;
+  stopFileRecording() ;
   stopSources() ;
   displayPlayButton() ;
   displaySoloPlays() ;
@@ -162,9 +163,9 @@ function onRecordStart() {
       webRtcSource.connect(recordViewer);
       recordViewer.connect(recorderNodeForRecord) ;
       recordStartingPosition = cursorPosition ;
+      recording = true ;
       onPlay() ;                                    // Start playback
       recorderNodeForRecord.startRecording() ;
-      recording = true ;
     },
     function (error) {
       console.log("There was an error when getting microphone input: " + err);

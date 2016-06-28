@@ -89,6 +89,11 @@ function processTo(finalOutput) {   // does the wiring to produce the sound   ["
   startSources() ;
   startCursor() ;
 
+  if(finalOutput === "File") {
+    fileRecordingSources = playingSources.splice(0) ;   //  Prevent stoping the recorded sources
+    fileRecordingDelayedSources = delayedPlays.splice(0) ;    // Playback will be started to and pausing will stop recording
+  }
+
 }
 
 var tBegin, startCursorPosition ;
@@ -101,8 +106,7 @@ function startCursor() {
 }
 
 function cursorFollowPlaying() {
-  if (playing)
-  {
+  if (playing || recording)  {
     d = new Date();
     cursorPosition = (d.getTime() - tBegin)/1000 + startCursorPosition;
     if(cursorPosition > timeWindowOffset + timeWindowSize) {
@@ -130,6 +134,9 @@ function stopSources() {
   playingSources = [] ;
 }
 
+var fileRecordingSources = [] ;
+var fileRecordingDelayedSources = [] ;
+
 function startSources() {
   for(track of tracks) {
     // Play unMuted Sources
@@ -150,6 +157,10 @@ function startSources() {
   }
 }
 
+var fileParts ;
+var mediaRecorder ;
+var fileRecording = false ;
+
 function connectFinalOutputs(finalOutput) {
   switch(finalOutput)
   {
@@ -161,12 +172,43 @@ function connectFinalOutputs(finalOutput) {
       break;
 
     case "File" :     //TODO
-     var dest = audioContext.createMediaStreamDestination();
-     var mediaRecorder = new MediaRecorder(dest.stream);
+     fileParts = [];
+     var fileDest = audioContext.createMediaStreamDestination();
+     mediaRecorder = new MediaRecorder(fileDest.stream);
+
+     mediaRecorder.ondataavailable = function(evt) {
+        fileParts.push(evt.data);
+      };
+      mediaRecorder.onstop = function(evt) {
+        // Make blob out of our fileParts, and open it in new window.
+        var blob = new Blob(fileParts, { 'type' : 'audio/ogg; codecs=opus' });
+        window.open(URL.createObjectURL(blob));
+      };
+
+     for(track of tracks) {
+       track.outputNode.connect(fileDest) ;
+     }
+     fileRecording = true ;
+     mediaRecorder.start() ;
      break;
 
     case "Screen" :
       //Unused
+  }
+}
+
+function stopFileRecording() {
+  if(fileRecording) {
+    mediaRecorder.stop() ;
+    for(playingSource of fileRecordingSources) {
+      playingSource.stop() ;
+    }
+    for(delayedPlay of fileRecordingDelayedSources) {
+      clearTimeout(delayedPlay) ;
+    }
+    fileRecordingDelayedSources = [] ;
+    fileRecordingSources = [] ;
+    fileRecording = false ;
   }
 }
 
