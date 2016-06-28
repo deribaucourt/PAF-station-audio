@@ -50,11 +50,6 @@ function execute(finalOutput, isPlayButton) {   // does the wiring to produce th
         gainNode.gain.value = args[2] ;
         tracks[args[1]].outputNode.connect(gainNode) ;
         tracks[args[1]].outputNode = gainNode ;
-<<<<<<< HEAD
-        lastTrack = tracks[args[1]];
-        console.log("applying gain");
-=======
->>>>>>> origin/Vincent
         break;
 
       case "convolve" :
@@ -114,9 +109,10 @@ function connectFinalOutputs(finalOutput, isPlayButton) {
     case "Speakers" :
       if (isPlayButton) listenToAll(1);
       else listenToAll(0);
+      break;
 
     case "File" :     //TODO
-     var dest = ac.createMediaStreamDestination();
+     var dest = audioContext.createMediaStreamDestination();
      var mediaRecorder = new MediaRecorder(dest.stream);
      break;
 
