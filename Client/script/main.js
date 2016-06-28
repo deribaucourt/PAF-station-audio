@@ -179,3 +179,58 @@ function importFile(evt)
 //document.getElementById('importButton').addEventListener('change', importFile, false); //ToDo : update ref
 
 repaintTracks() ;
+
+function chooseCopyArea()
+{
+  alert("Beginning (Click on the timeline)");
+  
+}
+
+function chooseCutArea()
+{
+
+}
+var newTrackBuffer = audioContext.createBufferSource();
+
+function copyTrack(trackId, begin, end)
+{
+  var sampleRate = audioContext.sampleRate;
+  var trackBuffer = audioContext.createBuffer(2, (end-begin)*sampleRate, sampleRate);
+  var j = 0
+  for (var i = begin*sampleRate ; i < end*sampleRate ; i++)
+  {
+    for (var k = 0 ; k < tracks[trackId].signal.numberOfChannels ; k++)
+      trackBuffer.getChannelData(k)[j] = tracks[trackId].signal.getChannelData(k)[i];
+
+    j++;
+  }
+  newTrackBuffer.buffer = trackBuffer;
+}
+
+function cutTrack(trackId, begin, end)
+{
+  var sampleRate = audioContext.sampleRate;
+  var trackBuffer = audioContext.createBuffer(2, (end-begin)*sampleRate, sampleRate);
+  var j = 0;
+  for (var i = begin*sampleRate ; i < end*sampleRate ; i++)
+  {
+    for (var k = 0 ; k < tracks[trackId].signal.numberOfChannels ; k++)
+    {
+      trackBuffer.getChannelData(k)[j] = tracks[trackId].signal.getChannelData(k)[i];
+      tracks[trackId].signal.getChannelData(k)[i] = 0;
+    }
+    j++;
+  }
+  newTrackBuffer.buffer = trackBuffer;
+}
+
+function cloneTrack(trackId)
+{
+  copyTrack(trackId, 0, tracks[trackId].signal.duration);
+  pasteTrack();
+}
+
+function pasteTrack()
+{
+  addTrack(newTrackBuffer.buffer);
+}
