@@ -178,7 +178,7 @@ function importFile(evt)
         }
     }
 
-//document.getElementById('importButton').addEventListener('change', importFile, false); //ToDo : update ref
+document.getElementById('importAudio').addEventListener('change', importFile, false);
 
 function onExport() {
   onStop();

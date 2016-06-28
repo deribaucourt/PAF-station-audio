@@ -109,7 +109,7 @@ li.listSeparator {
 
 .muteButton {
 	width: 32px;
-	height: 32px;	
+	height: 32px;
 	background: url(./icons/multimedia-2.png) no-repeat;
 	background-position: center;
 	background-size: auto 85%;
@@ -135,6 +135,10 @@ li.listSeparator {
 	background-position: center;
 	background-size: auto 80%;
 	cursor: pointer;
+}
+
+#importAudio {
+	display: none;
 }
 
 div#titleContainer {

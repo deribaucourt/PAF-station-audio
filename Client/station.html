@@ -64,8 +64,7 @@ Code starts here                                                                
 	<!-- ************* Tracks Popup ************ -->
 	<div id="tracksPopup" class="popup" style="left:10%; top:32px; width:auto; height:auto; display:none;">
 		<ul style="width:100%">
-			<li class="listChoice unselectable" style="padding-left:6px;"><img src="icons/track_add_file.png" class="listChoice" /><span class="listChoice">Add from file</span></li>
-			<li class="listChoice unselectable" style="padding-left:6px;"><img src="icons/track_add_record.png" class="listChoice" /><span class="listChoice">Add from record</span></li>
+			<li class="listChoice unselectable" style="padding-left:6px;"><input type="file" id="importAudio" name="files[]" multiple /><img src="icons/track_add_file.png" class="listChoice" /><label class="listChoice" for="importAudio">Add from file</label></li>
 			<li class="listChoice unselectable"><span class="listChoice">Duplicate</span></li>
 			<li class="listSeparator"></li>
 			<li class="listChoice unselectable" onclick="onExport();"><span class="listChoice">Export to audio file</span></li>
