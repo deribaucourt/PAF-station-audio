@@ -77,6 +77,16 @@ function execute(finalOutput, isPlayButton) {   // does the wiring to produce th
           gainNode.gain.linearRampToValueAtTime(0, currTime + duration);
           break;
 
+        case "Convolve" :
+            var convolver;
+
+            convolver = context.createConvolver();
+            tracks[args[1]].outputNode.connect(convolver);
+
+            convolver.buffer = convolverBuffer;
+
+        };
+
     }
   }
 
