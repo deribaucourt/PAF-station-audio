@@ -178,10 +178,6 @@ function drawNewTrack(track) {
       	c.height = c.clientHeight;
       	c.addEventListener("mousedown", tracksMouseDownHandler, false);
       	drawSignal(partialTrack);
-      	for(var j = 0 ; j < tracks.length - 1 ; j++) {  // repaint all other canvas (they clear for some reason)
-        	console.log("repainting track " + j);
-        	drawSignal(tracks[j]);
-      	}
       	document.getElementById("tracksInsertMessage").style.display = "none";
 	};
 	var callbackClosure = function() {callbackFunction(track);}
@@ -191,6 +187,7 @@ function drawNewTrack(track) {
 function drawRecordTrack() {
 	console.log("painting record track last");
 	var callbackFunction = function() {
+    document.getElementById("recordTrackMenu").parentElement.setAttribute("id","recordTrackContainer") ;
 	};
 	serveTemplateIntoContainer(document.getElementById("tracksContainer"), "record", "", callbackFunction);
 }
