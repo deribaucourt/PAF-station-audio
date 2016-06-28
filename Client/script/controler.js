@@ -79,6 +79,13 @@ function execute(finalOutput, isPlayButton) {   // does the wiring to produce th
           gainNode.gain.linearRampToValueAtTime(0, currTime + duration);
           break;
 
+        case "Delay" :
+
+          var synthDelay = audioContext.createDelay(5.0);
+          tracks[args[1]].outputNode.connect(synthDelay) ;
+          tracks[args[1]].outputNode = synthDelay;
+          break;
+
         case "Convolve" :
             var convolver;
 
@@ -86,7 +93,7 @@ function execute(finalOutput, isPlayButton) {   // does the wiring to produce th
             tracks[args[1]].outputNode.connect(convolver);
 
             convolver.buffer = convolverBuffer;
-
+            break;
         };
 
     }
