@@ -53,6 +53,12 @@ function execute(finalOutput, isPlayButton) {   // does the wiring to produce th
         console.log("applying gain");
         break;
 
+      case "convolve" :
+
+      case "delay" :
+
+      case "fade" :
+
     }
   }
 
@@ -91,7 +97,7 @@ function connectFinalOutputs(finalOutput, isPlayButton) {
     case "File" :
       //TODO
     case "Screen" :
-      //TODO
+      //Unused
   }
 }
 
