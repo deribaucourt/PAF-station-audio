@@ -21,7 +21,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 function Track(audioBuff) {
   console.log("Instanciating new Track") ;
   this.volume = 100 ;
-  this.title = "Darude - Sandstorm" ;
   this.offset = 0 ;
   this.number = tracks.length ;
   this.signal = audioBuff ;
@@ -55,10 +54,14 @@ function repaintTimeline() {
 /*  timeline.moveTo(0,timelineHeight/2); // Trace axis
   timeline.lineTo(timelineWidth,timelineHeight/2);
   timeline.stroke(); */
-  for(var i = 0; i<6; i++) {  // Trace 6 big time divisions
-    timeline.moveTo(i*timelineWidth/5, 0);
-    timeline.lineTo(i*timelineWidth/5, timelineHeight);
-    timeline.fillText(i*timeWindowSize/5 + timeWindowOffset, i*timelineWidth/5, timelineHeight*19/30);
+  timeDivision = Math.pow(10,Math.floor(Math.log10(timeWindowSize / 5))) ;
+  firstDivision = Math.floor(timeWindowOffset/timeDivision) ;
+  numberOfDivisions = Math.ceil( timeWindowSize / timeDivision ) ;
+  for(var i = 0; i<=numberOfDivisions; i++) {  // Trace 6 big time divisions
+    bigDivisionLocation = ( i + firstDivision - timeWindowOffset/timeDivision ) * timelineWidth / numberOfDivisions ;
+    timeline.moveTo(bigDivisionLocation, 0);
+    timeline.lineTo(bigDivisionLocation, timelineHeight);
+    timeline.fillText((i + firstDivision)*timeDivision, bigDivisionLocation, timelineHeight*19/30);
   }
   timeline.stroke();
 }
@@ -94,15 +97,13 @@ function drawSignal(track) {
   var currentSample = Math.floor(timeWindowOffset*track.signal.sampleRate);
   ctx.beginPath();
   ctx.strokeStyle = "#e69900" ;
-  for(i = 0; i<canvasWidth; i++) {
+  firstPixel = Math.max(0, Math.floor((track.offset-timeWindowOffset)*canvasWidth/timeWindowSize ) ) ;
+  lastPixel = Math.min(canvasWidth, Math.ceil( canvasWidth + (track.offset + track.signal.duration -timeWindowOffset)*canvasWidth/timeWindowSize ) ) ;
+  for(i = firstPixel; i<=lastPixel; i++) {
     previousSample = currentSample ;
     currentSample = Math.floor((timeWindowOffset-track.offset+i*timeWindowSize/canvasWidth)*track.signal.sampleRate) ;
-    localMax = 0;
-    for(k = previousSample+1; k<currentSample; k++) {
-      if(Math.abs(track.signal.getChannelData(0)[k])>localMax) {
-        localMax = Math.abs(track.signal.getChannelData(0)[k]) ;
-      }
-    }
+    localArray = track.signal.getChannelData(0).slice(previousSample, currentSample) ;
+    localMax = Math.max(...localArray);
     ctx.moveTo(i,-(localMax-1)*canvasHeight*0.5);
     ctx.lineTo(i,(localMax+1)*canvasHeight*0.5);
   }
@@ -148,22 +149,14 @@ function addNewTrackToDisplay() {
   drawRecordTrack();                        // finally add record track
 }
 
-function toggleFiltersPopup(toggleState) {
-    if(toggleState) {
-        document.getElementById("filtersPopup").style.display = "block";
-    } else {
-        document.getElementById("filtersPopup").style.display = "none";
-    }
-}
-
-function togglePopup(caller, elementId, loadingFunction) {
+function togglePopup(caller, className, elementId, loadingFunction) {
 	var popup = document.getElementById(elementId);
     if(popup.style.display === "none") {
-		caller.classList.add("menuButtonActive");
+		caller.classList.add(className);
 		loadingFunction();
         popup.style.display = "block";
     } else {
-		caller.classList.remove("menuButtonActive");
+		caller.classList.remove(className);
         popup.style.display = "none";
     }
 }
@@ -182,7 +175,7 @@ function drawNewTrack(track) {
       	}
       	document.getElementById("tracksInsertMessage").style.display = "none";
 	};
-	var callbackClosure = function() {callbackFunction(track);}
+	var callbackClosure = function() { callbackFunction(track); }
     serveTemplateIntoContainer(document.getElementById("tracksContainer"), "track", track.number, callbackClosure);
 }
 
@@ -237,4 +230,19 @@ function onClose(i) {
     addNewTrackToDisplay() ;
   }
   repaintTracks() ;
+}
+
+
+function createTrackSelect() {
+  var selectList = document.createElement("select");
+  selectList.id = "trackSelect";
+
+  for (var i = 0; i<tracks.length; i++) {
+      var option = document.createElement("option");
+      option.value = i;
+      option.text = document.getElementById("trackTitleInput"+i).value;
+      selectList.appendChild(option);
+  }
+
+  return selectList ;
 }

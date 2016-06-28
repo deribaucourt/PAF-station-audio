@@ -199,7 +199,7 @@ div.popup {
 div#cursor {
 	position: absolute;
 	z-index: 2;
-	width: 3px;
+	width: 2px;
 	top: 167px;
 	left: 50%;
 	border: 1px solid #e6e6e6;
@@ -314,16 +314,14 @@ div.menuButton {
 div.menuButton:hover {
 	background-color: #e6e6e6;
 }
-
 div.menuButtonActive {
 	border-bottom-width: 0;
 }
-
 div.menuButtonActive:hover {
 	background-color: #ffffff;
 }
 
-input.menuInput {
+input[type=text].menuInput {
 	outline: none;
 	border: 1px solid #e6e6e6;
 	border-width:0 1px 1px 1px;
@@ -331,10 +329,11 @@ input.menuInput {
 	font:14px Arial, sans-serif;
 	transition: background-color 0.07s;
 }
-input.menuInput:hover {
+input[type=text].menuInput:hover {
 	background-color: #e6e6e6;
 }
-input.menuInput:focus {
+input[type=text].menuInput:focus {
+	outline: none;
 	border: 2px solid #b6b6b6;
 	border-width: 0 2px;
 	background-color: #e6e6e6;
@@ -380,6 +379,9 @@ div.textToolButton {
 div.textToolButton:hover {
 	background-color: #d6d6d6;
 }
+div.textToolButtonActive {
+	background-color: #d6d6d6;
+}
 
 img.toolButton {
 	width: 100%;
@@ -396,7 +398,27 @@ div.trackMenuTitle {
 	clear: both;
 	background-color: #2e2e2e;
 	border-bottom: 1px solid #3a3a3a;
-	line-height: 30px;
+}
+
+input[type=text].trackMenuTitle {
+	outline: none;
+	width: 100%;
+	height: 100%;
+	background-color: #2e2e2e;
+	border: 0 solid #ffffff;
+	padding:2px;
+	font: 13px Arial, sans-serif;
+	color: #ffffff;
+	transition: background-color 0.07s;
+	transition: border-color 0.07s;
+}
+input[type=text].trackMenuTitle:hover {
+	background-color : #3a3a3a;
+}
+input[type=text].trackMenuTitle:focus {
+	outline: none;
+	background-color : #3a3a3a;
+	border-width: 0 2px;
 }
 
 div.trackToolsContainer {

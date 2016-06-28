@@ -1,7 +1,11 @@
 from flask import Flask, request, make_response, jsonify
 from werkzeug.routing import BaseConverter
 from os import listdir
+import base64
 import json
+from signalProcessing import deconvolve
+
+import numpy as np
 
 app = Flask(__name__, static_url_path="", static_folder="../Client")
 
@@ -72,12 +76,12 @@ def load_project() :
 def filter_audio() :
     data = json.loads(request.data)
     
-    filteredAudio = deconvolve(data["signal1"]["leftChannel"], data["signal1"]["rightChannel"], data["signal2"]["leftChannel"], data["signal2"]["rightChannel"])
+    filtered_audio = deconvolve(data["signal1"]["leftChannel"], data["signal2"]["leftChannel"], data["sampleRate"])
+    filtered_audio = np.ascontiguousarray(filtered_audio, dtype=np.float32)
+    enc_str = base64.b64encode(filtered_audio)
     
-    return str(filteredAudio)[1:-1]
+    return enc_str
 
-def deconvolve(sig1l, sig1r, sig2l, sig2r) :
-    return [sig1l]
 
 if __name__ == "__main__":
     app.run(debug = True)

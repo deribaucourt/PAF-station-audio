@@ -145,22 +145,32 @@ function serverDeconvolve(id1, id2) {
 	"use strict";
 	
 	var xhr = new GetXMLHttpRequest();
-	var signal1ArrayLeft = Array.prototype.slice.call(tracks[id1].signal.getChannelData(0));
+	var signal1ArrayLeft = 	Array.prototype.slice.call(tracks[id1].signal.getChannelData(0));
 	var signal1ArrayRight = Array.prototype.slice.call(tracks[id1].signal.getChannelData(1));
-	var signal2ArrayLeft = Array.prototype.slice.call(tracks[id2].signal.getChannelData(0));
+	var signal2ArrayLeft = 	Array.prototype.slice.call(tracks[id2].signal.getChannelData(0));
 	var signal2ArrayRight = Array.prototype.slice.call(tracks[id2].signal.getChannelData(1));
 	
 	var channelData = JSON.stringify({"signal1" : {"leftChannel" : signal1ArrayLeft, "rightChannel" : signal1ArrayRight},
-									  "signal2" : {"leftChannel" : signal2ArrayLeft, "rightChannel" : signal2ArrayRight}});
+									  "signal2" : {"leftChannel" : signal2ArrayLeft, "rightChannel" : signal2ArrayRight},
+									  "sampleRate" : tracks[id1].signal.sampleRate});
 	
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 0)) {
-			console.log(xhr.response); // the result
+			var binary_string = xhr.responseText;
+			var len = binary_string.length;
+			var responseBuffer = audioContext.createBuffer(1, len, 44100);
+    		for(var i = 0 ; i < len ; i++)        {
+        		responseBuffer.getChannelData(0)[i] = binary_string.charCodeAt(i);
+    		}
+			var source = audioContext.createBufferSource();
+ 			source.buffer = responseBuffer;
+ 			source.connect(audioContext.destination);
+ 			//source.start(); DONT EVER DECOMMENT
 		}
 	}
 	
 	xhr.open("POST", "/deconvolve", true);
 	xhr.setRequestHeader("Content-Type", "application/json");
-	xhr.responseType = "arraybuffer";
+	xhr.responseType = "text";
 	xhr.send(channelData);
 }

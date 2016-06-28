@@ -150,3 +150,8 @@ function createFileOutputNode(file) {
 
   return newAudioNode ;
 }
+
+function changeOffset(track) {       // based on cursor position     TODO : put in html 
+  track.offset = cursorPosition ;
+  drawSignal(track) ;
+}
