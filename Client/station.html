@@ -89,6 +89,36 @@ Code starts here                                                                
 	<!-- ************* Effects Popups ************ -->
 	<div id="effectsPopup" style="position:absolute; top:120px; width:100px; height:auto;">
 
+    <!-- ************* Copy Popup **************** -->
+    <div id="copyPopup" class="popup effectPopup" style="display:none;">
+      <div style="width:100%; clear:both; margin-bottom:6px;">
+        <span>Number of the track to be copied : </span><input id="copySourceTrack" type="text" style="width:60px; margin:4px;"/>
+      </div>
+      <div onclick="chooseCopyArea()">
+        <button>Begin copying process</button>
+      </div>
+    </div>
+
+    <!-- ************ Cut Popup ********************-->
+    <div id="cutPopup" class="popup effectPopup" style="display:none;">
+      <div style="width:100%; clear:both; margin-bottom:6px;">
+        <span>Number of the track to be cut : </span><input id="cutSourceTrack" type="text" style="width:60px; margin:4px;"/>
+      </div>
+      <div onclick="chooseCutArea()">
+        <button >Begin cutting process</button>
+      </div>
+    </div>
+
+    <!-- ************ Paste Popup ***************** -->
+    <div id="pastePopup" class="popup effectPopup" style="display:none;">
+      <div style="width:100%; clear:both; margin-bottom:6px;">
+        <span>Copy to track Number : </span><input id="copyDestinationTrack" type="text" style="width:60px; margin:4px;"/>
+      </div>
+      <div onclick = "pasteTrack()">
+        <button>Paste</button>
+      </div>
+    </div>
+
 		<!-- ************* Deconvolve Popup ************ -->
 		<div id="deconvolvePopup" class="popup effectPopup" style="display:none;">
 			<div style="width:100%; clear:both; margin-bottom:6px;">
@@ -102,6 +132,7 @@ Code starts here                                                                
 			</div>
 		</div>
 		<!-- ************* Reverb Popup ************ -->
+
 		<div id="reverbPopup" class="popup effectPopup" style="display:none;">
 			<div style="width:100%; clear:both; margin-bottom:6px;">
 				<span>Duration</span><input type="text" style="width:60px; margin:4px;"/>
@@ -215,13 +246,13 @@ Code starts here                                                                
 			</div>
 			<div id="editionToolsContainer" class="toolsContainer" style="width:auto; height:100%;">
 				<div class="toolsHeader unselectable">Edition</div>
-				<div id="copyButton" title="Copy" class="toolButton" onclick="chooseCopyArea()">
+				<div id="copyButton" title="Copy" class="toolButton" onclick="togglePopup(this, 'toolButton', 'copyPopup', function(){})">
 					<img src="icons/copy-archive.png" />
 				</div>
-				<div id="cutButton" title="Cut" class="toolButton" onclick="chooseCutArea()">
+				<div id="cutButton" title="Cut" class="toolButton" onclick="togglePopup(this, 'toolButton', 'cutPopup', function(){})">
 					<img src="icons/scissors.png" />
 				</div>
-				<div id="pasteButton" title="Paste" class="toolButton" onclick="pasteTrack()">
+				<div id="pasteButton" title="Paste" class="toolButton" onclick="togglePopup(this, 'toolButton', 'pastePopup', function(){})">
 					<img src="icons/paste-file.png" />
 				</div>
 			</div>

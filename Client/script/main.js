@@ -123,8 +123,7 @@ function mouseClickHandler(e) {     // this moves the cursor  TODO : code me
   if (copyAreaNumb === 1)
   {
     copyBoolean = false;
-    console.log("copyArea 0 : " + copyArea[0] + "copyArea 1 : " + copyArea[1]);
-    copyTrack(0, copyArea[0], copyArea[1]);
+    copyTrack(copyTrackSourceId, copyArea[0], copyArea[1]);
   }
 
   if (cutBoolean)
@@ -135,8 +134,7 @@ function mouseClickHandler(e) {     // this moves the cursor  TODO : code me
   if (cutAreaNumb === 1)
   {
     cutBoolean = false;
-    console.log("copyArea 0 : " + cutArea[0] + "copyArea 1 : " + cutArea[1]);
-    cutTrack(0, cutArea[0], cutArea[1]);
+    cutTrack(cutTrackSourceId, cutArea[0], cutArea[1]);
   }
 
 
@@ -221,11 +219,17 @@ function onExport() {
 }
 
 repaintTracks() ;
+
+
 var copyBoolean = false;
 var cutBoolean = false;
+var copyTrackSourceId = 0;
+var cutTrackSourceId = 0;
+var trackDestinationId = 1;
 
 function chooseCopyArea()
 {
+  copyTrackSourceId = document.getElementById('copySourceTrack').value;
   cutBoolean = false;
   copyBoolean = true;
   alert("Click on the timeline to chose the beginning, then end of the copying area");
@@ -233,6 +237,7 @@ function chooseCopyArea()
 
 function chooseCutArea()
 {
+  cutTrackSourceId = document.getElementById('cutSourceTrack').value;
   cutBoolean = true;
   copyBoolean = false;
   alert("Click on the timeline to chose the beginning, then end of the copying area");
@@ -251,7 +256,9 @@ function copyTrack(trackId, begin, end)
 
     j++;
   }
+  copyAreaNumb = -1;
   newTrackBuffer.buffer = trackBuffer;
+  alert("Operation succesful");
 }
 
 function cutTrack(trackId, begin, end)
@@ -268,7 +275,9 @@ function cutTrack(trackId, begin, end)
     }
     j++;
   }
+  cutAreaNumb = -1;
   newTrackBuffer.buffer = trackBuffer;
+  alert("Operation succesful");
 }
 
 function cloneTrack(trackId)
