@@ -16,9 +16,53 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 
+function resizeEffectsPopup() {
+	var effectsPopup = document.getElementById("effectsPopup");
+	var toolsContainer = document.getElementById("effectsToolsContainer");
+
+	effectsPopup.style.left = "calc(100% - " + (toolsContainer.clientWidth - 4) + "px)";
+	effectsPopup.style.width = (toolsContainer.clientWidth - 12) + "px";
+}
+
+resizeEffectsPopup();
+
+function togglePopup(caller, className, elementId, loadingFunction) {
+	var popup = document.getElementById(elementId);
+  if(popup.style.display === "none") {
+		caller.classList.add(className + "Active");
+		loadingFunction();
+    popup.style.display = "block";
+  } else {
+	  caller. classList.remove(className + "Active");
+    popup.style.display = "none";
+  }
+
+  var selectContainers = document.getElementsByClassName("selectContainer");
+  for(selectCont of selectContainers) {
+    while (selectCont.hasChildNodes())
+      selectCont.removeChild(selectCont.lastChild);
+    selectCont.appendChild(createTrackSelect()) ;
+    selectCont.firstChild.setAttribute("id",elementId+"TrackSelect") ;
+  }
+}
+
+function createTrackSelect() {
+  var selectList = document.createElement("select");
+
+  for (var i = 0; i<tracks.length; i++) {
+      var option = document.createElement("option");
+      option.value = i;
+      option.text = document.getElementById("trackTitleInput"+i).value;
+      selectList.appendChild(option);
+  }
+
+  selectList.firstChild.setAttribute("selected","selected");
+  return selectList ;
+}
+
 function applyGain() {
-  var trackNumb = null;  //document.getElementById("trackValueInput").value ;   TODO : get correct values
-  var gainVal = null;        //document.getElementById("gainValueInput").value ;
+  var trackNumb = document.getElementById("gainPopupTrackSelect").value ;
+  var gainVal = document.getElementById("gainValueInput").value ;
   console.log("applying gain to" +trackNumb +" of "+ gainVal ) ;
   addInstruction("gain "+trackNumb+" "+gainVal) ;
 }
@@ -38,4 +82,9 @@ function applyFade() {
   var endGain = null;
   var endTime = null;
   addInstruction("fade "+trackNumb+" "+type+" "+startGain+" "+endGain+" "+endTime) ;
+}
+
+function applyOffset() {
+  var trackNumb = document.getElementById("offsetPopupTrackSelect").value ;
+  changeOffset(tracks[trackNumb]);
 }
