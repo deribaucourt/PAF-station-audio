@@ -65,7 +65,7 @@ Code starts here                                                                
 	<div id="tracksPopup" class="popup" style="left:10%; top:32px; width:auto; height:auto; display:none;">
 		<ul style="width:100%">
 			<li class="listChoice unselectable" style="padding-left:6px;"><img src="icons/track_add_file.png" class="listChoice" /><input type="file" multiple id="importAudio" name="files[]" /><span class="listChoice"><label for="importAudio">Add from file</label></span></li>
-			<li class="listChoice unselectable" onclick="cloneTrack(0)"><span class="listChoice">Duplicate</span></li>
+			<li class="listChoice unselectable" onclick="togglePopup(this, 'listChoice', 'duplicatePopup', function(){})"><span class="listChoice">Duplicate</span></li>
 			<li class="listSeparator"></li>
 			<li class="listChoice unselectable" onclick="onExport();"><span class="listChoice">Export to audio file</span></li>
 			<li class="listSeparator"></li>
@@ -88,6 +88,16 @@ Code starts here                                                                
 
 	<!-- ************* Effects Popups ************ -->
 	<div id="effectsPopup" style="position:absolute; top:120px; width:100px; height:auto;">
+
+    <!-- ************* Duplicate Popup ************** -->
+    <div id="duplicatePopup" class="popup effectPopup" style="display:none;">
+      <div style="width:100%; clear:both; margin-bottom:6px;">
+        <span>Number of the track to be duplicated : </span><input id="duplicateSourceTrack" type="text" style="width:60px; margin:4px;"/>
+      </div>
+      <div onclick="cloneTrack()">
+        <button>Duplicate</button>
+      </div>
+    </div>
 
     <!-- ************* Copy Popup **************** -->
     <div id="copyPopup" class="popup effectPopup" style="display:none;">
@@ -112,9 +122,9 @@ Code starts here                                                                
     <!-- ************ Paste Popup ***************** -->
     <div id="pastePopup" class="popup effectPopup" style="display:none;">
       <div style="width:100%; clear:both; margin-bottom:6px;">
-        <span>Copy to track Number : </span><input id="copyDestinationTrack" type="text" style="width:60px; margin:4px;"/>
+        <span>Paste to track Number : </span><input id="pasteDestinationTrack" type="text" style="width:60px; margin:4px;"/>
       </div>
-      <div onclick = "pasteTrack()">
+      <div onclick = "choosePasteArea()">
         <button>Paste</button>
       </div>
     </div>
@@ -202,8 +212,8 @@ Code starts here                                                                
   <div id="convolvePopup" class="popup effectPopup" style="display:none;">
     <select id="convolverChoice">
       <option value="Sacristie">Sacristie</option>
-      <option value="SportCenter">SportCenter</option>
-      <option value="Crypt">Crypt</option>
+      <option style="display:none;" value="SportCenter">SportCenter</option>
+      <option style="display:none;" value="Crypt">Crypt</option>
     </select>
     <div class="selectContainer">
       <!--<select id="convolvePopupTrackSelect"> </select>-->
