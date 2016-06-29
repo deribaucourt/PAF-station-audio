@@ -215,3 +215,20 @@ function serverDeconvolve(id1, id2) {
 	xhr.responseType = "text";
 	xhr.send(channelData);
 }
+
+function saveToComputer() {
+	"use strict";
+	
+	exportProject();
+
+	var xhr = new GetXMLHttpRequest();
+
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 0)) {
+			alert("e")
+		}
+	}
+
+	xhr.open("GET", "/project?file_name=" + convertToSlug(document.getElementById("projectNameInput")), true);
+	xhr.send();
+}

@@ -92,7 +92,7 @@ def filter_audio() :
     
     return enc_str
 
-def float32_wav_file(sample_array, sample_rate):
+def float32_wav_file(sample_array, sample_rate) :
   byte_count = (len(sample_array)) * 4  # 32-bit floats
   wav_file = ""
   # write the header
@@ -113,6 +113,14 @@ def float32_wav_file(sample_array, sample_rate):
     wav_file += struct.pack("<f", sample)
   return wav_file
 
+@app.route("/project", methods=["GET"])
+def get_project() :
+    file_name = request.args.get("file_name")
+    f = open("projects/" + file_name + ".json", "rb")
+    
+    response = make_response(f.read())
+    
+    return response
 
 if __name__ == "__main__":
     app.run(debug = True)
