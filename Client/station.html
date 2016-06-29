@@ -160,12 +160,20 @@ Code starts here                                                                
 					<button onclick="applyGain();">Apply gain</button>
 				</div>
 		</div>
-		<!-- ************* Offset Popup ************ -->
-		<div id="offsetPopup" class="popup effectPopup" style="display:none;">
-      <div class="selectContainer">
-        <!--<select id="offsetPopupTrackSelect"> </select>-->
-      </div>
+	<!-- ************* Offset Popup ************ -->
+	<div id="offsetPopup" class="popup effectPopup" style="display:none;">
+    <div class="selectContainer">
+      <!--<select id="offsetPopupTrackSelect"> </select>-->
+    </div>
+    <button onclick="applyOffset();">Apply Offset</button>
 	</div>
+  <!-- ************* Convolve Popup ************ -->
+  <div id="convolvePopup" class="popup effectPopup" style="display:none;">
+    <div class="selectContainer">
+      <!--<select id="convolvePopupTrackSelect"> </select>-->
+    </div>
+    <button onclick="applyOffset();">Apply Offset</button>
+  </div>
 </div>
 <!-- ************* Home Page ************ -->
 	<div id="topContainer" style="width:100%; height:100%;">
@@ -217,9 +225,10 @@ Code starts here                                                                
 			<div id="effectsToolsContainer" class="toolsContainer" style="width:auto; height:100%; float:right; border-left-width:1px;">
 				<div class="toolsHeader unselectable">Effects</div>
         <div id="deconvolveEffectButton" class="textToolButton unselectable" onclick="togglePopup(this, 'textToolButton', 'deconvolvePopup', resizeEffectsPopup)">Deconvolve</div>
-				<div id="reverbEffectButton" class="textToolButton unselectable" onclick="togglePopup(this, 'textToolButton', 'reverbPopup', resizeEffectsPopup)">Reverb</div>
-				<div id="echoEffectButton" class="textToolButton unselectable" onclick="togglePopup(this, 'textToolButton', 'echoPopup', resizeEffectsPopup)">Echo</div>
-				<div id="fadeEffectButton" class="textToolButton unselectable" onclick="togglePopup(this, 'textToolButton', 'fadePopup', resizeEffectsPopup)">Fade</div>
+				<div id="reverbEffectButton" style="display:none;" class="textToolButton unselectable" onclick="togglePopup(this, 'textToolButton', 'reverbPopup', resizeEffectsPopup)">Reverb</div>
+				<div id="echoEffectButton" style="display:none;" class="textToolButton unselectable" onclick="togglePopup(this, 'textToolButton', 'echoPopup', resizeEffectsPopup)">Echo</div>
+        <div id="convolveEffectButton" class="textToolButton unselectable" onclick="togglePopup(this, 'textToolButton', 'convolvePopup', resizeEffectsPopup)">Convolve</div>
+        <div id="fadeEffectButton" class="textToolButton unselectable" onclick="togglePopup(this, 'textToolButton', 'fadePopup', resizeEffectsPopup)">Fade</div>
 				<div id="gainEffectButton" class="textToolButton unselectable" onclick="togglePopup(this, 'textToolButton', 'gainPopup', resizeEffectsPopup)">Gain</div>
 				<div id="offsetEffectButton" class="textToolButton unselectable" onclick="togglePopup(this, 'textToolButton', 'offsetPopup', resizeEffectsPopup)">Offset</div>
 			</div>
