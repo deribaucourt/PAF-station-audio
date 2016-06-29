@@ -150,7 +150,7 @@ Code starts here                                                                
 		</div>
 		<!-- ************* Gain Popup ************ -->
 		<div id="gainPopup" class="popup effectPopup" style="display:none;">
-				<div style="width:100%; clear:both;">
+				<div>
 					<span>Gain :</span><input type="text" id="gainValueInput" style="width:60px; margin:4px;" />
 				</div>
         <div class="selectContainer">
@@ -169,10 +169,15 @@ Code starts here                                                                
 	</div>
   <!-- ************* Convolve Popup ************ -->
   <div id="convolvePopup" class="popup effectPopup" style="display:none;">
+    <select id="convolverChoice">
+      <option value="Sacristie">Sacristie</option>
+      <option value="SportCenter">SportCenter</option>
+      <option value="Crypt">Crypt</option>
+    </select>
     <div class="selectContainer">
       <!--<select id="convolvePopupTrackSelect"> </select>-->
     </div>
-    <button onclick="applyOffset();">Apply Offset</button>
+    <button onclick="applyConvolve();">Apply Convolve</button>
   </div>
 </div>
 <!-- ************* Home Page ************ -->

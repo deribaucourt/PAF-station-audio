@@ -51,7 +51,7 @@ function createTrackSelect() {
 
   for (var i = 0; i<tracks.length; i++) {
       var option = document.createElement("option");
-      option.value = i;
+      option.setAttribute("value",i);
       option.text = document.getElementById("trackTitleInput"+i).value;
       selectList.appendChild(option);
   }
@@ -67,12 +67,44 @@ function applyGain() {
   addInstruction("gain "+trackNumb+" "+gainVal) ;
 }
 
-function applyConvol() {
+//Import filters for convolver
+var filtersBuffers = [] ;
 
+function importFilter(url) {
+  var request = new XMLHttpRequest();
+  request.open("GET", url, true);
+  request.responseType = "arraybuffer";
+
+  request.onload = function () {
+    audioContext.decodeAudioData(request.response, function(convolverBuffer) {
+      filtersBuffers.push(convolverBuffer);
+    //  callback();
+    });
+  }
+  request.send();
 }
 
-function applyDelay() {
+importFilter("filters/Sacristie.wav");
+importFilter("filters/SportCenter.wav");
+importFilter("filters/Crypte.wav");
 
+function applyConvolve() {
+  var trackNumb = document.getElementById("convolvePopupTrackSelect").value ;
+  var filter = document.getElementById("convolverChoice").value ;
+  switch(filter) {
+    case "Sacristie" :
+      console.log("convolve " + trackNumb + " " + 0 ) ;
+      addInstruction("convolve " + trackNumb + " " + 0 ) ;
+      break;
+    case "SportCenter" :
+      console.log("convolve " + trackNumb + " " + 1 ) ;
+      addInstruction("convolve " + trackNumb + " " + 1 ) ;
+      break;
+    case "Crypt":
+      console.log("convolve " + trackNumb + " " + 2 ) ;
+      addInstruction("convolve " + trackNumb + " " + 2 ) ;
+      break;
+  }
 }
 
 function applyFade() {

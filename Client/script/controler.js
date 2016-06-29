@@ -58,10 +58,10 @@ function processTo(finalOutput) {   // does the wiring to produce the sound   ["
 
       case "convolve" :
         var convolver;
-        convolver = context.createConvolver();
+        convolver = audioContext.createConvolver();
+        convolver.buffer = filtersBuffers[args[2]];
         tracks[args[1]].outputNode.connect(convolver);
-
-        convolver.buffer = convolverBuffer;
+        tracks[args[1]].outputNode = convolver ;
         break;
 
       case "delay" :
