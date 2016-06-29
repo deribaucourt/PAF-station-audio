@@ -263,7 +263,6 @@ var newTrackBuffer = audioContext.createBufferSource();
 
 function copyTrack(trackId, begin, end)
 {
-  alert(copyTrackSourceId);
   var sampleRate = audioContext.sampleRate;
   var trackBuffer = audioContext.createBuffer(2, Math.trunc((end-begin)*sampleRate), sampleRate);
   var j = 0
@@ -319,7 +318,7 @@ function pasteTrack(trackId, begin)
           tracks[trackId].signal.getChannelData(k)[i] =  newTrackBuffer.buffer.getChannelData(k)[j];
       }
       j++;
-      if (j > newTrackBuffer.buffer.duration*audioContext.sampleRate)
+      if (j > Math.trunc(newTrackBuffer.buffer.duration*audioContext.sampleRate))
         break;
     }
   }
