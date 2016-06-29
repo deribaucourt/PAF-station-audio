@@ -49,11 +49,11 @@ Code starts here                                                                
 	<div id="projectsPopup" class="popup" style="left:0; top:32px; width:auto; height:auto; display:none;">
 		<ul style="width:100%">
 			<li class="listChoice unselectable" style="padding-left:6px" onclick="location.reload()"><img src="icons/project_new.png" class="listChoice" /><span class="listChoice">New</span></li>
-			<li class="listChoice unselectable" style="padding-left:6px"><img src="icons/project_load_computer.png" class="listChoice" /><span class="listChoice">Load from computer</span></li>
+			<li class="listChoice unselectable" style="padding-left:6px; display:none;"><img src="icons/project_load_computer.png" class="listChoice" /><span class="listChoice">Load from computer</span></li>
 			<li class="listChoice unselectable" style="background-color:#ffffff; cursor:default;"><span class="listChoice">Load from server :</span></li>
 			<div id="projectsPopupContainer" style="float:none; clear:both;"></div>
 			<li class="listSeparator unselectable"></li>
-			<li class="listChoice unselectable" style="padding-left:6px" onclick="saveToComputer"><img src="icons/project_save_computer.png" class="listChoice" /><span class="listChoice">Save to computer</span></li>
+			<li class="listChoice unselectable" style="padding-left:6px" onclick="saveToComputer()"><img src="icons/project_save_computer.png" class="listChoice" /><span class="listChoice">Save to computer</span></li>
 			<li class="listChoice unselectable" onclick="exportProject()"><span class="listChoice">Save to server</span></li>
 			<li class="listChoice unselectable"><span class="listChoice">Export to audio file</span></li>
 			<li class="listSeparator"></li>

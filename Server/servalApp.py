@@ -12,12 +12,6 @@ import numpy as np
 
 app = Flask(__name__, static_url_path="", static_folder="../Client")
 
-class RegexConverter(BaseConverter):
-    def __init__(self, url_map, *items):
-        super(RegexConverter, self).__init__(url_map)
-        self.regex = items[0]
-
-app.url_map.converters['regex'] = RegexConverter
 
 @app.route("/")
 def index():
@@ -26,70 +20,70 @@ def index():
 @app.route("/template")
 def serve_template() :
     template_name = request.args.get("template_name")
-    
+
     with open("../Client/" + template_name + ".html", "r") as f :
         template_html = f.read()
-    
+
     return template_html
 
 @app.route("/generate", methods=["POST"])
 def generate_file() :
     project_data = json.loads(request.data)
-    
+
     file_name = project_data["fileName"] + ".json"
-    
+
     with open("projects/" + file_name, "w+") as f :
         json.dump(project_data, f)
-    
+
     return file_name
 
 def get_min_filename() :
     list = []
-    
+
     for fileName in listdir("projects") :
         if fileName[-5:] == ".json" :
             list.append(int(fileName[:-5]))
-    
+
     m = min(list) + 1
-    
+
     return str(m) + ".json"
 
 @app.route("/retrieve", methods=["GET"])
 def retrieve_projects() :
     list = []
-    
+
     for fileName in listdir("projects") :
         if fileName[-5:] == ".json" :
             with open("projects/" + fileName) as f :
                 data = json.load(f)
                 list.append({"fileName" : fileName, "projectName" : data["projectName"]})
-    
+
     return jsonify(projects = list)
 
 @app.route("/load", methods=["GET"])
 def load_project() :
     file_name = request.args.get("file_name")
-    
+
     with open("projects/" + file_name) as f :
         project_data = f.read()
-    
+
     return project_data
 
 @app.route("/deconvolve", methods=["POST"])
 def filter_audio() :
     data = json.loads(request.data)
-    
+
     filtered_audio = deconvolve(data["signal1"]["leftChannel"], data["signal2"]["leftChannel"], data["sampleRate"])
     filtered_audio = np.ascontiguousarray(filtered_audio, dtype=np.float32)
-    
+
     pcm = float32_wav_file(filtered_audio, data["sampleRate"])
     with open("test.wav", "wb+") as f :
         f.write(pcm)
-    
+
     #sinus = np.sin(2 * np.pi * 440.0 / 44100.0 * np.linspace(0, 44100, 44100), dtype = np.float32)
-    
+
     enc_str = base64.b64encode(filtered_audio)
-    
+
     return enc_str
 
 def float32_wav_file(sample_array, sample_rate) :
@@ -116,11 +110,19 @@ def float32_wav_file(sample_array, sample_rate) :
 @app.route("/project", methods=["GET"])
 def get_project() :
     file_name = request.args.get("file_name")
-    f = open("projects/" + file_name + ".json", "rb")
-    
-    response = make_response(f.read())
-    
+    f = open("projects/" + file_name + ".json", "r")
+
+    t = open("project.json", "w+")
+    t.write(f.read());
+
     return response
+
+@app.route("/download")
+def download() :
+    f = open("project.json")
+
+    return make_response(f)
+
 
 if __name__ == "__main__":
     app.run(debug = True)
