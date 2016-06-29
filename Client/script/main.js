@@ -103,10 +103,31 @@ var tracksContainer = document.getElementById("tracksContainer") ;
 var movingTimelineOffset = false ;
 var movingCursor = false ;
 var previousMouseX = 0 ;
+var copyArea = [];
+var CutArea = [];
+var copyAreaNumb = -1;
+var cutAreaNumb = -1;
 
 function mouseClickHandler(e) {     // this moves the cursor  TODO : code me
   cursorPosition = (e.clientX - document.getElementById("globalTimelineContainer").clientWidth) * timeWindowSize/timelineWidth + timeWindowOffset ;
   console.log("detected mouse click. new cursor position = "+cursorPosition) ;
+
+  //We enter in the copyArea array the position of the cursor.
+  copyAreaNumb++;
+  if (copyBoolean)
+    copyArea[copyAreaNumb] = cursorPosition;
+  else
+    copyAreaNumb = -1;
+
+  if (copyAreaNumb === 1)
+  {
+    copyBoolean = false;
+    console.log("copyArea 0 : " + copyArea[0] + "copyArea 1 : " + copyArea[1]);
+    copyTrack(0, copyArea[0], copyArea[1]);
+    pasteTrack();
+  }
+
+
   repaintTracks() ;
 }
 
@@ -178,123 +199,66 @@ function importFile(evt)
 
 //document.getElementById('importButton').addEventListener('change', importFile, false); //ToDo : update ref
 
-function killDelayedPlays() {
-  for(delayedPlay of delayedPlays) {
-    clearTimeout(delayedPlay) ;
-  }
-  delayedPlays = [] ;
+repaintTracks() ;
+var copyBoolean = false;
+var cutBoolean = false;
+
+function chooseCopyArea()
+{
+  cutBoolean = false;
+  copyBoolean = true;
+  alert("Beginning (click on the timeline)");
 }
 
-var source = [];
-var play_pause = "block";
-function listenToAll(listen)
+function chooseCutArea()
 {
+  cutBoolean = true;
+  copyBoolean = false;
+  alert("Beginning (click on the timeline)");
+}
+var newTrackBuffer = audioContext.createBufferSource();
 
-    if(cursorPosition > timeWindowOffset + timeWindowSize || cursorPosition < timeWindowOffset) {
-      timeWindowOffset = cursorPosition ;
-      repaintTracks();
-    }
+function copyTrack(trackId, begin, end)
+{
+  var sampleRate = audioContext.sampleRate;
+  var trackBuffer = audioContext.createBuffer(2, (end-begin)*sampleRate, sampleRate);
+  var j = 0
+  for (var i = begin*sampleRate ; i < end*sampleRate ; i++)
+  {
+    for (var k = 0 ; k < tracks[trackId].signal.numberOfChannels ; k++)
+      trackBuffer.getChannelData(k)[j] = tracks[trackId].signal.getChannelData(k)[i];
 
+    j++;
+  }
+  newTrackBuffer.buffer = trackBuffer;
+}
 
-    if (play_pause === "block")
+function cutTrack(trackId, begin, end)
+{
+  var sampleRate = audioContext.sampleRate;
+  var trackBuffer = audioContext.createBuffer(2, (end-begin)*sampleRate, sampleRate);
+  var j = 0;
+  for (var i = begin*sampleRate ; i < end*sampleRate ; i++)
+  {
+    for (var k = 0 ; k < tracks[trackId].signal.numberOfChannels ; k++)
     {
-      play_pause = "none";
-      document.getElementById("play").style.display = "none";
-      document.getElementById("pause").style.display = "block";
+      trackBuffer.getChannelData(k)[j] = tracks[trackId].signal.getChannelData(k)[i];
+      tracks[trackId].signal.getChannelData(k)[i] = 0;
     }
-    else
-    {
-      play_pause = "block";
-      document.getElementById("pause").style.display = "none";
-      document.getElementById("play").style.display = "block";
-    }
-
-  var length = tracks.length;
-  var listenTo = [];
-  for (var i = 0 ; i < length ; i++)
-  {
-    if (play_pause === "none")
-    {
-      source[i] = tracks[i].audioSource;
-    }
-    if (!listen) listenTo[i] = 0;
-    else
-    {
-      if (play_pause === "none")
-        listenTo[i] = tracks[i].listen;
-      else
-        listenTo[i] = 0;
-    }
-
-    playback(tracks[i].signal, listenTo[i], source[i], tracks[i].outputNode, tracks[i].offset);
+    j++;
   }
-
-  if (!listen)
-  {
-    play_pause = "block";
-    document.getElementById("play").style.display = "block";
-    document.getElementById("pause").style.display = "none";
-    cursorPosition = 0;
-    offset = 0;
-    drawCursor();
-
-    if(recording && tracks.length ===0)
-      stopRecord() ;
-  }
+  newTrackBuffer.buffer = trackBuffer;
 }
 
-function soloPlay(trackId)
+function cloneTrack(trackId)
 {
-  var i = 0;
-  for (track of tracks)
-  {
-    track.listen = 0;
-    document.getElementById("trackSoloButtonOn"+i).style.display = "none";
-    document.getElementById("trackSoloButtonOff"+i).style.display = "block";
-    mute(i);
-    i++;
-  }
-  i = 0;
-  tracks[trackId].listen = 1;
-  document.getElementById("trackSoloButtonOn"+trackId).style.display = "none";
-  document.getElementById("trackSoloButtonOff"+trackId).style.display = "block";
-
-  document.getElementById("muteButtonIconOff"+trackId).style.display = "block";
-  document.getElementById("muteButtonIconOn"+trackId).style.display = "none";
-
-  execute("Speakers", 1);
+  copyTrack(trackId, 0, tracks[trackId].signal.duration);
+  pasteTrack();
 }
 
-function mute(trackId)
+function pasteTrack()
 {
-  if (document.getElementById("muteButtonIconOn"+trackId).style.display === "none")
-  {
-    tracks[trackId].listen = 0;
-    document.getElementById("muteButtonIconOn"+trackId).style.display = "block";
-    document.getElementById("muteButtonIconOff"+trackId).style.display = "none";
-  }
-  else
-  {
-    tracks[trackId].listen = 1;
-    document.getElementById("muteButtonIconOff"+trackId).style.display = "block";
-    document.getElementById("muteButtonIconOn"+trackId).style.display = "none";
-  }
-}
-
-function rewind()
-{
-  if (document.getElementById("play").style.display === "none")
-  {
-    execute("Speakers", 0);
-    execute("Speakers", 1);
-  }
-  else execute("Speakers", 0);
-  timeWindowOffset = 0;
-}
-
-repaintTracks()
-{
-  console.log("coucou");
+  addTrack(newTrackBuffer.buffer);
 }
 
 function submitEffect() {

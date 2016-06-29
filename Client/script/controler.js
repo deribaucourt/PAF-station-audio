@@ -29,18 +29,22 @@ var instructions = [] ; // array of string
 var args ;
 var lastTrack = [];
 var generalSound = 1;
+var playingSources = [] ;
+var delayedPlays = [] ;
+var playing = false ;
+var globalVolume = 1 ;
 
-function execute(finalOutput, isPlayButton) {   // does the wiring to produce the sound   ["Speakers","File","Screen"] TODO: rename processTo
+function processTo(finalOutput) {   // does the wiring to produce the sound   ["Speakers","File","Screen"] TODO: rename processTo
+
+  stopSources() ;
+
   for(track of tracks) {
-    for(playingSource of playingSources) {
-      if(playingSource.buffer)
-        playingSource.stop();
-    }
-    playingSources = [] ;
-    track.audioSource = audioContext.createBufferSource() ;
-    track.outputNode = track.audioSource ;
+    track.source = audioContext.createBufferSource() ;
+    track.source.buffer = track.signal ;
+    track.outputNode = track.source ;
   }
 
+  // Apply Effects
   for(instruction of instructions) {
     args = instruction.split(" ") ;
     switch(args[0]) {
@@ -60,15 +64,17 @@ function execute(finalOutput, isPlayButton) {   // does the wiring to produce th
 
     }
   }
+
+  // Apply volumes
   for (var j = 0 ; j < tracks.length ; j++)
     {
-
       SoundLevelNode = audioContext.createGain() ;
-      SoundLevelNode.gain.value = generalSound * tracks[j].volume ;
+      SoundLevelNode.gain.value = globalVolume * tracks[j].volume ;
       tracks[j].outputNode.connect(SoundLevelNode) ;
       tracks[j].outputNode = SoundLevelNode ;
     }
 
+  // Apply individual stereo balance
   for (var j = 0 ; j < tracks.length ; j++)
   {
     panNode = audioContext.createStereoPanner();
@@ -78,37 +84,80 @@ function execute(finalOutput, isPlayButton) {   // does the wiring to produce th
     tracks[j].outputNode = panNode;
   }
 
+  connectFinalOutputs(finalOutput) ;    // TODO CHECK ******************************
 
-  connectFinalOutputs(finalOutput, isPlayButton) ;
+  startSources() ;
+  startCursor() ;
 
 }
-function soundLevel(value, string )
-{
-  if (string === "global")
+
+var tBegin, startCursorPosition ;
+
+function startCursor() {
+  var d = new Date() ;
+  tBegin = d.getTime() ;
+  startCursorPosition = cursorPosition ;
+  cursorFollowPlaying() ;
+}
+
+function cursorFollowPlaying() {
+  if (playing)
   {
-    generalSound = value;
+    d = new Date();
+    cursorPosition = (d.getTime() - tBegin)/1000 + startCursorPosition;
+    if(cursorPosition > timeWindowOffset + timeWindowSize) {
+      timeWindowOffset += timeWindowSize ;
+      repaintTracks();
+    }
+    drawCursor();
+    setTimeout(cursorFollowPlaying, 50);
   }
-  else {
-    tracks[string].volume = value;
-  }
-  execute("Speakers", 1);
-  execute("Speakers", 1);
 }
 
-function volumeBalance(trackId, value)
-{
-  tracks[trackId].balance = value;
-  execute("Speakers", 1);
-  execute("Speakers", 1);
+function killDelayedPlays() {
+  for(delayedPlay of delayedPlays) {
+    clearTimeout(delayedPlay) ;
+  }
+  delayedPlays = [] ;
 }
 
+function stopSources() {
+  playing = false;
+  killDelayedPlays() ;
+  for(playingSource of playingSources) {
+    playingSource.stop() ;
+  }
+  playingSources = [] ;
+}
 
-function connectFinalOutputs(finalOutput, isPlayButton) {
+function startSources() {
+  for(track of tracks) {
+    // Play unMuted Sources
+    if(!track.muted) {
+      console.log("starting track source") ;
+      if(cursorPosition - track.offset < 0) {   // source.start does not handle negative offset (delay before play)
+        console.log("offset negatif");
+        delayedPlays.push(setTimeout(function() {
+          track.source.start(0,0) ;
+          playingSources.push(track.source) ;
+        },-(cursorPosition-track.offset)*1000)) ;
+      } else {
+        track.source.start(0,cursorPosition - track.offset);
+        playingSources.push(track.source) ;
+      }
+    }
+  playing = true ;
+  }
+}
+
+function connectFinalOutputs(finalOutput) {
   switch(finalOutput)
   {
     case "Speakers" :
-      if (isPlayButton) listenToAll(1);
-      else listenToAll(0);
+      console.log("connecting source to speaker") ;
+      for(track of tracks) {
+        track.outputNode.connect(audioContext.destination) ;
+      }
       break;
 
     case "File" :     //TODO

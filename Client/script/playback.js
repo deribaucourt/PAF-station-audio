@@ -17,87 +17,129 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.*/
 
 //TODO : rename this file playback-record
 
-var length;
-var soundBuffer ;
-var interval;
-var playing = false ;
-var tBegin, startCursorPosition;
-var playingCompt = 0;
-var comptGeneral = 0;
+/***************** Play And Volume *****************/
 
-function cursorFollowPlaying() {
-    if (playingCompt > 0)
-    {
-      d = new Date();
-      cursorPosition = (d.getTime() - tBegin)/1000 + startCursorPosition;
-      if(cursorPosition > timeWindowOffset + timeWindowSize) {
-        timeWindowOffset += timeWindowSize ;
-        repaintTracks();
-      }
-      drawCursor();
-      setTimeout(cursorFollowPlaying, 50);
-    }
+function onPlay() {
+  processTo("Speakers") ;
+  displayPauseButton() ;
+  displaySoloPauses() ;
 }
 
-var delayedPlays = [] ;
-var playingSources = [];
-
-function play(listen, source, input, offset) {
-    if (comptGeneral === 0)
-    {
-      playingCompt = 0;
-    }
-    comptGeneral++;
-    length = tracks.length;
-    if (listen)
-      {
-
-        if (!soundBuffer) return;
-
-        // Create AudioBufferSourceNode and attach buffer
-
-        source.buffer = soundBuffer;
-
-        // Connect it to the output
-        input.connect(audioContext.destination);
-
-        var d = new Date();
-        tBegin = d.getTime();
-        startCursorPosition = cursorPosition ;
-        playingCompt++;
-
-        // Play the source
-        if(cursorPosition - offset < 0) {   // source.start does not handle negative offset (delay before play)
-          console.log("offset negatif");
-          delayedPlays.push(setTimeout(function() {
-            source.start(0,0) ;
-            playingSources.push(source) ;
-          },-(cursorPosition-offset)*1000)) ;
-        } else {
-          source.start(0,cursorPosition - offset);
-          playingSources.push(source) ;
-        }
-
-        playing = true;
-    }
-    else {
-      playing = false;
-      stopRecord() ;
-      killDelayedPlays() ;
-      if (source.buffer && playingSources.includes(source)) source.stop();
-    }
-    if (comptGeneral === length)
-    {
-      comptGeneral = 0;
-      cursorFollowPlaying();
-    }
+function onPause() {
+  stopRecord() ;
+  stopSources() ;
+  displayPlayButton() ;
+  displaySoloPlays() ;
 }
 
-function playback(audioBuffer, listen, source, input, offset) {  // ArrayBuffer objects work to
-  soundBuffer = audioBuffer;
-  play(listen, source, input, offset);
+function onStop() {
+  onPause() ;
+  cursorPosition = 0 ;
+  drawCursor() ;
+  centerCursor() ;
 }
 
+function onRewind() {
+  if(playing) {
+    onStop() ;
+    onPlay() ;
+  } else {
+    onStop() ;
+  }
+}
+
+function onMute(i) {
+  tracks[i].muted = true ;
+  displayMutedButton(i) ;
+  if(playing) {   // We have to apply gain
+    onPause();
+    onPlay();
+  }
+}
+
+function onUnmute(i) {
+  tracks[i].muted = false ;
+  displayUnmutedButton(i) ;
+  if(playing) {   // We have to apply gain
+    onPause();
+    onPlay();
+  }
+}
+
+function onSoloPlay(i) {
+  for(var j = 0; j < tracks.length; j++) {
+    if(i != j) {
+      onMute(j) ;
+    }
+  }
+  onUnmute(i) ;
+  onPlay() ;
+}
+
+function onGlobalVolume(value) {
+  globalVolume = value ;
+  if(playing) {   // We have to apply gain
+    onPause();
+    onPlay();
+  }
+}
+
+function onTrackVolume(value, i) {
+  tracks[i].volume = value ;
+  if(playing) {   // We have to apply gain
+    onPause();
+    onPlay();
+  }
+}
+
+function onBalance(value, i) {
+  tracks[i].balance = value;
+  if(playing) {   // We have to apply gain
+    onPause();
+    onPlay();
+  }
+}
+
+function displayPauseButton() {
+  document.getElementById("play").style.display = "none";
+  document.getElementById("pause").style.display = "block";
+}
+
+function displayPlayButton() {
+  document.getElementById("play").style.display = "block";
+  document.getElementById("pause").style.display = "none";
+}
+
+function displayMutedButton(i) {
+  document.getElementById("muteButtonIconOn"+i).style.display = "block";
+  document.getElementById("muteButtonIconOff"+i).style.display = "none";
+}
+
+function displayUnmutedButton(i) {
+  document.getElementById("muteButtonIconOn"+i).style.display = "none";
+  document.getElementById("muteButtonIconOff"+i).style.display = "block";
+}
+
+function displaySoloPlays() {
+  for(var i = 0; i < tracks.length; i++) {
+    document.getElementById("trackSoloButtonOff"+i).style.display = "none";
+    document.getElementById("trackSoloButtonOn"+i).style.display = "block";
+  }
+}
+
+function displaySoloPauses() {
+  for(var i = 0; i < tracks.length; i++) {
+    document.getElementById("trackSoloButtonOff"+i).style.display = "block";
+    document.getElementById("trackSoloButtonOn"+i).style.display = "none";
+  }
+}
+
+function centerCursor() {
+  if(cursorPosition > timeWindowOffset + timeWindowSize || cursorPosition < timeWindowOffset) {
+    timeWindowOffset = cursorPosition ;
+    repaintTracks();
+  }
+}
 
   /***************** Recording ****************/
 
@@ -108,9 +150,11 @@ var recordStartingPosition = 0 ;
 var recording = false ;
 
 function onRecordStart() {
+  document.getElementById("stopRecordButtonImg").style.display = "block" ;
+  document.getElementById("recordButtonImg").style.display = "none" ;
   console.log("Starting Record") ;
   recordViewer = createDisplayNode(document.getElementById("recordTrack")) ;
-  navigator.getUserMedia =  navigator.mozGetUserMedia ;
+  navigator.getUserMedia = navigator.mozGetUserMedia ;
   navigator.getUserMedia(
     { audio: true, video: false },
     function (mediaStream) {        // called once the user has agreed to record
@@ -118,13 +162,8 @@ function onRecordStart() {
       webRtcSource.connect(recordViewer);
       recordViewer.connect(recorderNodeForRecord) ;
       recordStartingPosition = cursorPosition ;
-      if(tracks.length == 0) {                        // move cursor if no tracks
-        d = new Date();
-        tBegin = d.getTime() ;
-        cursorFollowRecording() ;
-      } else                                  // else play
-      execute("Speakers",1) ;
-        recorderNodeForRecord.startRecording() ;
+      onPlay() ;                                    // Start playback
+      recorderNodeForRecord.startRecording() ;
       recording = true ;
     },
     function (error) {
@@ -134,32 +173,17 @@ function onRecordStart() {
 }
 
 function onRecordStop() {
-  recording = true;
-  if(webRtcSource !== undefined) {
-    execute("Speakers",1) ;            // pause Playback (same as pressing play/pause button)
-    stopRecord() ;
-  }
+  onPause() ;                                      // pause Playback (will end recording) (same as pressing play/pause button)
 }
 
 function stopRecord() {
-  if(recording) {
+  if(webRtcSource !== undefined && recording == true) {
     console.log("Stoping Record") ;
     webRtcSource.disconnect() ;
     recordViewer.disconnect() ;
     webRtcSource = null;
     addTrack(recorderNodeForRecord.stopRecording()) ;
-    tracks[tracks.length-1].offset = recordStartingPosition ;
+    tracks[tracks.length-1].offset = recordStartingPosition ;   // TODO retrancher le décalage
     recording = false ;
   }
-}
-
-function cursorFollowRecording() {
-    if (recording)
-    {
-      d = new Date();
-      cursorPosition = (d.getTime()-tBegin)/1000 + recordStartingPosition;
-      console.log("new Cursor position :" + cursorPosition) ;
-      drawCursor();
-      setTimeout(cursorFollowRecording, 50);
-    }
 }
