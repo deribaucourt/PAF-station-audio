@@ -50,13 +50,16 @@ function createTrackSelect() {
   var selectList = document.createElement("select");
 
   for (var i = 0; i<tracks.length; i++) {
-      var option = document.createElement("option");
-      option.setAttribute("value",i);
-      option.text = document.getElementById("trackTitleInput"+i).value;
-      selectList.appendChild(option);
+      var option = new Option(document.getElementById("trackTitleInput"+i).value,i);
+			option.onclick = function() {					// Fixing strange behaving of created select elements of firefox
+				document.getElementById(this.parentElement.id)/*this.parentElement*/.value = this.value ;
+			}
+    //  option.setAttribute("value",i);
+    //  option.text = document.getElementById("trackTitleInput"+i).value;
+      selectList.add(option);
   }
 
-  selectList.firstChild.setAttribute("selected","selected");
+//  selectList.firstChild.setAttribute("selected","selected");
   return selectList ;
 }
 
