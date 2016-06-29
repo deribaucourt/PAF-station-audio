@@ -150,38 +150,40 @@ function addNewTrackToDisplay() {
   drawRecordTrack();                        // finally add record track
 }
 
-function toggleFiltersPopup(toggleState) {
-    if(toggleState) {
-        document.getElementById("filtersPopup").style.display = "block";
-    } else {
-        document.getElementById("filtersPopup").style.display = "none";
-    }
+function resizeEffectsPopup() {
+	var effectsPopup = document.getElementById("effectsPopup");
+	var toolsContainer = document.getElementById("effectsToolsContainer");
+
+	effectsPopup.style.left = "calc(100% - " + (toolsContainer.clientWidth - 4) + "px)";
+	effectsPopup.style.width = (toolsContainer.clientWidth - 12) + "px";
 }
 
-function togglePopup(caller, elementId, loadingFunction) {
+resizeEffectsPopup();
+
+function togglePopup(caller, className, elementId, loadingFunction) {
 	var popup = document.getElementById(elementId);
     if(popup.style.display === "none") {
-		caller.classList.add("menuButtonActive");
+		caller.classList.add(className + "Active");
 		loadingFunction();
         popup.style.display = "block";
     } else {
-		caller.classList.remove("menuButtonActive");
+		caller.classList.remove(className + "Active");
         popup.style.display = "none";
     }
 }
 
 function drawNewTrack(track) {
-  	console.log("loading html code for track number "+ track.number );
+  console.log("loading html code for track number "+ track.number );
 	var callbackFunction = function(partialTrack) {
 		var c = document.getElementById("trackCanvas" + partialTrack.number);
-      	c.width = c.clientWidth;
-      	c.height = c.clientHeight;
-      	c.addEventListener("mousedown", tracksMouseDownHandler, false);
-      	drawSignal(partialTrack);
-      	document.getElementById("tracksInsertMessage").style.display = "none";
+    c.width = c.clientWidth;
+    c.height = c.clientHeight;
+    c.addEventListener("mousedown", tracksMouseDownHandler, false);
+    drawSignal(partialTrack);
+    document.getElementById("tracksInsertMessage").style.display = "none";
 	};
-	var callbackClosure = function() {callbackFunction(track);}
-    serveTemplateIntoContainer(document.getElementById("tracksContainer"), "track", track.number, callbackClosure);
+	var callbackClosure = function() { callbackFunction(track); }
+  serveTemplateIntoContainer(document.getElementById("tracksContainer"), "track", track.number, callbackClosure);
 }
 
 function drawRecordTrack() {

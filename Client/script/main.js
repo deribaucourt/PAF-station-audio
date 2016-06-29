@@ -103,10 +103,31 @@ var tracksContainer = document.getElementById("tracksContainer") ;
 var movingTimelineOffset = false ;
 var movingCursor = false ;
 var previousMouseX = 0 ;
+var copyArea = [];
+var CutArea = [];
+var copyAreaNumb = -1;
+var cutAreaNumb = -1;
 
 function mouseClickHandler(e) {     // this moves the cursor  TODO : code me
   cursorPosition = (e.clientX - document.getElementById("globalTimelineContainer").clientWidth) * timeWindowSize/timelineWidth + timeWindowOffset ;
   console.log("detected mouse click. new cursor position = "+cursorPosition) ;
+
+  //We enter in the copyArea array the position of the cursor.
+  copyAreaNumb++;
+  if (copyBoolean)
+    copyArea[copyAreaNumb] = cursorPosition;
+  else
+    copyAreaNumb = -1;
+
+  if (copyAreaNumb === 1)
+  {
+    copyBoolean = false;
+    console.log("copyArea 0 : " + copyArea[0] + "copyArea 1 : " + copyArea[1]);
+    copyTrack(0, copyArea[0], copyArea[1]);
+    pasteTrack();
+  }
+
+
   repaintTracks() ;
 }
 
@@ -178,7 +199,7 @@ function importFile(evt)
         }
     }
 
-document.getElementById('importAudio').addEventListener('change', importFile, false);
+document.getElementById('importAudio').addEventListener('change', importFile, false); 
 
 function onExport() {
   onStop();
@@ -188,3 +209,67 @@ function onExport() {
 }
 
 repaintTracks() ;
+var copyBoolean = false;
+var cutBoolean = false;
+
+function chooseCopyArea()
+{
+  cutBoolean = false;
+  copyBoolean = true;
+  alert("Beginning (click on the timeline)");
+}
+
+function chooseCutArea()
+{
+  cutBoolean = true;
+  copyBoolean = false;
+  alert("Beginning (click on the timeline)");
+}
+var newTrackBuffer = audioContext.createBufferSource();
+
+function copyTrack(trackId, begin, end)
+{
+  var sampleRate = audioContext.sampleRate;
+  var trackBuffer = audioContext.createBuffer(2, (end-begin)*sampleRate, sampleRate);
+  var j = 0
+  for (var i = begin*sampleRate ; i < end*sampleRate ; i++)
+  {
+    for (var k = 0 ; k < tracks[trackId].signal.numberOfChannels ; k++)
+      trackBuffer.getChannelData(k)[j] = tracks[trackId].signal.getChannelData(k)[i];
+
+    j++;
+  }
+  newTrackBuffer.buffer = trackBuffer;
+}
+
+function cutTrack(trackId, begin, end)
+{
+  var sampleRate = audioContext.sampleRate;
+  var trackBuffer = audioContext.createBuffer(2, (end-begin)*sampleRate, sampleRate);
+  var j = 0;
+  for (var i = begin*sampleRate ; i < end*sampleRate ; i++)
+  {
+    for (var k = 0 ; k < tracks[trackId].signal.numberOfChannels ; k++)
+    {
+      trackBuffer.getChannelData(k)[j] = tracks[trackId].signal.getChannelData(k)[i];
+      tracks[trackId].signal.getChannelData(k)[i] = 0;
+    }
+    j++;
+  }
+  newTrackBuffer.buffer = trackBuffer;
+}
+
+function cloneTrack(trackId)
+{
+  copyTrack(trackId, 0, tracks[trackId].signal.duration);
+  pasteTrack();
+}
+
+function pasteTrack()
+{
+  addTrack(newTrackBuffer.buffer);
+}
+
+function submitEffect() {
+	alert("Effect submitted");
+}

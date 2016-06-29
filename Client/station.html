@@ -64,8 +64,8 @@ Code starts here                                                                
 	<!-- ************* Tracks Popup ************ -->
 	<div id="tracksPopup" class="popup" style="left:10%; top:32px; width:auto; height:auto; display:none;">
 		<ul style="width:100%">
-			<li class="listChoice unselectable" style="padding-left:6px;"><input type="file" id="importAudio" name="files[]" multiple /><img src="icons/track_add_file.png" class="listChoice" /><label class="listChoice" for="importAudio">Add from file</label></li>
-			<li class="listChoice unselectable"><span class="listChoice">Duplicate</span></li>
+			<li class="listChoice unselectable" style="padding-left:6px;"><img src="icons/track_add_file.png" class="listChoice" /><input type="file" multiple id="importAudio" name="files[]" /><span class="listChoice"><label for="importAudio">Add from file</label></span></li>
+			<li class="listChoice unselectable" onclick="cloneTrack(0)"><span class="listChoice">Duplicate</span></li>
 			<li class="listSeparator"></li>
 			<li class="listChoice unselectable" onclick="onExport();"><span class="listChoice">Export to audio file</span></li>
 			<li class="listSeparator"></li>
@@ -86,16 +86,104 @@ Code starts here                                                                
 		</div>
 	</div>
 
-	<!-- ************* Filters Popup ************ -->
-	<div id="filtersPopup" class="popup" style="left:70%; top:120px; width:64px; width:30%; height:20%; display:none; background:#d6d6d6; padding:6px;">
-		<div style="width:100%; clear:both; margin-bottom:6px;">
-			<span>Duration</span><input type="text" style="width:60px; margin:4px;"/>
+	<!-- ************* Effects Popups ************ -->
+	<div id="effectsPopup" style="position:absolute; top:120px; width:100px; height:auto;">
+
+		<!-- ************* Deconvolve Popup ************ -->
+		<div id="deconvolvePopup" class="popup effectPopup" style="display:none;">
+			<div style="width:100%; clear:both; margin-bottom:6px;">
+				<span>Duration</span><input type="text" style="width:60px; margin:4px;"/>
+			</div>
+			<div style="width:100%; clear:both;">
+				<span>Mix</span><input type="text" style="width:60px; margin:4px;" />
+			</div>
+			<div style="width:100%; clear:both;" onclick="serverDeconvolve(0, 1);">
+				<span style="text-decoration:underline;">Import impulse response...</span>
+			</div>
 		</div>
-		<div style="width:100%; clear:both;">
-			<span>Mix</span><input type="text" style="width:60px; margin:4px;" />
+		<!-- ************* Reverb Popup ************ -->
+		<div id="reverbPopup" class="popup effectPopup" style="display:none;">
+			<div style="width:100%; clear:both; margin-bottom:6px;">
+				<span>Duration</span><input type="text" style="width:60px; margin:4px;"/>
+			</div>
+			<div style="width:100%; clear:both;">
+				<span>Mix</span><input type="text" style="width:60px; margin:4px;" />
+			</div>
+			<div style="width:100%; clear:both;">
+				<span style="text-decoration:underline;">Import impulse response...</span>
+			</div>
 		</div>
-		<div style="width:100%; clear:both;">
-			<span style="text-decoration:underline;">Import impulse response...</span>
+		<!-- ************* Echo Popup ************ -->
+		<div id="echoPopup" class="popup effectPopup" style="display:none;">
+			<div style="width:100%; clear:both; margin-bottom:6px;">
+				<span>Duration</span><input type="text" style="width:60px; margin:4px;"/>
+			</div>
+			<div style="width:100%; clear:both;">
+				<span>Mix</span><input type="text" style="width:60px; margin:4px;" />
+			</div>
+			<div style="width:100%; clear:both;">
+				<span style="text-decoration:underline;">Import impulse response...</span>
+			</div>
+		</div>
+		<!-- ************* Fade Popup ************ -->
+		<div id="fadePopup" class="popup effectPopup" style="display:none;">
+			<form onsubmit="submitEffect()" target="_self">
+				<div style="width:100%; clear:both;">
+					<span>Gain begin :</span><input type="text" style="width:60px; margin:4px;" />
+				</div>
+				<div style="width:100%; clear:both;">
+					<span>Gain end :</span><input type="text" style="width:60px; margin:4px;" />
+				</div>
+				<div style="width:100%; clear:both;">
+					<span>Duration :</span><input type="text" style="width:60px; margin:4px;" />
+				</div>
+				<div>
+					<select>
+  						<option value="volvo">Volvo</option>
+  						<option value="saab">Saab</option>
+  						<option value="mercedes">Mercedes</option>
+  						<option value="audi">Audi</option></select>
+				</div>
+				<div>
+					<button>Apply gain</button>
+				</div>
+				<div>
+					<input type="radio" />
+				</div>
+			</form>
+		</div>
+		<!-- ************* Gain Popup ************ -->
+		<div id="gainPopup" class="popup effectPopup" style="display:none;">
+			<form onsubmit="submitEffect()" target="_self">
+				<div style="width:100%; clear:both;">
+					<span>Gain :</span><input type="text" style="width:60px; margin:4px;" />
+				</div>
+				<div style="width:100%; clear:both;">
+					<span style="text-decoration:underline;">Import impulse response...</span>
+				</div>
+				<div>
+					<select>
+  						<option value="volvo">Volvo</option>
+  						<option value="saab">Saab</option>
+  						<option value="mercedes">Mercedes</option>
+  						<option value="audi">Audi</option></select>
+				</div>
+				<div>
+					<button>Apply gain</button>
+				</div>
+			</form>
+		</div>
+		<!-- ************* Offset Popup ************ -->
+		<div id="offsetPopup" class="popup effectPopup" style="display:none;">
+			<div style="width:100%; clear:both; margin-bottom:6px;">
+				<span>Duration</span><input type="text" style="width:60px; margin:4px;"/>
+			</div>
+			<div style="width:100%; clear:both;">
+				<span>Mix</span><input type="text" style="width:60px; margin:4px;" />
+			</div>
+			<div style="width:100%; clear:both;">
+				<span style="text-decoration:underline;">Import impulse response...</span>
+			</div>
 		</div>
 	</div>
 
@@ -103,10 +191,10 @@ Code starts here                                                                
 	<div id="topContainer" style="width:100%; height:100%;">
 
 		<div id="headerContainer" style="width:100%; height:32px; clear:both;">
-			<div id="projectMenuButton" onclick="togglePopup(this, 'projectsPopup', retrieveProjects)" class="menuButton unselectable" style="width:10%; height:100%; border-left:1px solid #ffffff;">Project</div>
-			<div id="tracksMenuButton" onclick="togglePopup(this, 'tracksPopup', function(){})" class="menuButton unselectable" style="width:10%; height:100%; border-left-width:1px;">Tracks</div>
+			<div id="projectMenuButton" onclick="togglePopup(this, 'menuButton', 'projectsPopup', retrieveProjects)" class="menuButton unselectable" style="width:10%; height:100%; border-left:1px solid #ffffff;">Project</div>
+			<div id="tracksMenuButton" onclick="togglePopup(this, 'menuButton', 'tracksPopup', function(){})" class="menuButton unselectable" style="width:10%; height:100%; border-left-width:1px;">Tracks</div>
 			<input id="projectNameInput" type="text" value="My Project" class="menuInput" style="width:60%; height:100%;"/>
-			<div id="aboutMenuButton" onclick="togglePopup(this, 'aboutPopup', function(){})" class="menuButton unselectable" style="width:20%; height:100%;">About Serval</div>
+			<div id="aboutMenuButton" onclick="togglePopup(this, 'menuButton', 'aboutPopup', function(){})" class="menuButton unselectable" style="width:20%; height:100%;">About Serval</div>
 		</div>
 
 		<div style="width:100%; height:16px; background: #ffffff url('icons/drop_shadow.png') repeat-x top; clear:both;"></div>
@@ -114,31 +202,46 @@ Code starts here                                                                
 		<div id="toolsContainer" style="width:100%; height:auto; border:1px solid #e6e6e6; border-width:1px 2px; background-color:#f3f3f3; clear:both;">
 			<div id="playbackControllContainer" class="toolsContainer" style="width:auto; height:100%;">
 				<div class="toolsHeader unselectable">Playback</div>
-				<div id="rewindButton" class="toolButton" title="Rewind" onclick="onRewind();"><img src="icons/arrows.png" class="toolButton" /></div>
-				<div id="playButton" class="toolButton" ><img src="icons/play-button.png" title="Play" id="play" style="display:block" onclick="onPlay();" class="toolButton" />
-                                                                                 <img src = "icons/pause-button.png" title="Pause" onclick="onPause();" id="pause" style="display:none" class="toolButton"/></div>
-				<div id="stopButton" title="Stop" class="toolButton" onclick="onStop();"><img src="icons/stop.png" class="toolButton" /></div>
+				<div id="rewindButton" class="toolButton" title="Rewind" onclick="onRewind();">
+					<img src="icons/arrows.png" class="toolButton" />
+				</div>
+				<div id="playButton" class="toolButton" >
+					<img src="icons/play-button.png" title="Play" id="play" style="display:block" onclick="onPlay();" class="toolButton" />
+					<img src = "icons/pause-button.png" title="Pause" onclick="onPause();" id="pause" style="display:none" class="toolButton"/>
+				</div>
+				<div id="stopButton" title="Stop" class="toolButton" onclick="onStop();">
+					<img src="icons/stop.png" class="toolButton" />
+				</div>
 			</div>
 			<div id="editionToolsContainer" class="toolsContainer" style="width:auto; height:100%;">
 				<div class="toolsHeader unselectable">Edition</div>
-				<div id="copyButton" title="Copy" class="toolButton"><img src="icons/copy-archive.png" /></div>
-				<div id="cutButton" title="Cut" class="toolButton"><img src="icons/scissors.png" /></div>
-				<div id="pasteButton" title="Paste" class="toolButton"><img src="icons/paste-file.png" /></div>
+				<div id="copyButton" title="Copy" class="toolButton" onclick="chooseCopyArea()">
+					<img src="icons/copy-archive.png" />
+				</div>
+				<div id="cutButton" title="Cut" class="toolButton" onclick="chooseTrackArea()">
+					<img src="icons/scissors.png" />
+				</div>
+				<div id="pasteButton" title="Paste" class="toolButton" onclick="pasteTrack()">
+					<img src="icons/paste-file.png" />
+				</div>
 			</div>
 			<div id="historyToolsContainer" class="toolsContainer" style="width:auto; height:100%; border-right-width:1px;">
 				<div class="toolsHeader unselectable">History</div>
-				<div id="undoButton" title="Undo" class="toolButton" onclick="undo();"><img src="icons/back.png" /></div>
-				<div id="redoButton" title="Redo" class="toolButton" onclick="redo();"><img src="icons/forward.png" /></div>
+				<div id="undoButton" title="Undo" class="toolButton" onclick="undo();">
+					<img src="icons/back.png" />
+				</div>
+				<div id="redoButton" title="Redo" class="toolButton" onclick="redo();">
+					<img src="icons/forward.png" />
+				</div>
 			</div>
-
-			<div id="filtersToolsContainer" class="toolsContainer" style="width:auto; height:100%; float:right; border-left-width:1px;">
-				<div class="toolsHeader unselectable">Filters</div>
-				<div id="deconvolveFilterButton" class="textToolButton unselectable">Deconvolve</div>
-				<div id="reverbFilterButton" class="textToolButton unselectable">Reverb</div>
-				<div id="delayFilterButton" class="textToolButton unselectable">Delay</div>
-				<div id="fadeFilterButton" class="textToolButton unselectable">Fade</div>
-				<div id="gainFilterButton" class="textToolButton unselectable" onclick="">Gain</div>
-				<div id="OffsetEffectButton" class="textToolButton unselectable" onclick="">Offset</div>
+			<div id="effectsToolsContainer" class="toolsContainer" style="width:auto; height:100%; float:right; border-left-width:1px;">
+				<div class="toolsHeader unselectable">Effects</div>
+				<div id="deconvolveEffectButton" class="textToolButton unselectable" onclick="togglePopup(this, 'textToolButton', 'deconvolvePopup', resizeEffectsPopup)">Deconvolve</div>
+				<div id="reverbEffectButton" class="textToolButton unselectable" onclick="togglePopup(this, 'textToolButton', 'reverbPopup', resizeEffectsPopup)">Reverb</div>
+				<div id="echoEffectButton" class="textToolButton unselectable" onclick="togglePopup(this, 'textToolButton', 'echoPopup', resizeEffectsPopup)">Echo</div>
+				<div id="fadeEffectButton" class="textToolButton unselectable" onclick="togglePopup(this, 'textToolButton', 'fadePopup', resizeEffectsPopup)">Fade</div>
+				<div id="gainEffectButton" class="textToolButton unselectable" onclick="togglePopup(this, 'textToolButton', 'gainPopup', resizeEffectsPopup)">Gain</div>
+				<div id="offsetEffectButton" class="textToolButton unselectable" onclick="togglePopup(this, 'textToolButton', 'offsetPopup', resizeEffectsPopup)">Offset</div>
 			</div>
 		</div>
 
@@ -147,7 +250,9 @@ Code starts here                                                                
 				<div id="globalMuteButton" class="muteButton"><img src="icons/multimedia-1.png" id="globalMuteIcon" style="display:none;" /></div>
 				<input id="globalVolumeControl" title="Volume" class="volumeControl" type="range" min="0" max="3" step="0.05" value="1" onchange="onGlobalVolume(this.value);"/>
 			</div>
-			<div id="localTimelineContainer" style="width: calc(100% - 200px); height:32px;"><canvas id="timelineCanvas" style="width: 100%; height:100%;" /></div>
+			<div id="localTimelineContainer" style="width: calc(100% - 200px); height:32px;">
+				<canvas id="timelineCanvas" style="width: 100%; height:100%;" />
+			</div>
 		</div>
 
 		<div id="tracksContainer" ondrop="drop(event);" ondragover="allowDrop(event)" style="width:100%; height:calc(100% - 165px); overflow-y:auto; background-color:#242424; border:2px solid #3a3a3a;">

@@ -48,7 +48,7 @@ function serveTemplateIntoContainer(container, template, trackId, callback) {
 		if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 0)) {
 			var newDiv = document.createElement("div");
 			newDiv.setAttribute("class", "trackTopContainer") ;
-			newDiv.innerHTML = xhr.responseText.replace(/TRACKID/gi, trackId);
+			newDiv.innerHTML += xhr.responseText.replace(/TRACKID/gi, trackId);
 			container.appendChild(newDiv) ;
 			setTimeout(callback, 1000);
 		}
@@ -148,22 +148,38 @@ function serverDeconvolve(id1, id2) {
 	"use strict";
 
 	var xhr = new GetXMLHttpRequest();
-	var signal1ArrayLeft = Array.prototype.slice.call(tracks[id1].signal.getChannelData(0));
+	var signal1ArrayLeft = 	Array.prototype.slice.call(tracks[id1].signal.getChannelData(0));
 	var signal1ArrayRight = Array.prototype.slice.call(tracks[id1].signal.getChannelData(1));
-	var signal2ArrayLeft = Array.prototype.slice.call(tracks[id2].signal.getChannelData(0));
+	var signal2ArrayLeft = 	Array.prototype.slice.call(tracks[id2].signal.getChannelData(0));
 	var signal2ArrayRight = Array.prototype.slice.call(tracks[id2].signal.getChannelData(1));
 
 	var channelData = JSON.stringify({"signal1" : {"leftChannel" : signal1ArrayLeft, "rightChannel" : signal1ArrayRight},
-									  "signal2" : {"leftChannel" : signal2ArrayLeft, "rightChannel" : signal2ArrayRight}});
+									  "signal2" : {"leftChannel" : signal2ArrayLeft, "rightChannel" : signal2ArrayRight},
+									  "sampleRate" : tracks[id1].signal.sampleRate});
 
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 0)) {
-			console.log(xhr.response); // the result
+			var enc_str = xhr.responseText;
+			var data = atob(enc_str);
+			console.log(data.length / 4);
+			var data_bytes = new Uint8Array(data.length);
+			for (i = 0 ; i < data.length ; i++) {
+				data_bytes[i] = data.charCodeAt(i);
+			}
+			var floatView = new Float32Array(data_bytes.buffer);
+			var responseBuffer = audioContext.createBuffer(1, data.length / 4, 44100);
+    		for(var i = 0 ; i < data.length / 4 ; i++) {
+        		responseBuffer.getChannelData(0)[i] = floatView[i];
+    		}
+			var source = audioContext.createBufferSource();
+ 			source.buffer = responseBuffer;
+ 			source.connect(audioContext.destination);
+ 			source.start();
 		}
 	}
 
 	xhr.open("POST", "/deconvolve", true);
 	xhr.setRequestHeader("Content-Type", "application/json");
-	xhr.responseType = "arraybuffer";
+	xhr.responseType = "text";
 	xhr.send(channelData);
 }

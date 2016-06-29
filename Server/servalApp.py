@@ -1,7 +1,14 @@
-from flask import Flask, request, make_response, jsonify
+from flask import Flask, request, make_response, jsonify, send_file
 from werkzeug.routing import BaseConverter
-from os import listdir
+from os import listdir, stat
+import numpy as np
+import base64
 import json
+import tempfile
+from signalProcessing import deconvolve
+import struct
+
+import numpy as np
 
 app = Flask(__name__, static_url_path="", static_folder="../Client")
 
@@ -72,12 +79,40 @@ def load_project() :
 def filter_audio() :
     data = json.loads(request.data)
     
-    filteredAudio = deconvolve(data["signal1"]["leftChannel"], data["signal1"]["rightChannel"], data["signal2"]["leftChannel"], data["signal2"]["rightChannel"])
+    filtered_audio = deconvolve(data["signal1"]["leftChannel"], data["signal2"]["leftChannel"], data["sampleRate"])
+    filtered_audio = np.ascontiguousarray(filtered_audio, dtype=np.float32)
     
-    return str(filteredAudio)[1:-1]
+    pcm = float32_wav_file(filtered_audio, data["sampleRate"])
+    with open("test.wav", "wb+") as f :
+        f.write(pcm)
+    
+    #sinus = np.sin(2 * np.pi * 440.0 / 44100.0 * np.linspace(0, 44100, 44100), dtype = np.float32)
+    
+    enc_str = base64.b64encode(filtered_audio)
+    
+    return enc_str
 
-def deconvolve(sig1l, sig1r, sig2l, sig2r) :
-    return [sig1l]
+def float32_wav_file(sample_array, sample_rate):
+  byte_count = (len(sample_array)) * 4  # 32-bit floats
+  wav_file = ""
+  # write the header
+  wav_file += struct.pack('<ccccIccccccccIHHIIHH',
+    'R', 'I', 'F', 'F',
+    byte_count + 0x2c - 8,  # header size
+    'W', 'A', 'V', 'E', 'f', 'm', 't', ' ',
+    0x10,  # size of 'fmt ' header
+    3,  # format 3 = floating-point PCM
+    1,  # channels
+    sample_rate,  # samples / second
+    sample_rate * 4,  # bytes / second
+    4,  # block alignment
+    32)  # bits / sample
+  wav_file += struct.pack('<ccccI',
+    'd', 'a', 't', 'a', byte_count)
+  for sample in sample_array:
+    wav_file += struct.pack("<f", sample)
+  return wav_file
+
 
 if __name__ == "__main__":
     app.run(debug = True)
