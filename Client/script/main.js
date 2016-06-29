@@ -104,7 +104,7 @@ var movingTimelineOffset = false ;
 var movingCursor = false ;
 var previousMouseX = 0 ;
 var copyArea = [];
-var CutArea = [];
+var cutArea = [];
 var copyAreaNumb = -1;
 var cutAreaNumb = -1;
 
@@ -114,6 +114,7 @@ function mouseClickHandler(e) {     // this moves the cursor  TODO : code me
 
   //We enter in the copyArea array the position of the cursor.
   copyAreaNumb++;
+  cutAreaNumb++;
   if (copyBoolean)
     copyArea[copyAreaNumb] = cursorPosition;
   else
@@ -124,7 +125,18 @@ function mouseClickHandler(e) {     // this moves the cursor  TODO : code me
     copyBoolean = false;
     console.log("copyArea 0 : " + copyArea[0] + "copyArea 1 : " + copyArea[1]);
     copyTrack(0, copyArea[0], copyArea[1]);
-    pasteTrack();
+  }
+
+  if (cutBoolean)
+    cutArea[cutAreaNumb] = cursorPosition;
+  else
+    cutAreaNumb = -1;
+
+  if (cutAreaNumb === 1)
+  {
+    cutBoolean = false;
+    console.log("copyArea 0 : " + cutArea[0] + "copyArea 1 : " + cutArea[1]);
+    cutTrack(0, cutArea[0], cutArea[1]);
   }
 
 
@@ -199,7 +211,7 @@ function importFile(evt)
         }
     }
 
-document.getElementById('importAudio').addEventListener('change', importFile, false); 
+document.getElementById('importAudio').addEventListener('change', importFile, false);
 
 function onExport() {
   onStop();
@@ -216,14 +228,14 @@ function chooseCopyArea()
 {
   cutBoolean = false;
   copyBoolean = true;
-  alert("Beginning (click on the timeline)");
+  alert("Click on the timeline to chose the beginning, then end of the copying area");
 }
 
 function chooseCutArea()
 {
   cutBoolean = true;
   copyBoolean = false;
-  alert("Beginning (click on the timeline)");
+  alert("Click on the timeline to chose the beginning, then end of the copying area");
 }
 var newTrackBuffer = audioContext.createBufferSource();
 
@@ -232,7 +244,7 @@ function copyTrack(trackId, begin, end)
   var sampleRate = audioContext.sampleRate;
   var trackBuffer = audioContext.createBuffer(2, (end-begin)*sampleRate, sampleRate);
   var j = 0
-  for (var i = begin*sampleRate ; i < end*sampleRate ; i++)
+  for (var i = Math.trunc(begin*sampleRate) ; i < Math.trunc(end*sampleRate) ; i++)
   {
     for (var k = 0 ; k < tracks[trackId].signal.numberOfChannels ; k++)
       trackBuffer.getChannelData(k)[j] = tracks[trackId].signal.getChannelData(k)[i];
@@ -247,7 +259,7 @@ function cutTrack(trackId, begin, end)
   var sampleRate = audioContext.sampleRate;
   var trackBuffer = audioContext.createBuffer(2, (end-begin)*sampleRate, sampleRate);
   var j = 0;
-  for (var i = begin*sampleRate ; i < end*sampleRate ; i++)
+  for (var i = Math.trunc(begin*sampleRate) ; i < Math.trunc(end*sampleRate) ; i++)
   {
     for (var k = 0 ; k < tracks[trackId].signal.numberOfChannels ; k++)
     {
