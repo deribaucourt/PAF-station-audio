@@ -110,7 +110,24 @@ function loadProject(fileName) {
 
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 0)) {
-			console.log(xhr.response);
+			var project = xhr.response;
+			
+			document.getElementById("projectNameInput").value = project.projectName;
+			
+			for (var i = 0 ; i < project.tracks.length ; i++) {
+				var track = project.tracks[i];
+				var len = track.leftChannel.length;
+				var audioBuffer = audioContext.createBuffer(2, len, audioContext.sampleRate);
+				
+				for (var j = 0 ; j < len ; j++) {
+					audioBuffer.getChannelData(0)[j] = track.leftChannel[j];
+				}
+				for (var j = 0 ; j < len ; j++) {
+					audioBuffer.getChannelData(1)[j] = track.rightChannel[j];
+				}
+				
+				addTrack(audioBuffer);
+			}
 		}
 	}
 
@@ -138,10 +155,25 @@ function exportProject() {
 
 function generateProject() {
 	var projectName = document.getElementById("projectNameInput").value
-
-	var project = {"projectName" : projectName};
-
+	
+	var project = {"fileName" : convertToSlug(projectName),
+				   "projectName" : projectName,
+				   "tracks" : []};
+	
+	for (i = 0 ; i < tracks.length ; i++) {
+		project.tracks.push({"leftChannel" : Array.prototype.slice.call(tracks[i].signal.getChannelData(0)),
+							 "rightChannel" : Array.prototype.slice.call(tracks[i].signal.getChannelData(1))});
+	}
+	
 	return project
+}
+
+function convertToSlug(text)
+{
+    return text
+        .toLowerCase()
+        .replace(/ /g,'-')
+        .replace(/[^\w-]+/g,'')
 }
 
 function serverDeconvolve(id1, id2) {

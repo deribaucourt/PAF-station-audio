@@ -36,7 +36,7 @@ def serve_template() :
 def generate_file() :
     project_data = json.loads(request.data)
     
-    file_name = get_min_filename()
+    file_name = project_data["fileName"] + ".json"
     
     with open("projects/" + file_name, "w+") as f :
         json.dump(project_data, f)
