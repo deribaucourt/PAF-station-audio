@@ -57,22 +57,42 @@ function processTo(finalOutput) {   // does the wiring to produce the sound   ["
         break;
 
       case "convolve" :
+        var convolver;
+        convolver = audioContext.createConvolver();
+        convolver.buffer = filtersBuffers[args[2]];
+        tracks[args[1]].outputNode.connect(convolver);
+        tracks[args[1]].outputNode = convolver ;
+        break;
 
       case "delay" :
+        var synthDelay = audioContext.createDelay(5.0);
+        tracks[args[1]].outputNode.connect(synthDelay) ;
+        tracks[args[1]].outputNode = synthDelay;
+        break;
 
-      case "fade" :
-        gainNode = audioContext.createGain();
-        gainNode.gain.value = parseInt(args[3]);
-        switch(args[2]) {
-          case "linear" :
-            gainNode.gain.linearRampToValueAtTime(parseInt(args[4]), parseInt(args[5])) ;
-            break;
-          case "exponential":
-            gainNode.gain.exponentialRampToValueAtTime(parseInt(args[4]), parseInt(args[5])) ;
-            break;
-        }
+      case "fadeIn" :
+        var gainNode = audioContext.createGain();
+        var duration = track.source.buffer.duration;
+        var currTime = audioContext.currentTime;
+        var fadeTime = args[2];
+
         tracks[args[1]].outputNode.connect(gainNode) ;
         tracks[args[1]].outputNode = gainNode ;
+
+        gainNode.gain.linearRampToValueAtTime(0, cursorPosition + tracks[args[1]].offset);
+        gainNode.gain.linearRampToValueAtTime(1, cursorPosition + tracks[args[1]].offset + fadeTime);
+        break;
+
+      case "fadeOut" :
+        var gainNode = audioContext.createGain();
+        var duration = track.source.buffer.duration;
+        var currTime = audioContext.currentTime;
+        var fadeTime = args[2];
+        tracks[args[1]].outputNode.connect(gainNode) ;
+        tracks[args[1]].outputNode = gainNode ;
+
+        gainNode.gain.linearRampToValueAtTime(1, cursorPosition + tracks[args[1]].offset + duration-fadeTime);
+        gainNode.gain.linearRampToValueAtTime(0, cursorPosition + tracks[args[1]].offset + duration);
         break;
 
     }

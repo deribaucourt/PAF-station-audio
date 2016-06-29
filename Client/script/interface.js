@@ -150,28 +150,6 @@ function addNewTrackToDisplay() {
   drawRecordTrack();                        // finally add record track
 }
 
-function resizeEffectsPopup() {
-	var effectsPopup = document.getElementById("effectsPopup");
-	var toolsContainer = document.getElementById("effectsToolsContainer");
-
-	effectsPopup.style.left = "calc(100% - " + (toolsContainer.clientWidth - 4) + "px)";
-	effectsPopup.style.width = (toolsContainer.clientWidth - 12) + "px";
-}
-
-resizeEffectsPopup();
-
-function togglePopup(caller, className, elementId, loadingFunction) {
-	var popup = document.getElementById(elementId);
-    if(popup.style.display === "none") {
-		caller.classList.add(className + "Active");
-		loadingFunction();
-        popup.style.display = "block";
-    } else {
-		caller.classList.remove(className + "Active");
-        popup.style.display = "none";
-    }
-}
-
 function drawNewTrack(track) {
   console.log("loading html code for track number "+ track.number );
 	var callbackFunction = function(partialTrack) {
@@ -216,19 +194,4 @@ function onClose(i) {
     addNewTrackToDisplay() ;
   }
   repaintTracks() ;*/
-}
-
-
-function createTrackSelect() {
-  var selectList = document.createElement("select");
-  selectList.id = "trackSelect";
-
-  for (var i = 0; i<tracks.length; i++) {
-      var option = document.createElement("option");
-      option.value = i;
-      option.text = document.getElementById("trackTitleInput"+i).value;
-      selectList.appendChild(option);
-  }
-
-  return selectList ;
 }
