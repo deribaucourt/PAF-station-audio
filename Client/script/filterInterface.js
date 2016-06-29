@@ -88,10 +88,10 @@ function importFilter(url) {
 }
 
 //GENERATE a low pass
-/*importFilter("filters/Sacristie.wav");
+importFilter("filters/Sacristie.wav");
 importFilter("filters/SportCenter.wav");
 importFilter("filters/Crypte.wav");
-var lowPass = audioContext.createBuffer(2,100,audioContext.sampleRate);
+/*var lowPass = audioContext.createBuffer(2,100,audioContext.sampleRate);
 for(var channel = 0; channel< lowPass.numberOfChannels; channel++) {
 	for(var sample = 0; sample< lowPass.length; sample++) {
 		lowPass.getChannelData(channel)[sample] = 1;
