@@ -180,21 +180,20 @@ Code starts here                                                                
 			</div>
 			<div style="width:100%; clear:both;">
 				<span>Mix</span><input type="text" style="width:60px; margin:4px;" />
-			</div>
-			<div style="width:100%; clear:both;">
-				<span style="text-decoration:underline;">Import impulse response...</span>
-			</div>
+		</div>
+		<div style="width:100%; clear:both;">
+			<span style="text-decoration:underline;">Import impulse response...</span>
 		</div>
 	</div>
-
+</div>
 	<!-- ************* Home Page ************ -->
 	<div id="topContainer" style="width:100%; height:100%;">
 
 		<div id="headerContainer" style="width:100%; height:32px; clear:both;">
-			<div id="projectMenuButton" onclick="togglePopup(this, 'menuButton', 'projectsPopup', retrieveProjects)" class="menuButton unselectable" style="width:10%; height:100%; border-left:1px solid #ffffff;">Project</div>
-			<div id="tracksMenuButton" onclick="togglePopup(this, 'menuButton', 'tracksPopup', function(){})" class="menuButton unselectable" style="width:10%; height:100%; border-left-width:1px;">Tracks</div>
+			<div id="projectMenuButton" onclick="togglePopup(this, 'menuButtonActive', 'projectsPopup', retrieveProjects)" class="menuButton unselectable" style="width:10%; height:100%; border-left:1px solid #ffffff;">Project</div>
+			<div id="tracksMenuButton" onclick="togglePopup(this, 'menuButtonActive', 'tracksPopup', function(){})" class="menuButton unselectable" style="width:10%; height:100%; border-left-width:1px;">Tracks</div>
 			<input id="projectNameInput" type="text" value="My Project" class="menuInput" style="width:60%; height:100%;"/>
-			<div id="aboutMenuButton" onclick="togglePopup(this, 'menuButton', 'aboutPopup', function(){})" class="menuButton unselectable" style="width:20%; height:100%;">About Serval</div>
+			<div id="aboutMenuButton" onclick="togglePopup(this, 'menuButtonActive', 'aboutPopup', function(){})" class="menuButton unselectable" style="width:20%; height:100%;">About Serval</div>
 		</div>
 
 		<div style="width:100%; height:16px; background: #ffffff url('icons/drop_shadow.png') repeat-x top; clear:both;"></div>
@@ -236,12 +235,12 @@ Code starts here                                                                
 			</div>
 			<div id="effectsToolsContainer" class="toolsContainer" style="width:auto; height:100%; float:right; border-left-width:1px;">
 				<div class="toolsHeader unselectable">Effects</div>
-				<div id="deconvolveEffectButton" class="textToolButton unselectable" onclick="togglePopup(this, 'textToolButton', 'deconvolvePopup', resizeEffectsPopup)">Deconvolve</div>
-				<div id="reverbEffectButton" class="textToolButton unselectable" onclick="togglePopup(this, 'textToolButton', 'reverbPopup', resizeEffectsPopup)">Reverb</div>
-				<div id="echoEffectButton" class="textToolButton unselectable" onclick="togglePopup(this, 'textToolButton', 'echoPopup', resizeEffectsPopup)">Echo</div>
-				<div id="fadeEffectButton" class="textToolButton unselectable" onclick="togglePopup(this, 'textToolButton', 'fadePopup', resizeEffectsPopup)">Fade</div>
-				<div id="gainEffectButton" class="textToolButton unselectable" onclick="togglePopup(this, 'textToolButton', 'gainPopup', resizeEffectsPopup)">Gain</div>
-				<div id="offsetEffectButton" class="textToolButton unselectable" onclick="togglePopup(this, 'textToolButton', 'offsetPopup', resizeEffectsPopup)">Offset</div>
+				<div id="deconvolveFilterButton" class="textToolButton unselectable" onclick="serverDeconvolve(0, 1);">Deconvolve</div>
+				<div id="reverbFilterButton" class="textToolButton unselectable">Reverb</div>
+				<div id="echoFilterButton" class="textToolButton unselectable">Echo</div>
+				<div id="fadeFilterButton" class="textToolButton unselectable">Fade</div>
+				<div id="gainFilterButton" class="textToolButton unselectable" onclick="">Gain</div>
+				<div id="offsetEffectButton" class="textToolButton unselectable" onclick="">Offset</div>
 			</div>
 		</div>
 
