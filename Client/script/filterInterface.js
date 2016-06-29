@@ -89,8 +89,8 @@ function importFilter(url) {
 
 //GENERATE a low pass
 importFilter("filters/Sacristie.wav");
-//importFilter("filters/SportCenter.wav");
-//importFilter("filters/Crypte.wav");
+//importFilter("filters/SportCenter.wav");			// Don't do that if importing several filters. The order may be asynchronous.
+//importFilter("filters/Crypte.wav");						// Faire attention a mettre des filtres normalisés (ce n'est pas le cas ici), ou on risque de ne pas entendre
 /*var lowPass = audioContext.createBuffer(2,100,audioContext.sampleRate);
 for(var channel = 0; channel< lowPass.numberOfChannels; channel++) {
 	for(var sample = 0; sample< lowPass.length; sample++) {
